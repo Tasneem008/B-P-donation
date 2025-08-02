@@ -1,0 +1,18 @@
+<header class="navbar justify-between bg-red-600 text-white px-6">
+  <div>
+    <a class="text-2xl font-bold">DonateLife</a>
+  </div>
+  <div class="space-x-4">
+    <a href="/" class="btn btn-ghost text-white">Home</a>
+    <a href="/dashboard" class="btn btn-ghost text-white">Dashboard</a>
+    <a href="about" class="btn btn-ghost text-white">About</a>
+    <a href="/recipient/blood" class="btn btn-ghost text-white">Blood</a>
+  </div>
+  <div>
+    <% if(isAuthenticated){ %>
+    <a href="/logout" class="btn btn-outline btn-sm">Logout</a>
+    <%} else {%>
+    <a href="/logout" class="btn btn-outline btn-sm">Login</a>
+    <%}%>
+  </div>
+</header>
