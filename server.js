@@ -1,3 +1,4 @@
+// Required Packages
 const dotenv = require("dotenv");
 const express = require("express");
 const session = require("express-session");
@@ -5,8 +6,8 @@ const MongoStore = require("connect-mongo");
 const bodyParser = require("body-parser");
 const path = require("path");
 const app = express();
+// Middlewares
 const { setUserData } = require("./middleware/middleware.js");
-
 // Database Connection
 const connectDB = require("./config/db.js");
 // Routes
@@ -17,6 +18,8 @@ const dashboardRoutes = require("./routes/dashboard.route.js");
 const recipientRoutes = require("./routes/recipient.route.js");
 
 dotenv.config();
+
+const PORT = process.env.PORT || 3000;
 
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
@@ -41,7 +44,7 @@ app.use(setUserData);
 // Serve static files (if needed)
 app.use(express.static(path.join(__dirname, "public")));
 
-// Views setup - simple HTML files from public folder
+// Home route
 app.get("/", (req, res) => {
   res.render("home");
 });
@@ -62,12 +65,9 @@ app.get("/logout", (req, res) => {
   });
 });
 
-// Redirecting user to their respective dashboards based on their roles.
+// Dashboard of different roles users.
 app.use("/dashboard", dashboardRoutes);
 
 app.use("/recipient", recipientRoutes);
 
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
