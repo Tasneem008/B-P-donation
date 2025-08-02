@@ -2,6 +2,10 @@ const User = require("../models/User");
 const bcrypt = require("bcryptjs");
 
 const getLoginPage = (req, res) => {
+  if (req.session.userId) {
+    return res.redirect("/");
+  }
+
   res.render("login");
 };
 
@@ -21,13 +25,8 @@ const postLoginPage = async (req, res) => {
   // Set session and redirect
   req.session.userId = user._id;
   req.session.role = user.role;
-  if (user.role === "donor") {
-    res.redirect("/donor/dashboard");
-  } else if (user.role === "recipient") {
-    res.redirect("/recipient/dashboard");
-  } else if (user.role === "hospital") {
-    res.redirect("/admin/dashboard");
-  }
+
+  return res.redirect("/");
 };
 
 module.exports = { getLoginPage, postLoginPage };
