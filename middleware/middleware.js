@@ -14,8 +14,9 @@ function checkRole(role) {
 
 // middleware/auth.js
 function setUserData(req, res, next) {
-  res.locals.isAuthenticated = req.session.user ? true : false;
-  res.locals.user = req.session.user || null;
+  console.log(req.session.userId);
+  res.locals.isAuthenticated = req.session.userId ? true : false;
+  res.locals.user = req.session.userId || null;
   next();
 }
 
