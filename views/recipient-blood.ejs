@@ -1,29 +1,28 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Welcome - DonateLife</title>
-  <link href="https://cdn.jsdelivr.net/npm/daisyui@4.10.2/dist/full.min.css" rel="stylesheet" />
-  <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body class="bg-red-100 min-h-screen flex flex-col">
+  <head>
+    <%- include('./partials/head.ejs'); %>
 
-  <%- include('navbar.ejs'); %>
+    <title>Welcome - DonateLife</title>
+  </head>
+  <body class="bg-red-100 min-h-screen flex flex-col">
+    <%- include('navbar.ejs'); %>
 
- <main>
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 p-10">
-  <% bloodTypes.forEach(type => { %>
-    <div class="card bg-white shadow-md border-2 border-red-200">
-      <div class="card-body text-center">
-        <h2 class="text-3xl font-bold text-red-600"><%= type %></h2>
-        <a href="/recipient/request/<%= type %>" class="btn btn-error mt-4 text-white">Send Request</a>
+    <main>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 p-10">
+        <% bloodTypes.forEach(type => { %>
+        <div class="card bg-white shadow-md border-2 border-red-200">
+          <div class="card-body text-center">
+            <h2 class="text-3xl font-bold text-red-600"><%= type %></h2>
+            <a
+              href="/recipient/request/<%= type %>"
+              class="btn btn-error mt-4 text-white"
+              >Send Request</a
+            >
+          </div>
+        </div>
+        <% }) %>
       </div>
-    </div>
-  <% }) %>
-</div>
-
- </main>
-
-</body>
+    </main>
+  </body>
 </html>
