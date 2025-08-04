@@ -2,19 +2,11 @@
 <html lang="en">
   <head>
     <%- include('./partials/head.ejs'); %>
-    
+
     <title>Dashboard | DonateLife</title>
   </head>
   <body class="bg-red-100 min-h-screen flex flex-col">
-    <header class="navbar bg-red-600 text-white px-6">
-      <div class="flex-1">
-        <span class="text-2xl font-bold">DonateLife</span>
-      </div>
-      <div class="space-x-4">
-        <a href="/" class="btn btn-ghost text-white">Home</a>
-        <a href="/logout" class="btn btn-outline btn-sm">Logout</a>
-      </div>
-    </header>
+    <%- include('./partials/dashboard-navbar.ejs') %>
 
     <main class="flex-grow flex items-center justify-center p-6">
       <div
@@ -26,6 +18,7 @@
 
         <div class="text-left space-y-4">
           <p><strong>Username:</strong> <%= user.username %></p>
+          <p><strong>Role:</strong> <%= user.role %></p>
           <p>
             <strong>Blood Group:</strong> <%= user.bloodGroup || 'Not Set' %>
           </p>
