@@ -6,10 +6,10 @@
     <title>Welcome - DonateLife</title>
   </head>
   <body class="bg-red-100 min-h-screen flex flex-col">
-    <%- include('navbar.ejs'); %>
+    <%- include('./partials/navbar.ejs'); %>
 
     <main>
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 p-10">
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-6 p-10">
         <% bloodTypes.forEach(type => { %>
         <div class="card bg-white shadow-md border-2 border-red-200">
           <div class="card-body text-center">
