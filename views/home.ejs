@@ -1,26 +1,90 @@
+<!-- views/home.ejs -->
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <%- include('./partials/head.ejs'); %>
-   
     <title>Welcome - DonateLife</title>
   </head>
-  <body class="bg-red-100 min-h-screen flex flex-col">
+  <body class="bg-red-50 min-h-screen flex flex-col">
     <%- include('./partials/navbar.ejs'); %>
 
-    <main
-      class="flex-grow flex flex-col items-center justify-center text-center p-8"
-    >
-      <h1 class="text-4xl font-bold text-red-700 mb-4">
-        Welcome to DonateLife
-      </h1>
-      <p class="text-lg max-w-xl text-gray-700">
-        Thank you for logging in! Together, we can save lives by donating blood
-        and plasma.
+
+    <section class="flex flex-col items-center justify-center text-center px-4 py-20 bg-cover bg-center bg-no-repeat" src="/pics/bg.jpg">
+
+      <h1 class="text-5xl font-bold text-red-700 mb-4">Welcome to DonateLife</h1>
+      <p class="text-lg max-w-2xl text-gray-800 mb-6">
+        Join our community to save lives by donating blood and plasma. Whether you're a donor or someone in need, we're here for you.
       </p>
-      <div>
-        <a href="/dashboard" class="btn btn-ghost text-red-600">Donate</a>
+      <div class="flex gap-4">
+        <a href="/register" class="btn btn-error text-white">Join as Donor</a>
+        <a href="/recipient/blood" class="btn btn-outline btn-error">Request Blood</a>
       </div>
-    </main>
+    </section>
+
+
+    <section class="py-16 bg-white">
+      <h2 class="text-3xl font-bold text-center text-red-600 mb-8">How It Works</h2>
+      <div class="flex flex-col md:flex-row items-center justify-center gap-6 max-w-5xl mx-auto px-4">
+        <div class="card w-72 bg-red-100 shadow-xl">
+          <div class="card-body text-center text-gray-800">
+            <h3 class="text-xl font-semibold">1. Register</h3>
+            <p>Sign up as a donor, recipient, or hospital admin.</p>
+          </div>
+        </div>
+        <div class="card w-72 bg-red-100 shadow-xl">
+          <div class="card-body text-center text-gray-800">
+            <h3 class="text-xl font-semibold">2. Request / Donate</h3>
+            <p>Send blood requests or accept them if eligible.</p>
+          </div>
+        </div>
+        <div class="card w-72 bg-red-100 shadow-xl">
+          <div class="card-body text-center text-gray-800">
+            <h3 class="text-xl font-semibold">3. Save Lives</h3>
+            <p>Complete donation at the hospital and make a difference!</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    <section class="py-16 bg-red-50">
+      <h2 class="text-3xl font-bold text-center text-red-700 mb-10">Available Blood Types</h2>
+      <div class="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-8 gap-6 justify-center px-6">
+        <% ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'].forEach(bg => { %>
+          <div class="rounded-full w-20 h-20 flex items-center justify-center text-white font-bold text-lg bg-red-600 animate-pulse">
+            <%= bg %>
+          </div>
+        <% }) %>
+      </div>
+    </section>
+
+    <section class="py-16 bg-white">
+      <h2 class="text-3xl font-bold text-center text-red-600 mb-8">Get Started</h2>
+      <div class="flex flex-col md:flex-row justify-center items-center gap-8 px-4">
+        <div class="card w-64 bg-red-100 shadow-xl">
+          <div class="card-body text-center">
+            <h3 class="text-xl font-bold">I'm a Donor</h3>
+            <a href="/donor/dashboard" class="btn btn-error text-white mt-4">Donate</a>
+          </div>
+        </div>
+        <div class="card w-64 bg-red-100 shadow-xl">
+          <div class="card-body text-center">
+            <h3 class="text-xl font-bold">I'm a Recipient</h3>
+            <a href="/recipient/blood" class="btn btn-error text-white mt-4">Request Blood</a>
+          </div>
+        </div>
+        <div class="card w-64 bg-red-100 shadow-xl">
+          <div class="card-body text-center">
+            <h3 class="text-xl font-bold">Hospital Admin</h3>
+            <a href="/admin/dashboard" class="btn btn-error text-white mt-4">Admin Panel</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+     <%- include('./partials/footer.ejs'); %>
+  
   </body>
 </html>
+
+
