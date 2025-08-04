@@ -7,7 +7,7 @@ const { checkAuth, checkRole } = require("../middleware/middleware");
 
 const router = express.Router();
 
-router.get("/", checkAuth, redirectUserToDashboard);
+router.get("/dashboard", checkAuth, redirectUserToDashboard);
 
 router.get(
   "/donor/dashboard",
