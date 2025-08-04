@@ -6,7 +6,7 @@ function checkAuth(req, res, next) {
 function checkRole(role) {
   return function (req, res, next) {
     if (req.session.role !== role) {
-      return res.status(403).send("Access Denied");
+      return res.status(403).render("unauthorized");
     }
     next();
   };
@@ -14,9 +14,8 @@ function checkRole(role) {
 
 // middleware/auth.js
 function setUserData(req, res, next) {
-  console.log(req.session.userId);
   res.locals.isAuthenticated = req.session.userId ? true : false;
-  res.locals.user = req.session.userId || null;
+  res.locals.role = req.session.role || null;
   next();
 }
 
