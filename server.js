@@ -66,7 +66,7 @@ app.get("/logout", (req, res) => {
 });
 
 // Dashboard of different roles users.
-app.use("/dashboard", dashboardRoutes);
+app.use("/", dashboardRoutes);
 
 app.use("/recipient", recipientRoutes);
 
