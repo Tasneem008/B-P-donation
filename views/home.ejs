@@ -17,7 +17,7 @@
       </p>
       <div class="flex gap-4">
         <a href="/register" class="btn btn-error text-white">Join as Donor</a>
-        <a href="/recipient/blood" class="btn btn-outline btn-error">Request Blood</a>
+        <a href="/recipient/blood" class="btn btn-outline btn-error">Request Blood and Plasma</a>
       </div>
     </section>
 
@@ -53,6 +53,15 @@
         <% ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'].forEach(bg => { %>
           <div class="rounded-full w-20 h-20 flex items-center justify-center text-white font-bold text-lg bg-red-600 animate-pulse">
             <%= bg %>
+          </div>
+        <% }) %>
+      </div>
+
+      <h2 class="text-2xl font-semibold text-center text-yellow-600 mt-16 mb-6">Available Plasma Types</h2>
+      <div class="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 gap-6 justify-center px-6">
+        <% ['Plasma A', 'Plasma B', 'Plasma AB', 'Plasma O'].forEach(plasma => { %>
+          <div class="blood-type rounded-full w-24 h-24 flex items-center justify-center text-white font-bold text-sm bg-yellow-500 hover:bg-yellow-600">
+            <%= plasma %>
           </div>
         <% }) %>
       </div>
