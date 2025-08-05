@@ -8,7 +8,7 @@ const path = require("path");
 const app = express();
 // Middlewares
 const { setUserData } = require("./middleware/middleware.js");
-// Database Connection
+// Db Connection
 const connectDB = require("./config/db.js");
 // Routes
 const loginRoutes = require("./routes/login.route.js");
@@ -41,7 +41,6 @@ app.use(
 
 app.use(setUserData);
 
-// Serve static files (if needed)
 app.use(express.static(path.join(__dirname, "public")));
 
 // Home route
