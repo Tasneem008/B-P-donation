@@ -73,34 +73,63 @@
   class="bg-red-200 mt-10 p-6 rounded-xl hidden transition-all duration-300"
 >
   <h2 class="text-lg font-semibold mb-4">Send Your Request!</h2>
-  <form class="flex flex-col lg:flex-row gap-4 justify-center items-center">
-    <select class="px-4 py-2 rounded-lg bg-red-700 text-white">
-      <option>Select Blood Group</option>
-      <option>O+</option>
-      <option>A+</option>
-      <option>B+</option>
-      <option>AB+</option>
-    </select>
+  <form action="/request" method="post" class="flex flex-col lg:flex-row flex-wrap gap-4 justify-center items-center bg-red-50 p-6 rounded-xl shadow-md">
+  <!-- Blood Group -->
+  <select name="bloodgroup" class="px-4 py-2 rounded-lg bg-red-700 text-white focus:outline-none focus:ring-2 focus:ring-red-500">
+    <option>Select Blood Group</option>
+    <option>O+</option>
+    <option>A+</option>
+    <option>B+</option>
+    <option>AB+</option>
+  </select>
 
-    <select class="px-4 py-2 rounded-lg bg-red-700 text-white">
-      <option>Gender</option>
-      <option>Male</option>
-      <option>Female</option>
-    </select>
+  <!-- Phone Number -->
+  <input
+    name="phone" 
+    type="number"
+    placeholder="Phone Number"
+    class="px-4 py-2 rounded-lg border border-red-600 focus:outline-none focus:ring-2 focus:ring-red-500"
+  />
 
-    <input
-      type="number"
-      placeholder="Blood Unit"
-      class="px-4 py-2 rounded-lg border border-red-600"
+  <!-- Location -->
+  <select name="location" class="px-4 py-2 rounded-lg bg-red-700 text-white focus:outline-none focus:ring-2 focus:ring-red-500">
+    <option>Location</option>
+    <option>LabAid Hospital</option>
+    <option>DMCH</option>
+    <option>Popular Medical</option>
+  </select>
+
+  <!-- Blood Unit -->
+  <input
+    name="bags"
+    type="number"
+    placeholder="Blood Unit"
+    class="px-4 py-2 rounded-lg border border-red-600 focus:outline-none focus:ring-2 focus:ring-red-500"
+  />
+ <input 
+    name="description"
+    type="text"
+    placeholder="Description"
+    class="px-4 py-2 rounded-lg border border-red-600 focus:outline-none focus:ring-2 focus:ring-red-500"
     />
+    
+ <label class="block">
+  <span class="text-gray-700">Requested Date & Time</span>
+  <input 
+    type="datetime-local" 
+    name="requestedDate"
+    class="mt-1 px-4 py-2 rounded-lg border border-red-600 focus:outline-none focus:ring-2 focus:ring-red-500"
+  >
+</label>
 
-    <button
-      type="submit"
-      class="bg-white hover:bg-gray-100 px-6 py-2 rounded-lg shadow"
-    >
-      Send Request
-    </button>
-  </form>
+    <div class="w-full"></div>
+  <button
+    type="submit"
+    class="bg-red-700 text-white hover:bg-red-800 px-6 py-2 rounded-lg shadow transition"
+  >
+    Send Request
+  </button>
+</form>
 </div>
 
       </div>
