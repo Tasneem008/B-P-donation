@@ -17,7 +17,7 @@ const forgotPasswordRoutes = require("./routes/forgot-password.route.js");
 const dashboardRoutes = require("./routes/dashboard.route.js");
 const recipientRoutes = require("./routes/recipient.route.js");
 const requestRoutes = require("./routes/request.js");
-const donateRoutes = require("./routes/donate.js");
+const donateRoutes = require("./routes/donate.routes.js");
 
 
 dotenv.config();
