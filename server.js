@@ -16,6 +16,9 @@ const registerRoutes = require("./routes/register.route.js");
 const forgotPasswordRoutes = require("./routes/forgot-password.route.js");
 const dashboardRoutes = require("./routes/dashboard.route.js");
 const recipientRoutes = require("./routes/recipient.route.js");
+const requestRoutes = require("./routes/request.js");
+const donateRoutes = require("./routes/donate.js");
+
 
 dotenv.config();
 
@@ -68,5 +71,7 @@ app.get("/logout", (req, res) => {
 app.use("/", dashboardRoutes);
 
 app.use("/recipient", recipientRoutes);
+app.use("/request", requestRoutes);
+app.use("/donate-blood", donateRoutes);
 
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
