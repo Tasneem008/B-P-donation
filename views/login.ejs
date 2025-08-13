@@ -1,57 +1,66 @@
 <!DOCTYPE html>
-<html lang="en">
+<html data-theme="light" lang="en">
   <head>
     <%- include('./partials/head.ejs'); %>
 
     <title>Login | DonateLife</title>
   </head>
-  <body class="bg-red-100 flex items-center justify-center min-h-screen">
-    <form
-      method="POST"
-      action="/login"
-      class="bg-white shadow-lg rounded-xl py-10 px-8 w-full max-w-sm"
-    >
-      <h1 class="text-3xl font-bold text-center text-red-600 mb-6">Login</h1>
-
-      <label class="form-control w-full mb-4">
-        <span class="label-text font-semibold">Email</span>
-        <input
-          type="email"
-          name="email"
-          required
-          class="input input-bordered w-full"
-        />
-      </label>
-
-      <label class="form-control w-full mb-6">
-        <span class="label-text font-semibold">Password</span>
-        <input
-          type="password"
-          name="password"
-          required
-          class="input input-bordered w-full"
-        />
-      </label>
-
-      <button
-        type="submit"
-        class="btn btn-primary w-full bg-red-600 hover:bg-red-700 border-none"
+  <body
+    class="bg-red-100 flex items-center justify-start min-h-screen"
+    style="
+      background-image: url('/pics/login.png');
+      background-size: cover;
+      background-position: center;
+    "
+  >
+    <div class="container mx-auto">
+      <form
+        method="POST"
+        action="/login"
+        class="bg-white/20 backdrop-blur-sm shadow-lg rounded-xl py-10 px-8 w-full max-w-sm"
       >
-        Login
-      </button>
+        <h1 class="text-3xl font-bold text-center text-red-600 mb-6">Login</h1>
 
-      <p class="text-center mt-2 text-sm">
-        <a href="/forgot-password" class="text-red-600 hover:underline"
-          >Forgot password?</a
-        >
-      </p>
+        <label class="form-control w-full mb-4">
+          <span class="label-text font-semibold">Email</span>
+          <input
+            type="email"
+            name="email"
+            required
+            class="input input-bordered w-full"
+          />
+        </label>
 
-      <p class="text-center mt-4 text-sm text-gray-600">
-        Don’t have an account?
-        <a href="/register" class="text-red-600 font-medium hover:underline"
-          >Register</a
+        <label class="form-control w-full mb-6">
+          <span class="label-text font-semibold">Password</span>
+          <input
+            type="password"
+            name="password"
+            required
+            class="input input-bordered w-full"
+          />
+        </label>
+
+        <button
+          type="submit"
+          class="btn btn-primary w-full bg-red-600 hover:bg-red-700 border-none"
         >
-      </p>
-    </form>
+          Login
+        </button>
+
+        <p class="text-center mt-2 text-sm">
+          <a href="/forgot-password" class="text-red-600 hover:underline"
+            >Forgot password?</a
+          >
+        </p>
+
+        <p class="text-center mt-4 text-sm text-gray-600">
+          Don’t have an account?
+          <a href="/register" class="text-red-600 font-medium hover:underline"
+            >Register</a
+          >
+        </p>
+      </form>
+    </div>
   </body>
 </html>
