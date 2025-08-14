@@ -73,6 +73,6 @@ app.use("/", dashboardRoutes);
 
 app.use("/recipient", recipientRoutes);
 app.use("/request", requestRoutes);
-app.use("/donate-blood", donateRoutes);
+app.use("/donate", donateRoutes);
 
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
