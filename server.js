@@ -18,6 +18,7 @@ const dashboardRoutes = require("./routes/dashboard.route.js");
 const recipientRoutes = require("./routes/recipient.route.js");
 const hospitalRoutes = require('./routes/hospital.routes.js');
 
+const requestRoutes = require("./routes/request.js");
 
 dotenv.config();
 
@@ -71,6 +72,7 @@ app.get("/logout", (req, res) => {
 app.use("/", dashboardRoutes);
 
 app.use("/recipient", recipientRoutes);
+app.use("/request", requestRoutes);
 
 app.use("/hospital", hospitalRoutes);
 
