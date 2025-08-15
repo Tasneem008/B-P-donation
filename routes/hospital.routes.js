@@ -1,12 +1,12 @@
 const express = require('express');
 const router = express.Router();
-const hospitalController = require('../controllers/hospital.controller');
+const hospitalController = require('../controllers/hospital.controller.js');
 
 // Dashboard
 router.get('/', hospitalController.getDashboard);
 
 // Submit new blood request
-router.post('/request-blood', hospitalController.requestBlood);
+router.post('/', hospitalController.requestBlood);
 
 // Approve/Reject actions
 router.post('/approve/:id', hospitalController.approveRequest);
