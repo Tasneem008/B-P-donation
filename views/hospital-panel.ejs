@@ -1,6 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
-<head>
+<html data-theme="light" lang="en">
+  <head>
 
       <%- include('./partials/head.ejs'); %>
      <title>Hospital Panel - LifeSaver</title>
@@ -57,10 +57,10 @@
       <div class="bg-white p-6 rounded-lg shadow-md">
         <h3 class="text-xl font-bold mb-4 text-red-600">Request Blood/Plasma</h3>
         <form action="/hospital" method="POST" class="grid grid-cols-1 md:grid-cols-3 gap-4">
-  <input name="bloodType" type="text" placeholder="Blood Type (e.g. A+)" class="p-2 border rounded-md" />
-  <input name="quantity" type="number" placeholder="Quantity (units)" class="p-2 border rounded-md" />
-  <input name="urgency" type="text" placeholder="Urgency (Low/Medium/High)" class="p-2 border rounded-md" />
-  <textarea name="notes" placeholder="Reason / Notes" class="col-span-3 p-2 border rounded-md h-24"></textarea>
+  <input name="bloodgroup" type="text" placeholder="Blood Type (e.g. A+)" class="p-2 border rounded-md" />
+  <input name="bags" type="number" placeholder="Bags (units)" class="p-2 border rounded-md" />
+  <input name="requestedDate" type="date" class="p-2 border rounded-md" />
+  <textarea name="description" placeholder="Reason / Notes" class="col-span-3 p-2 border rounded-md h-24"></textarea>
   <button type="submit" class="col-span-3 bg-red-600 text-white py-2 px-6 rounded-md hover:bg-red-700 transition">
     Submit Request
   </button>
