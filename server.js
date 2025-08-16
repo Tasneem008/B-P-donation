@@ -36,7 +36,7 @@ app.post('/send',(req,res)=>{
 })
 // Middlewares
 const { setUserData } = require("./middleware/middleware.js");
-// Database Connection
+// Db Connection
 const connectDB = require("./config/db.js");
 // Routes
 const loginRoutes = require("./routes/login.route.js");
@@ -44,8 +44,9 @@ const registerRoutes = require("./routes/register.route.js");
 const forgotPasswordRoutes = require("./routes/forgot-password.route.js");
 const dashboardRoutes = require("./routes/dashboard.route.js");
 const recipientRoutes = require("./routes/recipient.route.js");
+const hospitalRoutes = require('./routes/hospital.routes.js');
 const requestRoutes = require("./routes/request.js");
-const donateRoutes = require("./routes/donate.js");
+const donateRoutes = require("./routes/donate.routes.js");
 
 
 dotenv.config();
@@ -72,7 +73,6 @@ app.use(
 
 app.use(setUserData);
 
-// Serve static files (if needed)
 app.use(express.static(path.join(__dirname, "public")));
 
 // Home route
@@ -102,5 +102,7 @@ app.use("/", dashboardRoutes);
 app.use("/recipient", recipientRoutes);
 app.use("/request", requestRoutes);
 app.use("/donate", donateRoutes);
+
+app.use("/hospital", hospitalRoutes);
 
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

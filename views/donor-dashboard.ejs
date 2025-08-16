@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html data-theme="light" lang="en">
   <head>
     <%- include('./partials/head.ejs'); %>
     <title>Dashboard | DonateLife</title>
@@ -76,7 +76,7 @@
           id="donateForm"
           class="bg-red-200 mt-10 p-6 rounded-xl hidden transition-all duration-300">
           <h2 class="text-lg font-semibold mb-4">Donate Your Blood!</h2>
-          <form action="/donate" method="post"
+          <form action="/donate-blood" method="post"
             class="flex flex-col flex-wrap gap-4 bg-red-50 p-6 rounded-xl shadow-md">
 
             <input type="text" name="name" placeholder="Full Name" required

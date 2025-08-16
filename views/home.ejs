@@ -1,90 +1,193 @@
-<!-- views/home.ejs -->
 <!DOCTYPE html>
-<html lang="en">
+<html data-theme="light" lang="en">
   <head>
     <%- include('./partials/head.ejs'); %>
     <title>Welcome - DonateLife</title>
   </head>
-  <body class="bg-red-50 min-h-screen flex flex-col">
+  <body class="flex flex-col">
     <%- include('./partials/navbar.ejs'); %>
 
-
-    <section class="flex flex-col items-center justify-center text-center px-4 py-20 bg-cover bg-center bg-no-repeat" src="/pics/bg.jpg">
-
-      <h1 class="text-5xl font-bold text-red-700 mb-4">Welcome to DonateLife</h1>
-      <p class="text-lg max-w-2xl text-gray-800 mb-6">
-        Join our community to save lives by donating blood and plasma. Whether you're a donor or someone in need, we're here for you.
-      </p>
-      <div class="flex gap-4">
-        <a href="/register" class="btn btn-error text-white">Join as Donor</a>
-        <a href="/recipient/blood" class="btn btn-outline btn-error">Request Blood</a>
+    <section
+      style="
+        background-image: url('/pics/bg2.jpg');
+        background-size: cover;
+        background-position: center;
+      "
+    >
+      <div
+        class="flex flex-col items-center justify-center text-center px-4 bg-white/2 backdrop-blur-sm h-[90vh]"
+      >
+        <h1 class="text-5xl font-bold text-red-700 mb-4">
+          Welcome to DonateLife
+        </h1>
+        <p class="text-lg max-w-2xl text-gray-800 mb-6">
+          Join our community to save lives by donating blood and plasma. Whether
+          you're a donor or someone in need, we're here for you.
+        </p>
+        <div class="flex gap-4">
+          <a href="/register" class="btn btn-error text-white">Join as Donor</a>
+          <a href="/recipient/blood" class="btn btn-outline btn-error"
+            >Request Blood and Plasma</a
+          >
+        </div>
       </div>
     </section>
-
 
     <section class="py-16 bg-white">
-      <h2 class="text-3xl font-bold text-center text-red-600 mb-8">How It Works</h2>
-      <div class="flex flex-col md:flex-row items-center justify-center gap-6 max-w-5xl mx-auto px-4">
-        <div class="card w-72 bg-red-100 shadow-xl">
-          <div class="card-body text-center text-gray-800">
-            <h3 class="text-xl font-semibold">1. Register</h3>
-            <p>Sign up as a donor, recipient, or hospital admin.</p>
+      <div
+        class="container mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 items-center"
+      >
+        <div>
+          <div class="grid grid-cols-3 gap-4 mb-8">
+            <div class="text-center">
+              <h2 class="text-4xl font-bold text-red-600">320+</h2>
+              <p class="text-gray-600">Blood Donations</p>
+            </div>
+            <div class="text-center">
+              <h2 class="text-4xl font-bold text-red-600">150+</h2>
+              <p class="text-gray-600">Registered Donors</p>
+            </div>
+            <div class="text-center">
+              <h2 class="text-4xl font-bold text-red-600">50+</h2>
+              <p class="text-gray-600">Hospitals Partnered</p>
+            </div>
+          </div>
+
+          <!-- Image / Info Box -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 my-4">
+            <div class="bg-red-600 text-white py-10 px-6 rounded-lg">
+              <h3 class="text-2xl font-semibold">Why We Do It</h3>
+              <hr class="my-4" />
+              <p>
+                Every 2 seconds, someone needs a blood transfusion. Yet, less
+                than 5% of eligible donors give blood. We’re here to bridge that
+                gap, making donation simple, safe, and rewarding.
+              </p>
+            </div>
+            <div>
+              <img
+                src="/pics/blood-bag.jpg"
+                alt="Blood Bag"
+                class="rounded-lg shadow-md h-full w-full"
+              />
+            </div>
           </div>
         </div>
-        <div class="card w-72 bg-red-100 shadow-xl">
-          <div class="card-body text-center text-gray-800">
-            <h3 class="text-xl font-semibold">2. Request / Donate</h3>
-            <p>Send blood requests or accept them if eligible.</p>
+
+        <!-- Right Column -->
+        <div>
+          <p class="text-red-600 font-semibold mb-2">Our Story</p>
+          <h2 class="text-4xl font-bold mb-4">
+            Dedicated to Life: The Story of Our Blood Drive Initiative
+          </h2>
+          <p class="text-gray-700 mb-6">
+            Join our mission to save lives. We connect donors with recipients,
+            ensuring that life-saving blood and plasma reaches those in need
+            quickly and safely.
+          </p>
+
+          <!-- How It Works Box -->
+          <div class="bg-gray-50 p-6 rounded-lg shadow-sm mb-6">
+            <h3 class="text-lg font-semibold mb-4">How It Works</h3>
+            <ul class="space-y-2 text-gray-700">
+              <li>
+                <i class="fa-solid fa-heart text-red-500"></i> Register as a
+                donor or request blood.
+              </li>
+              <li>
+                <i class="fa-solid fa-heart text-red-500"></i> We match donors
+                with recipients based on needs.
+              </li>
+              <li>
+                <i class="fa-solid fa-heart text-red-500"></i> Donations happen
+                at certified locations.
+              </li>
+              <li>
+                <i class="fa-solid fa-heart text-red-500"></i> Save lives and
+                inspire others to give.
+              </li>
+            </ul>
           </div>
-        </div>
-        <div class="card w-72 bg-red-100 shadow-xl">
-          <div class="card-body text-center text-gray-800">
-            <h3 class="text-xl font-semibold">3. Save Lives</h3>
-            <p>Complete donation at the hospital and make a difference!</p>
-          </div>
+
+          <a href="/about" class="btn btn-error text-white">Discover More</a>
         </div>
       </div>
     </section>
 
-
     <section class="py-16 bg-red-50">
-      <h2 class="text-3xl font-bold text-center text-red-700 mb-10">Available Blood Types</h2>
-      <div class="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-8 gap-6 justify-center px-6">
+      <h2 class="text-3xl font-bold text-center text-red-700 mb-10">
+        Available Blood Types
+      </h2>
+      <div
+        class="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-8 gap-4 justify-items-center mx-auto container"
+      >
         <% ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'].forEach(bg => { %>
-          <div class="rounded-full w-20 h-20 flex items-center justify-center text-white font-bold text-lg bg-red-600 animate-pulse">
-            <%= bg %>
+        <div
+          class="rounded-full w-20 h-20 flex items-center justify-center text-white font-bold text-lg bg-red-600 animate-pulse"
+        >
+          <%= bg %>
+        </div>
+        <% }) %>
+      </div>
+
+      <h2 class="text-2xl font-semibold text-center text-yellow-600 mt-16 mb-6">
+        Available Plasma Types
+      </h2>
+      <div
+        class="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 gap-6 justify-center px-6"
+      >
+        <% ['Plasma A', 'Plasma B', 'Plasma AB', 'Plasma O'].forEach(plasma => {
+        %>
+        <div
+          class="blood-type rounded-full w-24 h-24 flex items-center justify-center text-white font-bold text-sm bg-yellow-500 hover:bg-yellow-600"
+        >
+          <%= plasma %>
+        </div>
+        <% }) %>
+      </div>
+
+      <h2 class="text-2xl font-semibold text-center text-yellow-600 mt-16 mb-6">Available Plasma Types</h2>
+      <div class="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 gap-6 justify-center px-6">
+        <% ['Plasma A', 'Plasma B', 'Plasma AB', 'Plasma O'].forEach(plasma => { %>
+          <div class="blood-type rounded-full w-24 h-24 flex items-center justify-center text-white font-bold text-sm bg-yellow-500 hover:bg-yellow-600">
+            <%= plasma %>
           </div>
         <% }) %>
       </div>
     </section>
 
     <section class="py-16 bg-white">
-      <h2 class="text-3xl font-bold text-center text-red-600 mb-8">Get Started</h2>
-      <div class="flex flex-col md:flex-row justify-center items-center gap-8 px-4">
+      <h2 class="text-3xl font-bold text-center text-red-600 mb-8">
+        Get Started
+      </h2>
+      <div
+        class="flex flex-col md:flex-row justify-center items-center gap-8 px-4"
+      >
         <div class="card w-64 bg-red-100 shadow-xl">
           <div class="card-body text-center">
             <h3 class="text-xl font-bold">I'm a Donor</h3>
-            <a href="/donor/dashboard" class="btn btn-error text-white mt-4">Donate</a>
+            <a href="/donor/dashboard" class="btn btn-error text-white mt-4"
+              >Donate</a
+            >
           </div>
         </div>
         <div class="card w-64 bg-red-100 shadow-xl">
           <div class="card-body text-center">
             <h3 class="text-xl font-bold">I'm a Recipient</h3>
-            <a href="/recipient/blood" class="btn btn-error text-white mt-4">Request Blood</a>
+            <a href="/recipient/blood" class="btn btn-error text-white mt-4"
+              >Request Blood</a
+            >
           </div>
         </div>
         <div class="card w-64 bg-red-100 shadow-xl">
           <div class="card-body text-center">
             <h3 class="text-xl font-bold">Hospital Admin</h3>
-            <a href="/admin/dashboard" class="btn btn-error text-white mt-4">Admin Panel</a>
+            <a href="/hospital" class="btn btn-error text-white mt-4">Admin Panel</a>
           </div>
         </div>
       </div>
     </section>
 
-     <%- include('./partials/footer.ejs'); %>
-  
+    <%- include('./partials/footer.ejs'); %>
   </body>
 </html>
-
-

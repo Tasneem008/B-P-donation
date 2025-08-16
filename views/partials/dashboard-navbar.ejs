@@ -1,9 +1,17 @@
-<header class="navbar justify-between bg-red-600 text-white px-6">
+<header
+  class="navbar justify-between bg-transparent text-white px-6 border-b border-white/30 absolute top-0 left-0 w-full z-50"
+>
   <div>
     <span class="text-2xl font-bold">DonateLife</span>
   </div>
   <div><a href="/" class="btn btn-ghost text-white">Home</a></div>
   <div class="space-x-4">
-    <a href="/logout" class="btn btn-outline btn-sm">Logout</a>
+    <div>
+      <% if(isAuthenticated){ %>
+      <a href="/logout" class="btn btn-outline btn-sm">Logout</a>
+      <%} else {%>
+      <a href="/login" class="btn btn-outline btn-sm">Login</a>
+      <%}%>
+    </div>
   </div>
 </header>
