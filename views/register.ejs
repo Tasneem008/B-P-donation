@@ -1,15 +1,23 @@
 <!DOCTYPE html>
-<html lang="en">
+<html data-theme="light" lang="en">
   <head>
     <%- include('./partials/head.ejs'); %>
 
     <title>Register | DonateLife</title>
   </head>
-  <body class="bg-red-100 flex items-center justify-center min-h-screen">
+<body
+    class="bg-red-100 flex items-center justify-start min-h-screen"
+    style="
+      background-image: url('/pics/login.png');
+      background-size: cover;
+      background-position: center;
+    "
+  >
+   <div class="container mx-auto">
     <form
       method="POST"
       action="/register"
-      class="bg-white shadow-lg rounded-xl px-8 py-10 w-full max-w-sm"
+      class="bg-white/20 backdrop-blur-sm shadow-lg rounded-xl px-8 py-10 w-full max-w-sm"
     >
       <h1 class="text-3xl font-bold text-center text-red-600 mb-6">Register</h1>
 
@@ -64,5 +72,6 @@
         >
       </p>
     </form>
+    </div>
   </body>
 </html>
