@@ -3,7 +3,7 @@ const router = express.Router();
 const hospitalController = require('../controllers/hospital.controller.js');
 
 // Dashboard
-router.get('/', hospitalController.getDashboard);
+router.get('/dashboard', hospitalController.getDashboard);
 
 // Submit new blood request
 router.post('/', hospitalController.requestBlood);
