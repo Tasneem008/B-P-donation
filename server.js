@@ -101,7 +101,7 @@ app.use("/", dashboardRoutes);
 
 app.use("/recipient", recipientRoutes);
 app.use("/request", requestRoutes);
-app.use("/donate", donateRoutes);
+app.use("/donate-blood", donateRoutes);
 
 app.use("/hospital", hospitalRoutes);
 

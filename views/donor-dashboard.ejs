@@ -21,7 +21,7 @@
                 d="M5.121 17.804A11.954 11.954 0 0112 15c2.5 0 4.847.776 6.879 2.096M15 12a3 3 0 10-6 0 3 3 0 006 0z" />
             </svg>
           </div>
-          <p class="text-lg font-semibold text-gray-800"><%= user.username %></p>
+          <p class="text-lg font-semibold text-gray-800"><%= user %></p>
           
           <div class="flex gap-3">
             <button onclick="toggleDonateForm()"
@@ -47,7 +47,7 @@
   <svg width="80" height="150" viewBox="0 0 64 80" xmlns="http://www.w3.org/2000/svg">
     <path fill="#ef4444" d="M32 0C32 0 4 36 4 56a28 28 0 1056 0C60 36 32 0 32 0z"/>
   </svg>
-  <p class="text-white font-bold -mt-12">O+</p>
+  <p class="text-white font-bold -mt-12"><%= bloodGroup %></p>
 </div>
 
   <!-- Next Donation -->
@@ -127,27 +127,7 @@
     <input type="checkbox" name="locations[]" value="DMCH" class="w-4 h-4">
     DMCH
   </label>
-
-  <!-- hospital request showing section -->
-
-  <div id="hospitalRequests" class="mt-4 p-4 bg-red-100 rounded-lg border border-red-300 hidden">
-  <h3 class="text-md font-semibold mb-2">Blood Requests from Selected Hospitals</h3>
-  <div id="requestsContainer" class="flex flex-col gap-2">
-    <!-- Example request item -->
-    <div class="p-3 bg-white/80 rounded-lg shadow flex justify-between items-center">
-      <p class="text-sm text-gray-700">O+ needed at Popular Medical</p>
-      <button 
-        class="acceptBtn bg-red-500 text-white px-3 py-1 rounded-full text-sm hover:bg-red-600 transition"
-      >
-        Accept
-      </button>
-    </div>
-  </div>
-</div>
-
-
-
-            <label class="block">
+<label class="block">
               <span class="text-gray-700">Last Donation Date</span>
               <input type="date" name="lastDonation"
              class="mt-1 px-4 py-2 rounded-lg border border-red-300 focus:outline-none focus:ring-2 focus:ring-red-500">
@@ -169,6 +149,22 @@
               Submit Donation
             </button>
           </form>
+  <!-- hospital request showing section -->
+
+  <div id="hospitalRequests" class="mt-4 p-4 bg-red-100 rounded-lg border border-red-300 ">
+  <h3 class="text-md font-semibold mb-2">Blood Requests from Selected Hospitals</h3>
+  <div id="requestsContainer" class="flex flex-col gap-2">
+    <!-- Example request item -->
+    <div class="p-3 bg-white/80 rounded-lg shadow flex justify-between items-center">
+      <p class="text-sm text-gray-700">O+ needed at Popular Medical</p>
+      <button 
+        class="acceptBtn bg-red-500 text-white px-3 py-1 rounded-full text-sm hover:bg-red-600 transition"
+      >
+        Accept
+      </button>
+    </div>
+  </div>
+</div>
         </div>
 
 
