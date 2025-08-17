@@ -7,7 +7,7 @@ const redirectUserToDashboard = async (req, res) => {
   } else if (user.role === "recipient") {
     res.redirect("/recipient/dashboard");
   } else if (user.role === "hospital") {
-    res.redirect("/admin/dashboard");
+    res.redirect("/hospital/dashboard");
   }
 };
 
