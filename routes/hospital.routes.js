@@ -12,5 +12,7 @@ router.post('/', hospitalController.requestBlood);
 router.post('/approve/:id', hospitalController.approveRequest);
 router.post('/reject/:id', hospitalController.rejectRequest);
 
+router.get('/donor-request', hospitalController.getDonorRequestsPage)
+
 module.exports = router;
 
