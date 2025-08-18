@@ -49,7 +49,7 @@ const showDonorDashboard = async (req, res) => {
 
     const userRequests = await BloodRequest.find({reqId: userId});
     res.render("donor-dashboard", { 
-      user: user.username, 
+      user: user, 
       bloodGroup: donation.bloodgroup, 
       daysSinceDonation: diffDays,
       matchingRequests,
