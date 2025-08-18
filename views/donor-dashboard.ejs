@@ -7,7 +7,7 @@
   <body class="bg-red-100 min-h-screen">
     <%- include('./partials/dashboard-navbar.ejs') %>
 
-    <main class="flex flex-col items-center justify-start p-6 space-y-6">
+    <main class="flex flex-col items-center justify-start p-6 space-y-6 pt-20 bg-white/20">
       <!-- Header -->
       <div class="w-full max-w-4xl bg-red-500 text-white px-6 py-4 rounded-lg flex justify-between items-center shadow-md">
         <div class="flex space-x-4">
@@ -78,14 +78,17 @@
           <h2 class="text-lg font-semibold mb-4">Donate Your Blood!</h2>
           <form action="/donate-blood" method="post"
             class="flex flex-col flex-wrap gap-4 bg-red-50 p-6 rounded-xl shadow-md">
+            <input type="text" name="donorId" class="hidden" value="<%= user._id.toString() %>"/>
 
             <input type="text" name="name" placeholder="Full Name" required
-             class="px-4 py-2 rounded-lg border border-red-600 focus:outline-none focus:ring-2 focus:ring-red-500" />
+             class="px-4 py-2 rounded-lg border border-red-600 focus:outline-none focus:ring-2 focus:ring-red-500" 
+             readonly value="<%= user.username %>"
+             />
 
             <input type="number" name="age" placeholder="Age" min="18" required
                class="px-4 py-2 rounded-lg border border-red-600 focus:outline-none focus:ring-2 focus:ring-red-500" />
 
-            <input type="tel" name="phone" placeholder="Phone Number" required
+            <input type="tel" name="phone" placeholder="Phone Number" required pattern="^(?:\+?88)?01[3-9]\d{8}$"
                class="px-4 py-2 rounded-lg border border-red-600 focus:outline-none focus:ring-2 focus:ring-red-500" />
 
             <input type="text" name="address" placeholder="Address" required
@@ -95,22 +98,28 @@
             <input type="text" name="nid" placeholder="National ID Number" required
                class="px-4 py-2 rounded-lg border border-red-600 focus:outline-none focus:ring-2 focus:ring-red-500" />
 
-            <select name="bloodgroup" required
-              class="px-4 py-2 rounded-lg bg-red-700 text-white focus:outline-none focus:ring-2 focus:ring-red-500">
-              <option value="">Select Blood Group</option>
-              <option>O+</option>
-              <option>A+</option>
-              <option>B+</option>
-              <option>AB+</option>
-              <option>O-</option>
-              <option>A-</option>
-              <option>B-</option>
-              <option>AB-</option>
+            <select name="donationPlace" required
+              class="px-4 py-2 rounded-lg border border-red-600 focus:outline-none focus:ring-2 focus:ring-red-500">
+              <option value="">Select a hospital</option>
+              <% hospitals.forEach(hospital => { %>
+                <option value="<%= hospital._id %>"><%= hospital.username %></option>
+              <% }); %>          
+            </select>
+
+            <select
+              class="px-4 py-2 rounded-lg bg-red-700 text-white focus:outline-none focus:ring-2 focus:ring-red-500"
+              required
+              name="bloodgroup"
+            >
+              <option disabled selected>Select Blood Group</option>
+              <% ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"].forEach(type => { %>
+                <option value="<%= type %>"><%= type %></option>
+              <% }) %>
             </select>
 
             <label class="block">
               <span class="text-gray-700">Last Donation Date</span>
-              <input type="datetime-local" name="lastDonation"
+              <input type="date" name="lastDonation"
              class="mt-1 px-4 py-2 rounded-lg border border-red-600 focus:outline-none focus:ring-2 focus:ring-red-500">
             </label>
 
