@@ -56,9 +56,9 @@
     <path fill="#ef4444" d="M32 0C32 0 4 36 4 56a28 28 0 1056 0C60 36 32 0 32 0z"/>
   </svg>
    
-      <p class="text-white  -mt-12">in 3 months</p>
+      <p class="text-white  -mt-12"><%= daysSinceDonation %> Days ago</p>
       <!-- <p class="text-white font-bold -mt-12">Donation in</p> -->
-      <p class="text-white font-bold -mt-12">Next</p>
+      <p class="text-white font-bold -mt-12"></p>
       
   </div>
 
@@ -84,7 +84,7 @@
           id="donateForm"
           class="max-w-3xl mx-auto mt-10 backdrop-blur-md bg-white/70 p-8 rounded-2xl shadow-xl border border-white/30 hidden transition-all duration-300">
           <h2 class="text-lg font-semibold mb-4">Donate Your Blood!</h2>
-
+        
           <!-- ekhane change hoise action ta-donate -->
           <form action="/donate-blood" method="post"
             class="flex flex-col flex-wrap gap-4 bg-red-50 p-6 rounded-xl shadow-md">
@@ -151,18 +151,23 @@
           </form>
   <!-- hospital request showing section -->
 
-  <div id="hospitalRequests" class="mt-4 p-4 bg-red-100 rounded-lg border border-red-300 ">
-  <h3 class="text-md font-semibold mb-2">Blood Requests from Selected Hospitals</h3>
+ <div id="hospitalRequests" class="mt-4 p-4 bg-red-100 rounded-lg border border-red-300 ">
+  <h3 class="text-md font-semibold mb-2">Blood Requests from Your Preferred Locations</h3>
   <div id="requestsContainer" class="flex flex-col gap-2">
-    <!-- Example request item -->
-    <div class="p-3 bg-white/80 rounded-lg shadow flex justify-between items-center">
-      <p class="text-sm text-gray-700">O+ needed at Popular Medical</p>
-      <button 
-        class="acceptBtn bg-red-500 text-white px-3 py-1 rounded-full text-sm hover:bg-red-600 transition"
-      >
-        Accept
-      </button>
-    </div>
+    <% if (matchingRequests.length === 0) { %>
+      <p class="text-sm text-gray-600">No matching requests at the moment.</p>
+    <% } else { %>
+      <% matchingRequests.forEach(request => { %>
+        <div class="p-3 bg-white/80 rounded-lg shadow flex justify-between items-center">
+          <p class="text-sm text-gray-700"><%= request.bloodgroup %> needed at <%= request.location %></p>
+          <button 
+            class="acceptBtn bg-red-500 text-white px-3 py-1 rounded-full text-sm hover:bg-red-600 transition"
+          >
+            Accept
+          </button>
+        </div>
+      <% }) %>
+    <% } %>
   </div>
 </div>
         </div>
@@ -190,7 +195,7 @@
             <select name="location" required
               class="px-4 py-3 rounded-lg border border-red-300 bg-white focus:outline-none focus:ring-2 focus:ring-red-500 shadow-sm">
               <option>Location</option>
-              <option>LabAid Hospital</option>
+              <option>LabAid</option>
               <option>DMCH</option>
               <option>Popular Medical</option>
             </select>
@@ -214,6 +219,67 @@
             </button>
             
           </form>
+         <div id="userRequests" class="mt-4 p-4 bg-blue-100 rounded-lg border border-blue-300">
+  <h3 class="text-md font-semibold mb-2">Your Blood Requests</h3>
+  <div class="flex flex-col gap-3">
+    <% if (userRequests.length === 0) { %>
+      <p class="text-sm text-gray-600">You haven't made any requests yet.</p>
+    <% } else { %>
+      <% userRequests.forEach(request => { %>
+        <div class="p-4 bg-white/80 rounded-lg shadow border border-gray-200 request-card" data-id="<%= request._id %>">
+          
+          <!-- READ-ONLY VIEW -->
+          <div class="request-view">
+            <div class="flex justify-between items-center mb-2">
+              <p class="text-sm font-medium text-gray-800">
+                <%= request.bloodgroup %> needed at <%= request.location %>
+              </p>
+              <div class="flex items-center gap-2">
+                <span class="text-xs text-gray-500">Status: <%= request.status %></span>
+                <button class="edit-icon text-blue-600 hover:text-blue-800 text-sm">✏️</button>
+              </div>
+            </div>
+            <div class="grid grid-cols-2 gap-4 text-sm text-gray-700">
+              <div>
+                <p><strong>Phone:</strong> <%= request.phone %></p>
+                <p><strong>Bags Needed:</strong> <%= request.bags %></p>
+              </div>
+              <div>
+                <p><strong>Requested Date:</strong> <%= new Date(request.requestedDate).toLocaleDateString() %></p>
+                <p><strong>Description:</strong> <%= request.description %></p>
+              </div>
+            </div>
+          </div>
+
+          <!-- EDIT FORM (Hidden by default) -->
+          <form action="/edit-request/<%= request._id %>" method="POST" class="edit-form space-y-2 hidden mt-2">
+            <div class="grid grid-cols-2 gap-4 text-sm text-gray-700">
+              <div>
+                <label class="block text-xs font-semibold">Phone</label>
+                <input type="text" name="phone" value="<%= request.phone %>" class="w-full p-1 border rounded">
+                
+                <label class="block mt-2 text-xs font-semibold">Bags</label>
+                <input type="number" name="bags" value="<%= request.bags %>" class="w-full p-1 border rounded">
+              </div>
+              <div>
+                <label class="block text-xs font-semibold">Requested Date</label>
+                <input type="date" name="requestedDate" value="<%= request.requestedDate.toISOString().split('T')[0] %>" class="w-full p-1 border rounded">
+                
+                <label class="block mt-2 text-xs font-semibold">Description</label>
+                <textarea name="description" class="w-full p-1 border rounded"><%= request.description %></textarea>
+              </div>
+            </div>
+
+            <div class="flex justify-end gap-2 mt-2">
+              <button type="submit" class="text-xs bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700">Save</button>
+              <button type="button" class="cancel-edit text-xs text-gray-500 hover:underline">Cancel</button>
+            </div>
+          </form>
+        </div>
+      <% }) %>
+    <% } %>
+  </div>
+</div>
         </div>
       </div>
     </main>
@@ -227,6 +293,21 @@
         const donateForm = document.getElementById('donateForm');
         donateForm.classList.toggle('hidden');
       }
+      document.querySelectorAll(".edit-icon").forEach(icon => {
+  icon.addEventListener("click", () => {
+    const card = icon.closest(".request-card");
+    card.querySelector(".request-view").style.display = "none";
+    card.querySelector(".edit-form").classList.remove("hidden");
+  });
+});
+
+document.querySelectorAll(".cancel-edit").forEach(btn => {
+  btn.addEventListener("click", () => {
+    const card = btn.closest(".request-card");
+    card.querySelector(".edit-form").classList.add("hidden");
+    card.querySelector(".request-view").style.display = "block";
+  });
+});
     </script>
   </body>
 </html>
