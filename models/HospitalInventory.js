@@ -1,9 +1,13 @@
 // models/HospitalInventory.js
 const mongoose = require("mongoose");
 
-const InventorySchema = new mongoose.Schema(
+const HospitalInventory = new mongoose.Schema(
   {
-    hospital: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
+    hospital: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
     kind: { type: String, enum: ["blood", "plasma"], required: true },
     bloodType: {
       type: String,
@@ -15,6 +19,4 @@ const InventorySchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-
-
-module.exports = mongoose.model("HospitalInventory", InventorySchema);
+module.exports = mongoose.model("HospitalInventory", HospitalInventory);
