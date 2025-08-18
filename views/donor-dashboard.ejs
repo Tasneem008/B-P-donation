@@ -4,10 +4,16 @@
     <%- include('./partials/head.ejs'); %>
     <title>Dashboard | DonateLife</title>
   </head>
-  <body class="min-h-screen bg-gradient-to-br from-red-50 via-pink-100 to-red-200">
+  <body class="min-h-screen"
+  style="
+        background-image: url('/pics/recipient.png');
+        background-size: cover;
+        background-position: center;
+      "
+    >
     <%- include('./partials/dashboard-navbar.ejs') %>
 
-    <main class="flex flex-col items-center p-6 space-y-6">
+    <main class="flex flex-col items-center pt-20 px-20 space-y-6 bg-white/10">
       
           <!-- Profile Card -->
     <div class="w-full backdrop-blur-md bg-white/70 p-8 rounded-2xl shadow-xl border border-white/30 transition hover:shadow-2xl">
@@ -21,17 +27,14 @@
                 d="M5.121 17.804A11.954 11.954 0 0112 15c2.5 0 4.847.776 6.879 2.096M15 12a3 3 0 10-6 0 3 3 0 006 0z" />
             </svg>
           </div>
-          <p class="text-lg font-semibold text-gray-800"><%= user %></p>
+          <p class="text-lg font-semibold text-gray-800"><%= user.username %></p>
           
           <div class="flex gap-3">
             <button onclick="toggleDonateForm()"
               class="bg-gradient-to-r from-red-500 to-red-700 hover:scale-105 transform text-white px-4 py-2 rounded-full shadow-md transition">
               Donate Blood
             </button>
-            <button onclick="toggleRequestForm()"
-              class="bg-gradient-to-r from-red-500 to-red-700 hover:scale-105 transform text-white px-4 py-2 rounded-full shadow-md transition">
-              Request Blood
-            </button>
+            
           </div>
         </div>
 
@@ -127,24 +130,9 @@
               <% }) %>
             </select>
 
-            <p class="font-medium">Preferable Locations</p>
-  <label class="flex items-center gap-2">
-    <input type="checkbox" name="locations[]" value="Popular Medical" class="w-4 h-4">
-    Popular Medical
-  </label>
-  
-  <label class="flex items-center gap-2">
-    <input type="checkbox" name="locations[]" value="LabAid" class="w-4 h-4">
-    LabAid
-  </label>
-
-  <label class="flex items-center gap-2">
-    <input type="checkbox" name="locations[]" value="DMCH" class="w-4 h-4">
-    DMCH
-  </label>
 <label class="block">
               <span class="text-gray-700">Last Donation Date</span>
-              <input type="date" name="lastDonation"
+              <input type="date" id="lastDonation" name="lastDonation"
              class="mt-1 px-4 py-2 rounded-lg border border-red-600 focus:outline-none focus:ring-2 focus:ring-red-500">
             </label>
 
@@ -190,139 +178,43 @@
 
 
 
-        <!-- Request Blood Form (Initially Hidden) -->
-        <div
-          id="requestForm"
-          class="max-w-3xl mx-auto mt-10 backdrop-blur-md bg-white/70 p-8 rounded-2xl shadow-xl border border-white/30 hidden transition-all duration-300">
-          <h2 class="text-lg font-semibold mb-4">Send Your Request!</h2>
-          <form action="/request" method="post" class="grid gap-5 sm:grid-cols-2 bg-red-100 rounded-xl shadow-md p-6">
-            <!-- class="flex flex-col lg:flex-row flex-wrap gap-4 justify-center items-center bg-red-50 p-6 rounded-xl shadow-md"> -->
-
-             <select name="bloodgroup" required
-      class="px-4 py-3 rounded-lg border border-red-300 bg-white focus:outline-none focus:ring-2 focus:ring-red-500 shadow-sm">
-      <option value="">Select Blood Group</option>
-      <option>O+</option><option>A+</option><option>B+</option><option>AB+</option>
-    </select>
-
-            <input name="phone" type="number" placeholder="Phone Number"
-              class="px-4 py-2 rounded-lg border border-red-300 focus:outline-none focus:ring-2 focus:ring-red-500" />
-
-            <select name="location" required
-              class="px-4 py-3 rounded-lg border border-red-300 bg-white focus:outline-none focus:ring-2 focus:ring-red-500 shadow-sm">
-              <option>Location</option>
-              <option>LabAid</option>
-              <option>DMCH</option>
-              <option>Popular Medical</option>
-            </select>
-
-            <input name="bags" type="number" placeholder="Blood Unit"
-              class="px-4 py-2 rounded-lg border border-red-300 focus:outline-none focus:ring-2 focus:ring-red-500" />
-
-            <input name="description" type="text" placeholder="Description"
-              class="col-span-2 px-4 py-2 rounded-lg border border-red-300 focus:outline-none focus:ring-2 focus:ring-red-500" />
-
-            <label class="col-span-2">
-              <span class="text-gray-700">Requested Date & Time</span>
-              <input type="datetime-local" name="requestedDate"
-                class="mt-1 w-full px-4 py-3 rounded-lg border border-red-300 focus:outline-none focus:ring-2 focus:ring-red-500 shadow-sm">
-            </label>
-
-            <!-- <div class="w-full"></div> -->
-            <button type="submit"
-              class="bg-red-700 text-white hover:bg-red-800 col-span-2 px-6 py-2 rounded-lg shadow transition">
-              Send Request
-            </button>
-            
-          </form>
-         <div id="userRequests" class="mt-4 p-4 bg-blue-100 rounded-lg border border-blue-300">
-  <h3 class="text-md font-semibold mb-2">Your Blood Requests</h3>
-  <div class="flex flex-col gap-3">
-    <% if (userRequests.length === 0) { %>
-      <p class="text-sm text-gray-600">You haven't made any requests yet.</p>
-    <% } else { %>
-      <% userRequests.forEach(request => { %>
-        <div class="p-4 bg-white/80 rounded-lg shadow border border-gray-200 request-card" data-id="<%= request._id %>">
-          
-          <!-- READ-ONLY VIEW -->
-          <div class="request-view">
-            <div class="flex justify-between items-center mb-2">
-              <p class="text-sm font-medium text-gray-800">
-                <%= request.bloodgroup %> needed at <%= request.location %>
-              </p>
-              <div class="flex items-center gap-2">
-                <span class="text-xs text-gray-500">Status: <%= request.status %></span>
-                <button class="edit-icon text-blue-600 hover:text-blue-800 text-sm">✏️</button>
-              </div>
-            </div>
-            <div class="grid grid-cols-2 gap-4 text-sm text-gray-700">
-              <div>
-                <p><strong>Phone:</strong> <%= request.phone %></p>
-                <p><strong>Bags Needed:</strong> <%= request.bags %></p>
-              </div>
-              <div>
-                <p><strong>Requested Date:</strong> <%= new Date(request.requestedDate).toLocaleDateString() %></p>
-                <p><strong>Description:</strong> <%= request.description %></p>
-              </div>
-            </div>
-          </div>
-
-          <!-- EDIT FORM (Hidden by default) -->
-          <form action="/edit-request/<%= request._id %>" method="POST" class="edit-form space-y-2 hidden mt-2">
-            <div class="grid grid-cols-2 gap-4 text-sm text-gray-700">
-              <div>
-                <label class="block text-xs font-semibold">Phone</label>
-                <input type="text" name="phone" value="<%= request.phone %>" class="w-full p-1 border rounded">
-                
-                <label class="block mt-2 text-xs font-semibold">Bags</label>
-                <input type="number" name="bags" value="<%= request.bags %>" class="w-full p-1 border rounded">
-              </div>
-              <div>
-                <label class="block text-xs font-semibold">Requested Date</label>
-                <input type="date" name="requestedDate" value="<%= request.requestedDate.toISOString().split('T')[0] %>" class="w-full p-1 border rounded">
-                
-                <label class="block mt-2 text-xs font-semibold">Description</label>
-                <textarea name="description" class="w-full p-1 border rounded"><%= request.description %></textarea>
-              </div>
-            </div>
-
-            <div class="flex justify-end gap-2 mt-2">
-              <button type="submit" class="text-xs bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700">Save</button>
-              <button type="button" class="cancel-edit text-xs text-gray-500 hover:underline">Cancel</button>
-            </div>
-          </form>
-        </div>
-      <% }) %>
-    <% } %>
-  </div>
-</div>
-        </div>
+        
       </div>
     </main>
 
     <script>
-      function toggleRequestForm() {
-        const form = document.getElementById('requestForm');
-        form.classList.toggle('hidden');
-      }
       function toggleDonateForm() {
         const donateForm = document.getElementById('donateForm');
         donateForm.classList.toggle('hidden');
       }
-      document.querySelectorAll(".edit-icon").forEach(icon => {
-  icon.addEventListener("click", () => {
-    const card = icon.closest(".request-card");
-    card.querySelector(".request-view").style.display = "none";
-    card.querySelector(".edit-form").classList.remove("hidden");
-  });
-});
+//       document.querySelectorAll(".edit-icon").forEach(icon => {
+//   icon.addEventListener("click", () => {
+//     const card = icon.closest(".request-card");
+//     card.querySelector(".request-view").style.display = "none";
+//     card.querySelector(".edit-form").classList.remove("hidden");
+//   });
+// });
 
-document.querySelectorAll(".cancel-edit").forEach(btn => {
-  btn.addEventListener("click", () => {
-    const card = btn.closest(".request-card");
-    card.querySelector(".edit-form").classList.add("hidden");
-    card.querySelector(".request-view").style.display = "block";
-  });
-});
+// document.querySelectorAll(".cancel-edit").forEach(btn => {
+//   btn.addEventListener("click", () => {
+//     const card = btn.closest(".request-card");
+//     card.querySelector(".edit-form").classList.add("hidden");
+//     card.querySelector(".request-view").style.display = "block";
+//   });
+// });
+
+const requestedDate = document.getElementById('lastDonation')
+// Create a Date object for the minimum date (e.g., today's date)
+const today = new Date();
+const year = today.getFullYear();
+const month = (today.getMonth() + 1).toString().padStart(2, '0'); // Month is 0-indexed, add 1 and pad with leading zero
+const day = today.getDate().toString().padStart(2, '0'); // Pad with leading zero
+
+// Format the date as YYYY-MM-DD
+const maxDate = `${year}-${month}-${day}`;
+
+requestedDate.setAttribute('max', maxDate) 
+   
     </script>
   </body>
 </html>
