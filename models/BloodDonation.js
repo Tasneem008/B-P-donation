@@ -5,6 +5,7 @@ const bloodDonationSchema = new mongoose.Schema({
   age: { type: Number, required: true },
   phone: { type: String, required: true },
   address: { type: String, required: true },
+  locations: { type: [String], required:true },
   nid: { type: String, required: true },
   bloodgroup: { type: String, required: true },
   donorId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },

@@ -8,6 +8,7 @@ const bloodRequestSchema = new mongoose.Schema({
   bags: Number,
   description: String,
   requestedDate: { type: Date, default: Date.now },
+  reqId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
   status: { type: String, enum: ['pending', 'accepted', 'declined'], default: 'pending' },
   createdAt: { type: Date, default: Date.now }
 });
