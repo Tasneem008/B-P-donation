@@ -13,7 +13,8 @@ const redirectUserToDashboard = async (req, res) => {
 
 const showDonorDashboard = async (req, res) => {
   const user = await User.findById(req.session.userId);
-  res.render("donor-dashboard", { user });
+  const hospitals = await User.find({ role: "hospital" });
+  res.render("donor-dashboard", { user, hospitals });
 };
 
 module.exports = { redirectUserToDashboard, showDonorDashboard };
