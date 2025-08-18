@@ -1,11 +1,13 @@
 const { default: mongoose } = require("mongoose");
 const BloodRequest = require("../models/BloodRequest.js");
+const User = require("../models/User.js");
 const getRequestForm = (req, res) => {
     res.render("/views/donor-dashboard.ejs");
 }
 
 const postRequestForm = async (req, res) => {
     try{
+      const userId = req.session.userId;
    const {bloodgroup, phone, location, bags, description,requestedDate} = req.body;
     const newbloodrequest = new BloodRequest({
       bloodgroup,
@@ -13,7 +15,8 @@ const postRequestForm = async (req, res) => {
       location,
       bags,
       description,
-      requestedDate
+      requestedDate,
+      reqId: userId
     });
     await newbloodrequest.save()
     res.send("Blood request submitted successfully!");

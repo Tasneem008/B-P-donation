@@ -1,121 +1,155 @@
 <!DOCTYPE html>
-<html lang="en">
+<html data-theme="light" lang="en">
   <head>
     <%- include('./partials/head.ejs'); %>
     <title>Dashboard | DonateLife</title>
   </head>
-  <body class="bg-red-100 min-h-screen">
+  <body class="min-h-screen bg-gradient-to-br from-red-50 via-pink-100 to-red-200">
     <%- include('./partials/dashboard-navbar.ejs') %>
 
-    <main class="flex flex-col items-center justify-start p-6 space-y-6">
-      <!-- Header -->
-      <div class="w-full max-w-4xl bg-red-500 text-white px-6 py-4 rounded-lg flex justify-between items-center shadow-md">
-        <div class="flex space-x-4">
-          <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-              d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
-          </svg>
-        </div>
-      </div>
-
-      <!-- Profile Card -->
-      <div class="w-full max-w-4xl bg-pink-100 p-6 rounded-xl shadow-md text-center">
-        <!-- User Info and Stats -->
-        <div class="flex flex-col lg:flex-row justify-between items-center">
-          <!-- User Info -->
-          <div class="flex flex-col items-center space-y-2">
-            <div class="w-16 h-16 bg-gray-300 rounded-full flex items-center justify-center">
-              <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                  d="M5.121 17.804A11.954 11.954 0 0112 15c2.5 0 4.847.776 6.879 2.096M15 12a3 3 0 10-6 0 3 3 0 006 0z" />
-              </svg>
-            </div>
-            <p class="font-semibold text-gray-700"><%= user.username %></p>
-
-            <div class="space-y-2 mt-2">
-              <!-- Donate Blood Button -->
-              <button
-                onclick="toggleDonateForm()"
-                class="bg-red-700 hover:bg-red-800 text-white px-4 py-2 rounded-lg shadow">
-                Donate Blood
-              </button>
-
-              <!-- Request Blood Button -->
-              <button
-                onclick="toggleRequestForm()"
-                class="bg-red-700 hover:bg-red-800 text-white px-4 py-2 rounded-full shadow-md">
-                Request Blood
-              </button>
-            </div>
+    <main class="flex flex-col items-center p-6 space-y-6">
+      
+          <!-- Profile Card -->
+    <div class="w-full backdrop-blur-md bg-white/70 p-8 rounded-2xl shadow-xl border border-white/30 transition hover:shadow-2xl">
+      <div class="flex flex-col lg:flex-row justify-between items-center gap-6">
+        
+        <!-- User Info -->
+        <div class="flex flex-col items-center space-y-3">
+          <div class="w-20 h-20 bg-gradient-to-br from-pink-400 to-red-500 rounded-full flex items-center justify-center shadow-lg">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M5.121 17.804A11.954 11.954 0 0112 15c2.5 0 4.847.776 6.879 2.096M15 12a3 3 0 10-6 0 3 3 0 006 0z" />
+            </svg>
           </div>
-
-          <!-- Stats -->
-          <div class="flex items-center justify-center gap-6 mt-6 lg:mt-0">
-            <div class="w-20 h-20 border-4 border-red-600 rounded-full flex items-center justify-center text-center text-sm">
-              <div>
-                <p class="text-xs font-semibold">O+</p>
-              </div>
-            </div>
-
-            <div class="w-24 h-24 border-4 border-red-600 rounded-full flex items-center justify-center text-center">
-              <div>
-                <p class="text-sm">Next donation in<br><span class="font-bold">3 months</span></p>
-              </div>
-            </div>
-
-            <div class="w-20 h-20 border-4 border-red-600 rounded-full flex items-center justify-center text-center text-sm">
-              <div>
-                <p class="font-semibold">6<br>donations</p>
-              </div>
-            </div>
+          <p class="text-lg font-semibold text-gray-800"><%= user %></p>
+          
+          <div class="flex gap-3">
+            <button onclick="toggleDonateForm()"
+              class="bg-gradient-to-r from-red-500 to-red-700 hover:scale-105 transform text-white px-4 py-2 rounded-full shadow-md transition">
+              Donate Blood
+            </button>
+            <button onclick="toggleRequestForm()"
+              class="bg-gradient-to-r from-red-500 to-red-700 hover:scale-105 transform text-white px-4 py-2 rounded-full shadow-md transition">
+              Request Blood
+            </button>
           </div>
         </div>
+
+
+
+
+        
+        <!-- Blood Drop Stats -->
+<div class="flex items-center justify-center gap-6">
+
+  <!-- Blood Type -->
+  <div class="w-24 h-24 flex flex-col items-center justify-center">
+  <svg width="80" height="150" viewBox="0 0 64 80" xmlns="http://www.w3.org/2000/svg">
+    <path fill="#ef4444" d="M32 0C32 0 4 36 4 56a28 28 0 1056 0C60 36 32 0 32 0z"/>
+  </svg>
+  <p class="text-white font-bold -mt-12"><%= bloodGroup %></p>
+</div>
+
+  <!-- Next Donation -->
+  <div class="w-24 h-24 flex flex-col items-center justify-center">
+  <svg width="125" height="250" viewBox="0 0 64 80" xmlns="http://www.w3.org/2000/svg">
+    <path fill="#ef4444" d="M32 0C32 0 4 36 4 56a28 28 0 1056 0C60 36 32 0 32 0z"/>
+  </svg>
+   
+      <p class="text-white  -mt-12"><%= daysSinceDonation %> Days ago</p>
+      <!-- <p class="text-white font-bold -mt-12">Donation in</p> -->
+      <p class="text-white font-bold -mt-12"></p>
+      
+  </div>
+
+     <div class="w-24 h-24 flex flex-col items-center justify-center">
+  <svg width="100" height="200" viewBox="0 0 64 80" xmlns="http://www.w3.org/2000/svg">
+    <path fill="#ef4444" d="M32 0C32 0 4 36 4 56a28 28 0 1056 0C60 36 32 0 32 0z"/>
+  </svg>
+  <p class="text-white font-bold -mt-12">6</p>
+   <p class="text-white font-bold -mt-12">Donations</p>
+
+</div>
+  </div>
+
+</div>
+
+
+
+
+
 
         <!-- Donate Blood Form (Initially Hidden) -->
         <div
           id="donateForm"
-          class="bg-red-200 mt-10 p-6 rounded-xl hidden transition-all duration-300">
+          class="max-w-3xl mx-auto mt-10 backdrop-blur-md bg-white/70 p-8 rounded-2xl shadow-xl border border-white/30 hidden transition-all duration-300">
           <h2 class="text-lg font-semibold mb-4">Donate Your Blood!</h2>
-          <form action="/donate" method="post"
+        
+          <!-- ekhane change hoise action ta-donate -->
+          <form action="/donate-blood" method="post"
             class="flex flex-col flex-wrap gap-4 bg-red-50 p-6 rounded-xl shadow-md">
+            <input type="text" name="donorId" class="hidden" value="<%= user._id.toString() %>"/>
 
             <input type="text" name="name" placeholder="Full Name" required
-             class="px-4 py-2 rounded-lg border border-red-600 focus:outline-none focus:ring-2 focus:ring-red-500" />
+             class="px-4 py-2 rounded-lg border border-red-600 focus:outline-none focus:ring-2 focus:ring-red-500" 
+             readonly value="<%= user.username %>"
+             />
 
             <input type="number" name="age" placeholder="Age" min="18" required
-               class="px-4 py-2 rounded-lg border border-red-600 focus:outline-none focus:ring-2 focus:ring-red-500" />
+               class="px-4 py-2 rounded-lg border border-red-300 focus:outline-none focus:ring-2  focus:ring-red-500 shadow-sm" />
 
-            <input type="tel" name="phone" placeholder="Phone Number" required
+            <input type="tel" name="phone" placeholder="Phone Number" required pattern="^(?:\+?88)?01[3-9]\d{8}$"
                class="px-4 py-2 rounded-lg border border-red-600 focus:outline-none focus:ring-2 focus:ring-red-500" />
 
             <input type="text" name="address" placeholder="Address" required
-               class="px-4 py-2 rounded-lg border border-red-600 focus:outline-none focus:ring-2 focus:ring-red-500" />
+               class="col-span-2 px-4 py-2 rounded-lg border border-red-300 focus:outline-none focus:ring-2 focus:ring-red-500" />
               
 
             <input type="text" name="nid" placeholder="National ID Number" required
-               class="px-4 py-2 rounded-lg border border-red-600 focus:outline-none focus:ring-2 focus:ring-red-500" />
+               class="col-span-2 px-4 py-2 rounded-lg border border-red-300 focus:outline-none focus:ring-2 focus:ring-red-500" />
 
-            <select name="bloodgroup" required
-              class="px-4 py-2 rounded-lg bg-red-700 text-white focus:outline-none focus:ring-2 focus:ring-red-500">
-              <option value="">Select Blood Group</option>
-              <option>O+</option>
-              <option>A+</option>
-              <option>B+</option>
-              <option>AB+</option>
-              <option>O-</option>
-              <option>A-</option>
-              <option>B-</option>
-              <option>AB-</option>
+            <select name="donationPlace" required
+              class="px-4 py-2 rounded-lg border border-red-600 focus:outline-none focus:ring-2 focus:ring-red-500">
+              <option value="">Select a hospital</option>
+              <% hospitals.forEach(hospital => { %>
+                <option value="<%= hospital._id %>"><%= hospital.username %></option>
+              <% }); %>          
             </select>
 
-            <label class="block">
+            <select
+              class="px-4 py-2 rounded-lg bg-red-700 text-white focus:outline-none focus:ring-2 focus:ring-red-500"
+              required
+              name="bloodgroup"
+            >
+              <option disabled selected>Select Blood Group</option>
+              <% ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"].forEach(type => { %>
+                <option value="<%= type %>"><%= type %></option>
+              <% }) %>
+            </select>
+
+            <p class="font-medium">Preferable Locations</p>
+  <label class="flex items-center gap-2">
+    <input type="checkbox" name="locations[]" value="Popular Medical" class="w-4 h-4">
+    Popular Medical
+  </label>
+  
+  <label class="flex items-center gap-2">
+    <input type="checkbox" name="locations[]" value="LabAid" class="w-4 h-4">
+    LabAid
+  </label>
+
+  <label class="flex items-center gap-2">
+    <input type="checkbox" name="locations[]" value="DMCH" class="w-4 h-4">
+    DMCH
+  </label>
+<label class="block">
               <span class="text-gray-700">Last Donation Date</span>
-              <input type="datetime-local" name="lastDonation"
+              <input type="date" name="lastDonation"
              class="mt-1 px-4 py-2 rounded-lg border border-red-600 focus:outline-none focus:ring-2 focus:ring-red-500">
             </label>
 
 
-            <div class="bg-white p-4 rounded-lg border border-red-600">
+            <div class="bg-white p-4 rounded-lg border border-red-300">
               <p class="text-sm mb-2">
                 I certify that all the information I have provided is truthful and accurate to the best of my knowledge.
               </p>
@@ -130,54 +164,137 @@
               Submit Donation
             </button>
           </form>
+  <!-- hospital request showing section -->
+
+ <div id="hospitalRequests" class="mt-4 p-4 bg-red-100 rounded-lg border border-red-300 ">
+  <h3 class="text-md font-semibold mb-2">Blood Requests from Your Preferred Locations</h3>
+  <div id="requestsContainer" class="flex flex-col gap-2">
+    <% if (matchingRequests.length === 0) { %>
+      <p class="text-sm text-gray-600">No matching requests at the moment.</p>
+    <% } else { %>
+      <% matchingRequests.forEach(request => { %>
+        <div class="p-3 bg-white/80 rounded-lg shadow flex justify-between items-center">
+          <p class="text-sm text-gray-700"><%= request.bloodgroup %> needed at <%= request.location %></p>
+          <button 
+            class="acceptBtn bg-red-500 text-white px-3 py-1 rounded-full text-sm hover:bg-red-600 transition"
+          >
+            Accept
+          </button>
         </div>
+      <% }) %>
+    <% } %>
+  </div>
+</div>
+        </div>
+
+
+
 
         <!-- Request Blood Form (Initially Hidden) -->
         <div
           id="requestForm"
-          class="bg-red-200 mt-10 p-6 rounded-xl hidden transition-all duration-300">
+          class="max-w-3xl mx-auto mt-10 backdrop-blur-md bg-white/70 p-8 rounded-2xl shadow-xl border border-white/30 hidden transition-all duration-300">
           <h2 class="text-lg font-semibold mb-4">Send Your Request!</h2>
-          <form action="/request" method="post"
-            class="flex flex-col lg:flex-row flex-wrap gap-4 justify-center items-center bg-red-50 p-6 rounded-xl shadow-md">
+          <form action="/request" method="post" class="grid gap-5 sm:grid-cols-2 bg-red-100 rounded-xl shadow-md p-6">
+            <!-- class="flex flex-col lg:flex-row flex-wrap gap-4 justify-center items-center bg-red-50 p-6 rounded-xl shadow-md"> -->
 
-            <select name="bloodgroup"
-              class="px-4 py-2 rounded-lg bg-red-700 text-white focus:outline-none focus:ring-2 focus:ring-red-500">
-              <option>Select Blood Group</option>
-              <option>O+</option>
-              <option>A+</option>
-              <option>B+</option>
-              <option>AB+</option>
-            </select>
+             <select name="bloodgroup" required
+      class="px-4 py-3 rounded-lg border border-red-300 bg-white focus:outline-none focus:ring-2 focus:ring-red-500 shadow-sm">
+      <option value="">Select Blood Group</option>
+      <option>O+</option><option>A+</option><option>B+</option><option>AB+</option>
+    </select>
 
             <input name="phone" type="number" placeholder="Phone Number"
-              class="px-4 py-2 rounded-lg border border-red-600 focus:outline-none focus:ring-2 focus:ring-red-500" />
+              class="px-4 py-2 rounded-lg border border-red-300 focus:outline-none focus:ring-2 focus:ring-red-500" />
 
-            <select name="location"
-              class="px-4 py-2 rounded-lg bg-red-700 text-white focus:outline-none focus:ring-2 focus:ring-red-500">
+            <select name="location" required
+              class="px-4 py-3 rounded-lg border border-red-300 bg-white focus:outline-none focus:ring-2 focus:ring-red-500 shadow-sm">
               <option>Location</option>
-              <option>LabAid Hospital</option>
+              <option>LabAid</option>
               <option>DMCH</option>
               <option>Popular Medical</option>
             </select>
 
             <input name="bags" type="number" placeholder="Blood Unit"
-              class="px-4 py-2 rounded-lg border border-red-600 focus:outline-none focus:ring-2 focus:ring-red-500" />
+              class="px-4 py-2 rounded-lg border border-red-300 focus:outline-none focus:ring-2 focus:ring-red-500" />
 
             <input name="description" type="text" placeholder="Description"
-              class="px-4 py-2 rounded-lg border border-red-600 focus:outline-none focus:ring-2 focus:ring-red-500" />
+              class="col-span-2 px-4 py-2 rounded-lg border border-red-300 focus:outline-none focus:ring-2 focus:ring-red-500" />
 
-            <label class="block">
+            <label class="col-span-2">
               <span class="text-gray-700">Requested Date & Time</span>
               <input type="datetime-local" name="requestedDate"
-                class="mt-1 px-4 py-2 rounded-lg border border-red-600 focus:outline-none focus:ring-2 focus:ring-red-500">
+                class="mt-1 w-full px-4 py-3 rounded-lg border border-red-300 focus:outline-none focus:ring-2 focus:ring-red-500 shadow-sm">
             </label>
 
-            <div class="w-full"></div>
+            <!-- <div class="w-full"></div> -->
             <button type="submit"
-              class="bg-red-700 text-white hover:bg-red-800 px-6 py-2 rounded-lg shadow transition">
+              class="bg-red-700 text-white hover:bg-red-800 col-span-2 px-6 py-2 rounded-lg shadow transition">
               Send Request
             </button>
+            
           </form>
+         <div id="userRequests" class="mt-4 p-4 bg-blue-100 rounded-lg border border-blue-300">
+  <h3 class="text-md font-semibold mb-2">Your Blood Requests</h3>
+  <div class="flex flex-col gap-3">
+    <% if (userRequests.length === 0) { %>
+      <p class="text-sm text-gray-600">You haven't made any requests yet.</p>
+    <% } else { %>
+      <% userRequests.forEach(request => { %>
+        <div class="p-4 bg-white/80 rounded-lg shadow border border-gray-200 request-card" data-id="<%= request._id %>">
+          
+          <!-- READ-ONLY VIEW -->
+          <div class="request-view">
+            <div class="flex justify-between items-center mb-2">
+              <p class="text-sm font-medium text-gray-800">
+                <%= request.bloodgroup %> needed at <%= request.location %>
+              </p>
+              <div class="flex items-center gap-2">
+                <span class="text-xs text-gray-500">Status: <%= request.status %></span>
+                <button class="edit-icon text-blue-600 hover:text-blue-800 text-sm">✏️</button>
+              </div>
+            </div>
+            <div class="grid grid-cols-2 gap-4 text-sm text-gray-700">
+              <div>
+                <p><strong>Phone:</strong> <%= request.phone %></p>
+                <p><strong>Bags Needed:</strong> <%= request.bags %></p>
+              </div>
+              <div>
+                <p><strong>Requested Date:</strong> <%= new Date(request.requestedDate).toLocaleDateString() %></p>
+                <p><strong>Description:</strong> <%= request.description %></p>
+              </div>
+            </div>
+          </div>
+
+          <!-- EDIT FORM (Hidden by default) -->
+          <form action="/edit-request/<%= request._id %>" method="POST" class="edit-form space-y-2 hidden mt-2">
+            <div class="grid grid-cols-2 gap-4 text-sm text-gray-700">
+              <div>
+                <label class="block text-xs font-semibold">Phone</label>
+                <input type="text" name="phone" value="<%= request.phone %>" class="w-full p-1 border rounded">
+                
+                <label class="block mt-2 text-xs font-semibold">Bags</label>
+                <input type="number" name="bags" value="<%= request.bags %>" class="w-full p-1 border rounded">
+              </div>
+              <div>
+                <label class="block text-xs font-semibold">Requested Date</label>
+                <input type="date" name="requestedDate" value="<%= request.requestedDate.toISOString().split('T')[0] %>" class="w-full p-1 border rounded">
+                
+                <label class="block mt-2 text-xs font-semibold">Description</label>
+                <textarea name="description" class="w-full p-1 border rounded"><%= request.description %></textarea>
+              </div>
+            </div>
+
+            <div class="flex justify-end gap-2 mt-2">
+              <button type="submit" class="text-xs bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700">Save</button>
+              <button type="button" class="cancel-edit text-xs text-gray-500 hover:underline">Cancel</button>
+            </div>
+          </form>
+        </div>
+      <% }) %>
+    <% } %>
+  </div>
+</div>
         </div>
       </div>
     </main>
@@ -191,6 +308,21 @@
         const donateForm = document.getElementById('donateForm');
         donateForm.classList.toggle('hidden');
       }
+      document.querySelectorAll(".edit-icon").forEach(icon => {
+  icon.addEventListener("click", () => {
+    const card = icon.closest(".request-card");
+    card.querySelector(".request-view").style.display = "none";
+    card.querySelector(".edit-form").classList.remove("hidden");
+  });
+});
+
+document.querySelectorAll(".cancel-edit").forEach(btn => {
+  btn.addEventListener("click", () => {
+    const card = btn.closest(".request-card");
+    card.querySelector(".edit-form").classList.add("hidden");
+    card.querySelector(".request-view").style.display = "block";
+  });
+});
     </script>
   </body>
 </html>

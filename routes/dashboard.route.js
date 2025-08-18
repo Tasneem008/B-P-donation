@@ -2,6 +2,7 @@ const express = require("express");
 const {
   redirectUserToDashboard,
   showDonorDashboard,
+  updateRequest
 } = require("../controllers/dashboard.controller");
 const { checkAuth, checkRole } = require("../middleware/middleware");
 
@@ -13,7 +14,11 @@ router.get(
   "/donor/dashboard",
   checkAuth,
   checkRole("donor"),
-  showDonorDashboard
+  showDonorDashboard,
 );
-
+router.post(
+  "/edit-request/:id",
+  checkAuth,
+  updateRequest
+);
 module.exports = router;

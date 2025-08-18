@@ -1,4 +1,6 @@
-<header class="navbar justify-between bg-red-600 text-white px-6">
+<header
+  class="navbar justify-between bg-transparent text-white px-6 border-b border-white/30 absolute top-0 left-0 w-full z-50"
+>
   <div>
     <a href="/" class="text-2xl font-bold">DonateLife</a>
   </div>
@@ -10,15 +12,15 @@
 
     <a href="about" class="btn btn-ghost text-white">About</a>
 
-    <% if(isAuthenticated && role === 'recipient'){ %>
+    <!-- <% if(isAuthenticated && role === 'recipient'){ %>
     <a href="/recipient/blood" class="btn btn-ghost text-white">Blood</a>
-    <%}%>
+    <%}%> -->
   </div>
   <div>
     <% if(isAuthenticated){ %>
     <a href="/logout" class="btn btn-outline btn-sm">Logout</a>
     <%} else {%>
-    <a href="/logout" class="btn btn-outline btn-sm">Login</a>
+    <a href="/login" class="btn btn-outline btn-sm">Login</a>
     <%}%>
   </div>
 </header>
