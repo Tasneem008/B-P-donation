@@ -32,7 +32,6 @@ exports.getDashboard = async (req, res) => {
 exports.requestBlood = async (req, res) => {
   try {
     const { bloodgroup, bags, requestedDate, description } = req.body;
-    console.log(req.body)
     const newRequest = new BloodRequest({
       bloodgroup,
       bags,
@@ -40,9 +39,9 @@ exports.requestBlood = async (req, res) => {
       description,
       recipientId: req.session.userId,
     });
-
+    console.log(newRequest);
     await newRequest.save();
-    res.redirect("/hospital");
+    res.redirect("/hospital/dashboard");
   } catch (err) {
     console.error(err);
     res.status(500).send("Server Error");
@@ -72,3 +71,8 @@ exports.rejectRequest = async (req, res) => {
     res.status(500).send("Server Error");
   }
 };
+
+
+exports.getDonorRequestsPage = (req, res)=>{
+    res.render('donor-requests')
+}
