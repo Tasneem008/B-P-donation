@@ -11,7 +11,6 @@ const postDonateForm = async (req, res) => {
     const { name, age, phone, address, nid, bloodgroup, donorId, lastDonation, donationPlace } =
       req.body;
 
-console.log(req.body)
 
     const newDonation = new BloodDonation({
       name,
