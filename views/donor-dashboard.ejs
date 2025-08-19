@@ -154,31 +154,157 @@
           </form>
   <!-- hospital request showing section -->
 
- <div id="hospitalRequests" class="mt-4 p-4 bg-red-100 rounded-lg border border-red-300 ">
+<div id="hospitalRequests" class="mt-4 p-4 bg-red-100 rounded-lg border border-red-300">
   <h3 class="text-md font-semibold mb-2">Blood Requests from Your Preferred Locations</h3>
   <div id="requestsContainer" class="flex flex-col gap-2">
     <% if (matchingRequests.length === 0) { %>
       <p class="text-sm text-gray-600">No matching requests at the moment.</p>
     <% } else { %>
       <% matchingRequests.forEach(request => { %>
-        <div class="p-3 bg-white/80 rounded-lg shadow flex justify-between items-center">
-          <p class="text-sm text-gray-700"><%= request.bloodgroup %> needed at <%= request.location %></p>
-          <button 
-            class="acceptBtn bg-red-500 text-white px-3 py-1 rounded-full text-sm hover:bg-red-600 transition"
-          >
-            Accept
-          </button>
+        <div class="p-3 bg-white/80 rounded-lg shadow border border-gray-200 request-card">
+          <div class="flex justify-between items-center">
+            <p class="text-sm text-gray-700"><%= request.bloodgroup %> needed at <%= request.location %></p>
+            <button class="toggle-details-btn text-xs text-red-600 hover:underline">View Details</button>
+          </div>
+
+          <!-- Hidden details section -->
+          <div class="request-details mt-2 text-sm text-gray-700 hidden">
+            <p><strong>Phone:</strong> <%= request.phone %></p>
+            <% if (request.reqzId && request.reqId.username) { %>
+              <p><strong>Name:</strong> <%= request.reqId.username %></p>
+            <% } %>
+            <% if (request.reqId && request.reqId.email) { %>
+              <p><strong>Email:</strong> <%= request.reqId.email %></p>
+            <% } %>
+
+           <button 
+  class="acceptBtn mt-2 bg-red-500 text-white px-3 py-1 rounded-full text-sm hover:bg-red-600 transition"
+  data-id="<%= request._id %>"
+>
+  Accept
+</button>
+
+          </div>
+        </div>
+      <% }) %>
+    <% } %>
+  </div>
+</div>
+
+        </div>
+
+
+
+
+        <!-- Request Blood Form (Initially Hidden) -->
+        <div
+          id="requestForm"
+          class="max-w-3xl mx-auto mt-10 backdrop-blur-md bg-white/70 p-8 rounded-2xl shadow-xl border border-white/30 hidden transition-all duration-300">
+          <h2 class="text-lg font-semibold mb-4">Send Your Request!</h2>
+          <form action="/request" method="post" class="grid gap-5 sm:grid-cols-2 bg-red-100 rounded-xl shadow-md p-6">
+            <!-- class="flex flex-col lg:flex-row flex-wrap gap-4 justify-center items-center bg-red-50 p-6 rounded-xl shadow-md"> -->
+
+             <select name="bloodgroup" required
+      class="px-4 py-3 rounded-lg border border-red-300 bg-white focus:outline-none focus:ring-2 focus:ring-red-500 shadow-sm">
+      <option value="">Select Blood Group</option>
+      <option>O+</option><option>A+</option><option>B+</option><option>AB+</option>
+    </select>
+
+            <input name="phone" type="number" placeholder="Phone Number"
+              class="px-4 py-2 rounded-lg border border-red-300 focus:outline-none focus:ring-2 focus:ring-red-500" />
+
+            <select name="location" required
+              class="px-4 py-3 rounded-lg border border-red-300 bg-white focus:outline-none focus:ring-2 focus:ring-red-500 shadow-sm">
+              <option>Location</option>
+              <option>LabAid</option>
+              <option>DMCH</option>
+              <option>Popular Medical</option>
+            </select>
+
+            <input name="bags" type="number" placeholder="Blood Unit"
+              class="px-4 py-2 rounded-lg border border-red-300 focus:outline-none focus:ring-2 focus:ring-red-500" />
+
+            <input name="description" type="text" placeholder="Description"
+              class="col-span-2 px-4 py-2 rounded-lg border border-red-300 focus:outline-none focus:ring-2 focus:ring-red-500" />
+
+            <label class="col-span-2">
+              <span class="text-gray-700">Requested Date & Time</span>
+              <input type="datetime-local" name="requestedDate"
+                class="mt-1 w-full px-4 py-3 rounded-lg border border-red-300 focus:outline-none focus:ring-2 focus:ring-red-500 shadow-sm">
+            </label>
+
+            <!-- <div class="w-full"></div> -->
+            <button type="submit"
+              class="bg-red-700 text-white hover:bg-red-800 col-span-2 px-6 py-2 rounded-lg shadow transition">
+              Send Request
+            </button>
+            
+          </form>
+         <div id="userRequests" class="mt-4 p-4 bg-blue-100 rounded-lg border border-blue-300">
+  <h3 class="text-md font-semibold mb-2">Your Blood Requests</h3>
+  <div class="flex flex-col gap-3">
+    <% if (userRequests.length === 0) { %>
+      <p class="text-sm text-gray-600">You haven't made any requests yet.</p>
+    <% } else { %>
+      <% userRequests.forEach(request => { %>
+        <div class="p-4 bg-white/80 rounded-lg shadow border border-gray-200 request-card" data-id="<%= request._id %>">
+          
+          <!-- READ-ONLY VIEW -->
+          <div class="request-view">
+            <div class="flex justify-between items-center mb-2">
+              <p class="text-sm font-medium text-gray-800">
+                <%= request.bloodgroup %> needed at <%= request.location %>
+              </p>
+              <div class="flex items-center gap-2">
+                <span class="text-xs text-gray-500">Status: <%= request.status %></span>
+                <button class="edit-icon text-blue-600 hover:text-blue-800 text-sm">✏️</button>
+              </div>
+            </div>
+            <div class="grid grid-cols-2 gap-4 text-sm text-gray-700">
+              <div>
+                <p><strong>Phone:</strong> <%= request.phone %></p>
+                <p><strong>Bags Needed:</strong> <%= request.bags %></p>
+              </div>
+              <div>
+                <p><strong>Requested Date:</strong> <%= new Date(request.requestedDate).toLocaleDateString() %></p>
+                <p><strong>Description:</strong> <%= request.description %></p>
+              </div>
+            </div>
+          </div>
+
+          <!-- EDIT FORM (Hidden by default) -->
+          <form action="/edit-request/<%= request._id %>" method="POST" class="edit-form space-y-2 hidden mt-2">
+            <div class="grid grid-cols-2 gap-4 text-sm text-gray-700">
+              <div>
+                <label class="block text-xs font-semibold">Phone</label>
+                <input type="text" name="phone" value="<%= request.phone %>" class="w-full p-1 border rounded">
+                
+                <label class="block mt-2 text-xs font-semibold">Bags</label>
+                <input type="number" name="bags" value="<%= request.bags %>" class="w-full p-1 border rounded">
+
+                <label class="block mt-2 text-xs font-semibold">Blood Group</label>
+                <input type="text" name="bloodgroup" value="<%= request.bloodgroup %>" class="w-full p-1 border rounded">
+              </div>
+              <div>
+                <label class="block text-xs font-semibold">Requested Date</label>
+                <input type="date" name="requestedDate" value="<%= request.requestedDate.toISOString().split('T')[0] %>" class="w-full p-1 border rounded">
+                
+                <label class="block mt-2 text-xs font-semibold">Description</label>
+                <textarea name="description" class="w-full p-1 border rounded"><%= request.description %></textarea>
+              </div>
+            </div>
+
+            <div class="flex justify-end gap-2 mt-2">
+              <button type="submit" class="text-xs bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700">Save</button>
+              <button type="button" class="cancel-edit text-xs text-gray-500 hover:underline">Cancel</button>
+            </div>
+          </form>
         </div>
       <% }) %>
     <% } %>
   </div>
 </div>
         </div>
-
-
-
-
-        
       </div>
     </main>
 
@@ -215,6 +341,53 @@ const maxDate = `${year}-${month}-${day}`;
 
 requestedDate.setAttribute('max', maxDate) 
    
+document.querySelectorAll(".cancel-edit").forEach(btn => {
+  btn.addEventListener("click", () => {
+    const card = btn.closest(".request-card");
+    card.querySelector(".edit-form").classList.add("hidden");
+    card.querySelector(".request-view").style.display = "block";
+  });
+});
+document.querySelectorAll(".toggle-details-btn").forEach(button => {
+  button.addEventListener("click", () => {
+    const card = button.closest(".request-card");
+    const details = card.querySelector(".request-details");
+
+    const isHidden = details.classList.contains("hidden");
+
+    if (isHidden) {
+      details.classList.remove("hidden");
+      button.textContent = "Hide Details";
+    } else {
+      details.classList.add("hidden");
+      button.textContent = "View Details";
+    }
+  });
+});
+document.querySelectorAll(".acceptBtn").forEach(button => {
+  button.addEventListener("click", async () => {
+    const requestId = button.getAttribute("data-id");
+
+    try {
+      const res = await fetch(`/accept-request/${requestId}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" }
+      });
+
+      const result = await res.json();
+      if (result.success) {
+        alert("Request accepted!");
+        button.disabled = true;
+        button.textContent = "Accepted";
+      } else {
+        alert("Error: " + result.message);
+      }
+    } catch (err) {
+      console.error(err);
+      alert("Something went wrong.");
+    }
+  });
+});
     </script>
   </body>
 </html>
