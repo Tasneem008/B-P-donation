@@ -23,6 +23,7 @@ const postRegisterPage = async (req, res) => {
   await user.save();
 
   req.session.userId = user._id;
+  req.session.role = user.role;
   res.redirect("/");
 };
 
