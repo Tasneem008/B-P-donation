@@ -26,11 +26,13 @@ const showDonorDashboard = async (req, res) => {
 
     if (!donation) {
       return res.render("donor-dashboard", { 
-        user: user ? user.username : null, 
+        user: user, 
         bloodGroup: "Not provided yet", 
         daysSinceDonation: "No donations yet" ,
-        matchingRequests: "No requests to show",
-        userRequests: "you havent requested for blood or plasma yet"
+        matchingRequests: [],
+        userRequests: [],
+        hospitals,
+
       });
     }
 
@@ -47,7 +49,8 @@ const showDonorDashboard = async (req, res) => {
       bloodgroup: donation.bloodgroup,
       location: { $in: donation.locations}
     }).populate("reqId", "username email");
-
+   
+    console.log(hospitals);
     const userRequests = await BloodRequest.find({reqId: userId});
     res.render("donor-dashboard", { 
       user: user, 
