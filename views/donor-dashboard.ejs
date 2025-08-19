@@ -151,25 +151,43 @@
           </form>
   <!-- hospital request showing section -->
 
- <div id="hospitalRequests" class="mt-4 p-4 bg-red-100 rounded-lg border border-red-300 ">
+<div id="hospitalRequests" class="mt-4 p-4 bg-red-100 rounded-lg border border-red-300">
   <h3 class="text-md font-semibold mb-2">Blood Requests from Your Preferred Locations</h3>
   <div id="requestsContainer" class="flex flex-col gap-2">
     <% if (matchingRequests.length === 0) { %>
       <p class="text-sm text-gray-600">No matching requests at the moment.</p>
     <% } else { %>
       <% matchingRequests.forEach(request => { %>
-        <div class="p-3 bg-white/80 rounded-lg shadow flex justify-between items-center">
-          <p class="text-sm text-gray-700"><%= request.bloodgroup %> needed at <%= request.location %></p>
-          <button 
-            class="acceptBtn bg-red-500 text-white px-3 py-1 rounded-full text-sm hover:bg-red-600 transition"
-          >
-            Accept
-          </button>
+        <div class="p-3 bg-white/80 rounded-lg shadow border border-gray-200 request-card">
+          <div class="flex justify-between items-center">
+            <p class="text-sm text-gray-700"><%= request.bloodgroup %> needed at <%= request.location %></p>
+            <button class="toggle-details-btn text-xs text-red-600 hover:underline">View Details</button>
+          </div>
+
+          <!-- Hidden details section -->
+          <div class="request-details mt-2 text-sm text-gray-700 hidden">
+            <p><strong>Phone:</strong> <%= request.phone %></p>
+            <% if (request.reqzId && request.reqId.username) { %>
+              <p><strong>Name:</strong> <%= request.reqId.username %></p>
+            <% } %>
+            <% if (request.reqId && request.reqId.email) { %>
+              <p><strong>Email:</strong> <%= request.reqId.email %></p>
+            <% } %>
+
+           <button 
+  class="acceptBtn mt-2 bg-red-500 text-white px-3 py-1 rounded-full text-sm hover:bg-red-600 transition"
+  data-id="<%= request._id %>"
+>
+  Accept
+</button>
+
+          </div>
         </div>
       <% }) %>
     <% } %>
   </div>
 </div>
+
         </div>
 
 
@@ -260,6 +278,9 @@
                 
                 <label class="block mt-2 text-xs font-semibold">Bags</label>
                 <input type="number" name="bags" value="<%= request.bags %>" class="w-full p-1 border rounded">
+
+                <label class="block mt-2 text-xs font-semibold">Blood Group</label>
+                <input type="text" name="bloodgroup" value="<%= request.bloodgroup %>" class="w-full p-1 border rounded">
               </div>
               <div>
                 <label class="block text-xs font-semibold">Requested Date</label>
@@ -306,6 +327,46 @@ document.querySelectorAll(".cancel-edit").forEach(btn => {
     const card = btn.closest(".request-card");
     card.querySelector(".edit-form").classList.add("hidden");
     card.querySelector(".request-view").style.display = "block";
+  });
+});
+document.querySelectorAll(".toggle-details-btn").forEach(button => {
+  button.addEventListener("click", () => {
+    const card = button.closest(".request-card");
+    const details = card.querySelector(".request-details");
+
+    const isHidden = details.classList.contains("hidden");
+
+    if (isHidden) {
+      details.classList.remove("hidden");
+      button.textContent = "Hide Details";
+    } else {
+      details.classList.add("hidden");
+      button.textContent = "View Details";
+    }
+  });
+});
+document.querySelectorAll(".acceptBtn").forEach(button => {
+  button.addEventListener("click", async () => {
+    const requestId = button.getAttribute("data-id");
+
+    try {
+      const res = await fetch(`/accept-request/${requestId}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" }
+      });
+
+      const result = await res.json();
+      if (result.success) {
+        alert("Request accepted!");
+        button.disabled = true;
+        button.textContent = "Accepted";
+      } else {
+        alert("Error: " + result.message);
+      }
+    } catch (err) {
+      console.error(err);
+      alert("Something went wrong.");
+    }
   });
 });
     </script>

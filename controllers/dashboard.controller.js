@@ -2,13 +2,14 @@ const { default: mongoose } = require("mongoose");
 const User = require("../models/User");
 const BloodDonation = require("../models/BloodDonation");
 const BloodRequest = require("../models/BloodRequest.js");
+const History = require("../models/history");
 
 const redirectUserToDashboard = async (req, res) => {
   const user = await User.findById(req.session.userId);
   if (user.role === "donor") {
     res.redirect("/donor/dashboard");
   } else if (user.role === "recipient") {
-    res.redirect("/recipient/dashboard");
+    res.redirect("/donor/dashboard");
   } else if (user.role === "hospital") {
     res.redirect("/admin/dashboard");
   }
@@ -44,7 +45,7 @@ const showDonorDashboard = async (req, res) => {
     const matchingRequests = await BloodRequest.find({
       bloodgroup: donation.bloodgroup,
       location: { $in: donation.locations}
-    });
+    }).populate("reqId", "username email");
 
     const userRequests = await BloodRequest.find({reqId: userId});
     res.render("donor-dashboard", { 
@@ -99,7 +100,36 @@ const updateRequest = async (req, res) => {
   }
 };
 
+const acceptRequest = async (req, res) => {
+  try {
+    const donorId = req.session.userId;
+    const requestId = req.params.id;
 
+    const request = await BloodRequest.findById(requestId).populate("reqId");
 
+    if (!request || request.status !== "pending") {
+      return res.status(400).send("Invalid or already accepted request");
+    }
 
-module.exports = { redirectUserToDashboard, showDonorDashboard, updateRequest};
+    // Update request status
+    request.status = "accepted";
+    await request.save();
+
+    // Create history record
+    const historyEntry = new History({
+      hisId: donorId, // optional if used
+      donorId,
+      reqId: request.reqId._id,
+      status: "accepted"
+    });
+
+    await historyEntry.save();
+
+    res.json({ success: true, message: "Request accepted and history saved" });
+  } catch (err) {
+    console.error("Error accepting request:", err);
+    res.status(500).send("Server error");
+  }
+};
+
+module.exports = { redirectUserToDashboard, showDonorDashboard, updateRequest, acceptRequest};

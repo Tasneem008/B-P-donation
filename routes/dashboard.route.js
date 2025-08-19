@@ -21,4 +21,13 @@ router.post(
   checkAuth,
   updateRequest
 );
+
+const { acceptRequest } = require("../controllers/dashboard.controller");
+
+router.post(
+  "/accept-request/:id", 
+  checkAuth, 
+  acceptRequest);
+
+
 module.exports = router;
