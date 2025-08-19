@@ -91,7 +91,7 @@
           <!-- ekhane change hoise action ta-donate -->
           <form action="/donate-blood" method="post"
             class="flex flex-col flex-wrap gap-4 bg-red-50 p-6 rounded-xl shadow-md">
-            <input type="text" name="donorId" class="hidden" value="<%= user._id.toString() %>"/>
+            <input type="text" name="donorId" class="hidden" value="<%= userId %>"/>
 
             <input type="text" name="name" placeholder="Full Name" required
              class="px-4 py-2 rounded-lg border border-red-600 focus:outline-none focus:ring-2 focus:ring-red-500" 
