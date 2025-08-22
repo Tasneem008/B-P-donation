@@ -1,5 +1,5 @@
 const express = require("express");
-const { getDonateForm, postDonateForm } = require("../controllers/donate.con.js");
+const { getDonateForm, postDonateForm } = require("../controllers/donor.controller.js");
 
 const router = express.Router();
 
