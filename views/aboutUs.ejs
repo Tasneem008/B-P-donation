@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <%- include('./partials/head.ejs'); %>
+</head>
+
+<body class="bg-gray-100 text-gray-800 font-sans flex flex-col">
+
+  <!-- Header / Navbar -->
+  <%- include('./partials/navbar.ejs'); %>
+
+  <!-- Hero Section -->
+  <section class="relative bg-cover bg-center text-white py-28 px-6 text-center" style="background-image: url('/pics/world-blood-donor-day-2022-banner.png');">
+    <div class="absolute inset-0 bg-black/60"></div>
+    <div class="relative max-w-4xl mx-auto">
+      <h1 class="text-5xl font-extrabold mb-6 drop-shadow-lg">About DonateLife</h1>
+      <p class="text-lg md:text-xl leading-relaxed">
+        Committed to saving lives by connecting donors and recipients through safe and timely blood and plasma donations.
+      </p>
+    </div>
+  </section>
+
+  <!-- Mission, Vision, Values -->
+  <section class="max-w-6xl mx-auto px-6 py-20 grid gap-12 md:grid-cols-3 text-center">
+    <div class="bg-white/40 backdrop-blur-lg p-8 rounded-2xl shadow-lg">
+      <h2 class="text-2xl font-bold mb-4 text-red-600">Our Mission</h2>
+      <p class="text-gray-700 leading-relaxed">
+        To promote voluntary blood and plasma donation, ensuring a safe and sufficient supply for patients in need.
+      </p>
+    </div>
+    <div class="bg-white/40 backdrop-blur-lg p-8 rounded-2xl shadow-lg">
+      <h2 class="text-2xl font-bold mb-4 text-red-600">Our Vision</h2>
+      <p class="text-gray-700 leading-relaxed">
+        A world where no life is lost due to blood shortage, supported by a community empowered to donate.
+      </p>
+    </div>
+    <div class="bg-white/40 backdrop-blur-lg p-8 rounded-2xl shadow-lg">
+      <h2 class="text-2xl font-bold mb-4 text-red-600">Our Values</h2>
+      <ul class="list-disc list-inside text-gray-700 space-y-2 text-left">
+        <li>Compassion & Empathy</li>
+        <li>Safety & Transparency</li>
+        <li>Community & Collaboration</li>
+        <li>Respect & Integrity</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- Why Donate -->
+  <section class="bg-white/50 backdrop-blur-lg py-20 px-6 max-w-6xl mx-auto rounded-3xl shadow-xl">
+    <h2 class="text-4xl font-bold text-center mb-12 text-red-600">Why Donate Blood and Plasma?</h2>
+    <div class="grid gap-10 md:grid-cols-3 text-center">
+      <!-- Card 1 -->
+      <div class="p-8 rounded-2xl shadow-lg bg-white/40 backdrop-blur-md hover:scale-105 transition-transform">
+        <div class="w-16 h-16 flex items-center justify-center mx-auto mb-4 rounded-full bg-red-100 text-red-600">
+          <i class="fas fa-heart text-2xl"></i>
+        </div>
+        <h3 class="font-semibold text-xl mb-2">Save Lives</h3>
+        <p class="text-gray-700">Every blood donation has the power to save up to three lives in need of urgent care.</p>
+      </div>
+      <!-- Card 2 -->
+      <div class="p-8 rounded-2xl shadow-lg bg-white/40 backdrop-blur-md hover:scale-105 transition-transform">
+        <div class="w-16 h-16 flex items-center justify-center mx-auto mb-4 rounded-full bg-green-100 text-green-600">
+          <i class="fas fa-heartbeat text-2xl"></i>
+        </div>
+        <h3 class="font-semibold text-xl mb-2">Healthy Habit</h3>
+        <p class="text-gray-700">Donating blood stimulates new blood cell production and keeps your body active and healthy.</p>
+      </div>
+      <!-- Card 3 -->
+      <div class="p-8 rounded-2xl shadow-lg bg-white/40 backdrop-blur-md hover:scale-105 transition-transform">
+        <div class="w-16 h-16 flex items-center justify-center mx-auto mb-4 rounded-full bg-blue-100 text-blue-600">
+          <i class="fas fa-users text-2xl"></i>
+        </div>
+        <h3 class="font-semibold text-xl mb-2">Build Community</h3>
+        <p class="text-gray-700">Be part of a compassionate community that supports and uplifts those in need.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Affiliated Hospitals -->
+  <section class="relative bg-gradient-to-r from-red-600 via-red-500 to-red-600 py-20 text-white text-center">
+    <div class="max-w-6xl mx-auto px-6 relative z-10">
+      <h2 class="text-4xl font-bold mb-6">Our Affiliated Hospitals</h2>
+      <p class="max-w-2xl mx-auto mb-12 text-lg leading-relaxed text-white/90">
+        We are proud to collaborate with leading hospitals and healthcare organizations to ensure that every donation reaches those in urgent need.
+      </p>
+      <div class="grid grid-cols-2 md:grid-cols-3 gap-10 items-center justify-center">
+        <div class="bg-white/20 backdrop-blur-lg p-6 rounded-2xl shadow-lg flex items-center justify-center hover:scale-105 transition">
+          <img src="/pics/popular-diagnostic-logo_636116-307.avif" alt="Popular Diagnostic" class="h-14 mx-auto" />
+        </div>
+        <div class="bg-white/20 backdrop-blur-lg p-6 rounded-2xl shadow-lg flex items-center justify-center hover:scale-105 transition">
+          <img src="/pics/labaid-logo-png_seeklogo-370215.png" alt="Labaid Hospital" class="h-14 mx-auto" />
+        </div>
+        <div class="bg-white/20 backdrop-blur-lg p-6 rounded-2xl shadow-lg flex items-center justify-center hover:scale-105 transition">
+          <img src="/pics/images.png" alt="Hospital Logo" class="h-14 mx-auto" />
+        </div>
+      </div>
+    </div>
+    <div class="absolute inset-0 bg-black/20"></div>
+  </section>
+
+  <!-- Sections (Blood Donation, Health Check, Blood Bank) -->
+  <!-- Reuse same structure, just updated image paths -->
+  <section id="bloodDonation" class="max-w-6xl mx-auto px-6 py-20 grid md:grid-cols-2 gap-12 items-center">
+    <img src="/pics/Transforming-Lives-The-Powerful-Impact-of-Donating-Blood--2000x1000.jpeg" alt="Blood Donation" class="rounded-3xl shadow-xl" />
+    <div class="bg-white/50 backdrop-blur-md p-8 rounded-2xl shadow-lg">
+      <h2 class="text-3xl font-bold text-red-600 mb-4">Blood Donation</h2>
+      <p class="text-gray-700 mb-4">Donating blood is a life-saving act of kindness that has immediate impact.</p>
+      <ul class="list-disc list-inside space-y-2 text-gray-700">
+        <li>One unit of blood can save up to three lives.</li>
+        <li>Helps patients undergoing surgeries, accidents, or cancer treatments.</li>
+        <li>Simple, safe, and quick procedure for donors.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- Health Check -->
+  <section id="healthCheck" class="max-w-6xl mx-auto px-6 py-20 grid md:grid-cols-2 gap-12 items-center">
+    <div class="bg-white/50 backdrop-blur-md p-8 rounded-2xl shadow-lg order-2 md:order-1">
+      <h2 class="text-3xl font-bold text-red-600 mb-4">Health Check</h2>
+      <p class="text-gray-700 mb-4">Every donor undergoes a free health check before donating blood.</p>
+      <ul class="list-disc list-inside space-y-2 text-gray-700">
+        <li>Quick screening for vital signs like blood pressure and hemoglobin.</li>
+        <li>Ensures donor safety and health eligibility.</li>
+        <li>Early detection of potential health issues.</li>
+      </ul>
+    </div>
+    <img src="/pics/images/222.jpg" alt="Health Check" class="rounded-3xl shadow-xl order-1 md:order-2" />
+  </section>
+
+  <!-- Blood Bank -->
+  <section id="bloodBank" class="max-w-6xl mx-auto px-6 py-20 grid md:grid-cols-2 gap-12 items-center">
+    <img src="/pics/Blood-Donation-2.jpg" alt="Blood Bank" class="rounded-3xl shadow-xl" />
+    <div class="bg-white/50 backdrop-blur-md p-8 rounded-2xl shadow-lg">
+      <h2 class="text-3xl font-bold text-red-600 mb-4">Blood Bank</h2>
+      <p class="text-gray-700 mb-4">Our blood banks ensure that donated blood is stored and available when needed.</p>
+      <ul class="list-disc list-inside space-y-2 text-gray-700">
+        <li>State-of-the-art storage facilities with safety standards.</li>
+        <li>Round-the-clock availability for emergencies.</li>
+        <li>Supports hospitals and clinics across the community.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- Location -->
+  <section class="relative bg-gray-50 py-20">
+    <div class="max-w-6xl mx-auto px-6 text-center">
+      <h2 class="text-3xl font-bold text-red-600 mb-6">Find Us</h2>
+      <p class="text-gray-700 max-w-2xl mx-auto mb-12">
+        Visit our donation center or affiliated hospitals to contribute and save lives.  
+        We are always here to welcome you!
+      </p>
+
+      <div class="relative rounded-2xl overflow-hidden shadow-2xl border-4 border-white">
+        <iframe 
+          src="https://www.google.com/maps/d/embed?mid=1gRoNAcl4shUq58gCN2yMJ6Vmx2RZK00&ehbc=2E312F" 
+          width="100%" 
+          height="500" 
+          style="border:0;" 
+          allowfullscreen 
+          loading="lazy" 
+          class="w-full h-[500px]">
+        </iframe>
+        <!-- Overlay to hide map title bar -->
+        <div class="absolute top-0 left-0 w-full h-20 bg-red-500"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Call to Action -->
+  <section class="bg-red-600 py-20 text-center text-white shadow-inner">
+    <h2 class="text-4xl font-bold mb-6">Ready to Make a Difference?</h2>
+    <p class="max-w-2xl mx-auto mb-8 text-lg leading-relaxed">
+      Join our community of heroes — donate blood or plasma today and save lives.
+    </p>
+    <a href="/home" class="inline-block bg-white text-red-600 font-semibold px-10 py-4 rounded-full shadow-lg hover:bg-gray-100 transition">
+      Donate Now
+    </a>
+  </section>
+
+  <!-- Footer -->
+  <%- include('./partials/footer.ejs'); %>
+
+</body>
+</html>
