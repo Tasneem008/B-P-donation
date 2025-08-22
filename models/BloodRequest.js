@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 const bloodRequestSchema = new mongoose.Schema({
   bloodgroup: { type: String, required: true },
-  phone: {type: String, required:true},
+  phone: { type: String},
   recipientId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
   location: String,
   bags: Number,

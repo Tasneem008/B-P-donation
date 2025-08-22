@@ -22,12 +22,7 @@ router.post(
   updateRequest
 );
 
-const {acceptRequest} = require("../controllers/dashboard.controller");
-const {cancelRequest} = require("../controllers/dashboard.controller");
-const {completeRequest} = require("../controllers/dashboard.controller");
-
-router.post("/cancel-request/:id", checkAuth, cancelRequest);
-router.post("/complete-request/:id", checkAuth, completeRequest);
+const { acceptRequest } = require("../controllers/dashboard.controller.js");
 
 router.post(
   "/accept-request/:id", 

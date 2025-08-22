@@ -9,14 +9,15 @@ const redirectUserToDashboard = async (req, res) => {
   if (user.role === "donor") {
     res.redirect("/donor/dashboard");
   } else if (user.role === "recipient") {
-    res.redirect("/donor/dashboard");
+    res.redirect("/recipient/dashboard");
   } else if (user.role === "hospital") {
-    res.redirect("/admin/dashboard");
+    res.redirect("/hospital/dashboard");
   }
 };
 
 const showDonorDashboard = async (req, res) => {
-  try {
+   try {
+    const hospitals = await User.find({ role: "hospital" });
     const userId = req.session.userId;
 
     // Find the latest donation record for this user
@@ -25,11 +26,13 @@ const showDonorDashboard = async (req, res) => {
 
     if (!donation) {
       return res.render("donor-dashboard", { 
-        user: user ? user.username : null, 
+        user: user, 
         bloodGroup: "Not provided yet", 
         daysSinceDonation: "No donations yet" ,
-        matchingRequests: "No requests to show",
-        userRequests: "you havent requested for blood or plasma yet"
+        matchingRequests: [],
+        userRequests: [],
+        hospitals,
+
       });
     }
 
@@ -46,14 +49,16 @@ const showDonorDashboard = async (req, res) => {
       bloodgroup: donation.bloodgroup,
       location: { $in: donation.locations}
     }).populate("reqId", "username email");
-
+   
+    console.log(hospitals);
     const userRequests = await BloodRequest.find({reqId: userId});
     res.render("donor-dashboard", { 
-      user: user.username, 
+      user: user, 
       bloodGroup: donation.bloodgroup, 
       daysSinceDonation: diffDays,
       matchingRequests,
       userRequests,
+      hospitals
     });
   } catch (err) {
     console.error(err);

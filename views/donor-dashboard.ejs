@@ -4,10 +4,16 @@
     <%- include('./partials/head.ejs'); %>
     <title>Dashboard | DonateLife</title>
   </head>
-  <body class="min-h-screen bg-gradient-to-br from-red-50 via-pink-100 to-red-200">
+  <body class="min-h-screen"
+  style="
+        background-image: url('/pics/recipient.png');
+        background-size: cover;
+        background-position: center;
+      "
+    >
     <%- include('./partials/dashboard-navbar.ejs') %>
 
-    <main class="flex flex-col items-center p-6 space-y-6">
+    <main class="flex flex-col items-center pt-20 px-20 space-y-6 bg-white/10">
       
           <!-- Profile Card -->
     <div class="w-full backdrop-blur-md bg-white/70 p-8 rounded-2xl shadow-xl border border-white/30 transition hover:shadow-2xl">
@@ -21,17 +27,14 @@
                 d="M5.121 17.804A11.954 11.954 0 0112 15c2.5 0 4.847.776 6.879 2.096M15 12a3 3 0 10-6 0 3 3 0 006 0z" />
             </svg>
           </div>
-          <p class="text-lg font-semibold text-gray-800"><%= user %></p>
+          <p class="text-lg font-semibold text-gray-800"><%= user.username %></p>
           
           <div class="flex gap-3">
             <button onclick="toggleDonateForm()"
               class="bg-gradient-to-r from-red-500 to-red-700 hover:scale-105 transform text-white px-4 py-2 rounded-full shadow-md transition">
               Donate Blood
             </button>
-            <button onclick="toggleRequestForm()"
-              class="bg-gradient-to-r from-red-500 to-red-700 hover:scale-105 transform text-white px-4 py-2 rounded-full shadow-md transition">
-              Request Blood
-            </button>
+            
           </div>
         </div>
 
@@ -40,24 +43,24 @@
 
         
         <!-- Blood Drop Stats -->
-<div class="flex items-center justify-center gap-6">
+<!-- <div class="flex items-center justify-center gap-6">
 
-  <!-- Blood Type -->
+
   <div class="w-24 h-24 flex flex-col items-center justify-center">
-  <svg width="80" height="150" viewBox="0 0 64 80" xmlns="http://www.w3.org/2000/svg">
+  <svg width="80" height="200" viewBox="0 0 64 80" xmlns="http://www.w3.org/2000/svg">
     <path fill="#ef4444" d="M32 0C32 0 4 36 4 56a28 28 0 1056 0C60 36 32 0 32 0z"/>
   </svg>
   <p class="text-white font-bold -mt-12"><%= bloodGroup %></p>
 </div>
 
-  <!-- Next Donation -->
+
   <div class="w-24 h-24 flex flex-col items-center justify-center">
   <svg width="125" height="250" viewBox="0 0 64 80" xmlns="http://www.w3.org/2000/svg">
     <path fill="#ef4444" d="M32 0C32 0 4 36 4 56a28 28 0 1056 0C60 36 32 0 32 0z"/>
   </svg>
    
       <p class="text-white  -mt-12"><%= daysSinceDonation %> Days ago</p>
-      <!-- <p class="text-white font-bold -mt-12">Donation in</p> -->
+      
       <p class="text-white font-bold -mt-12"></p>
       
   </div>
@@ -71,8 +74,31 @@
 
 </div>
   </div>
+ -->
 
+<div class="grid grid-cols-3 gap-6 text-center">
+  <div class="backdrop-blur-md bg-white/20 text-red-600 p-4 rounded-xl shadow-lg border border-white/30 hover:shadow-xl transition">
+  <i class="fa-solid fa-droplet text-2xl mb-1"></i>
+  <p class="text-xl font-bold"><%= bloodGroup %></p>
+  <p class="text-xs opacity-80">Blood Group</p>
 </div>
+
+
+  <div class="backdrop-blur-md bg-white/20 text-red-600 p-4 rounded-xl shadow-lg border border-white/30 hover:shadow-xl transition">
+    <i class="fa-solid fa-droplet text-2xl mb-1"></i>
+    <p class="text-xl font-bold"><%= daysSinceDonation %></p>
+    <p class="text-xs opacity-80">Days Since Donation</p>
+  </div>
+
+  <div class="backdrop-blur-md bg-white/20 text-red-600 p-4 rounded-xl shadow-lg border border-white/30 hover:shadow-xl transition">
+    <i class="fa-solid fa-droplet text-2xl mb-1"></i>
+    <p class="text-xl font-bold">6</p>
+    <p class="text-xs opacity-80">Donations</p>
+  </div>
+</div>
+
+
+</div> 
 
 
 
@@ -88,14 +114,17 @@
           <!-- ekhane change hoise action ta-donate -->
           <form action="/donate-blood" method="post"
             class="flex flex-col flex-wrap gap-4 bg-red-50 p-6 rounded-xl shadow-md">
+            <input type="text" name="donorId" class="hidden" value="<%= userId %>"/>
 
             <input type="text" name="name" placeholder="Full Name" required
-             class="col-span-2 px-4 py-3 rounded-lg border border-red-300 focus:outline-none focus:ring-2 focus:ring-red-500 shadow-sm" />
+             class="px-4 py-2 rounded-lg border border-red-300 focus:outline-none focus:ring-2 focus:ring-red-500" 
+             readonly value="<%= user.username %>"
+             />
 
             <input type="number" name="age" placeholder="Age" min="18" required
                class="px-4 py-2 rounded-lg border border-red-300 focus:outline-none focus:ring-2  focus:ring-red-500 shadow-sm" />
 
-            <input type="tel" name="phone" placeholder="Phone Number" required
+            <input type="tel" name="phone" placeholder="Phone Number" required pattern="^(?:\+?88)?01[3-9]\d{8}$"
                class="px-4 py-2 rounded-lg border border-red-300 focus:outline-none focus:ring-2 focus:ring-red-500" />
 
             <input type="text" name="address" placeholder="Address" required
@@ -105,31 +134,28 @@
             <input type="text" name="nid" placeholder="National ID Number" required
                class="col-span-2 px-4 py-2 rounded-lg border border-red-300 focus:outline-none focus:ring-2 focus:ring-red-500" />
 
-            <select name="bloodgroup" required
-      class="col-span-2 px-4 py-3 rounded-lg border border-red-300 bg-white focus:outline-none focus:ring-2 focus:ring-red-500 shadow-sm">
-      <option value="">Select Blood Group</option>
-      <option>O+</option><option>A+</option><option>B+</option><option>AB+</option>
-      <option>O-</option><option>A-</option><option>B-</option><option>AB-</option>
-    </select>
+            <select name="donationPlace" required
+              class="px-4 py-2 rounded-lg border border-red-300 focus:outline-none focus:ring-2 focus:ring-red-500">
+              <option value="">Select a hospital</option>
+              <% hospitals.forEach(hospital => { %>
+                <option value="<%= hospital._id %>"><%= hospital.username %></option>
+              <% }); %>          
+            </select>
 
-            <p class="font-medium">Preferable Locations</p>
-  <label class="flex items-center gap-2">
-    <input type="checkbox" name="locations[]" value="Popular Medical" class="w-4 h-4">
-    Popular Medical
-  </label>
-  
-  <label class="flex items-center gap-2">
-    <input type="checkbox" name="locations[]" value="LabAid" class="w-4 h-4">
-    LabAid
-  </label>
+            <select
+              class="px-4 py-2 rounded-lg bg-red-500 text-white focus:outline-none focus:ring-2 focus:ring-red-500"
+              required
+              name="bloodgroup"
+            >
+              <option disabled selected>Select Blood Group</option>
+              <% ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"].forEach(type => { %>
+                <option value="<%= type %>"><%= type %></option>
+              <% }) %>
+            </select>
 
-  <label class="flex items-center gap-2">
-    <input type="checkbox" name="locations[]" value="DMCH" class="w-4 h-4">
-    DMCH
-  </label>
 <label class="block">
               <span class="text-gray-700">Last Donation Date</span>
-              <input type="date" name="lastDonation"
+              <input type="date" id="lastDonation" name="lastDonation"
              class="mt-1 px-4 py-2 rounded-lg border border-red-300 focus:outline-none focus:ring-2 focus:ring-red-500">
             </label>
 
@@ -315,22 +341,38 @@
     </main>
 
     <script>
-      function toggleRequestForm() {
-        const form = document.getElementById('requestForm');
-        form.classList.toggle('hidden');
-      }
       function toggleDonateForm() {
         const donateForm = document.getElementById('donateForm');
         donateForm.classList.toggle('hidden');
       }
-      document.querySelectorAll(".edit-icon").forEach(icon => {
-  icon.addEventListener("click", () => {
-    const card = icon.closest(".request-card");
-    card.querySelector(".request-view").style.display = "none";
-    card.querySelector(".edit-form").classList.remove("hidden");
-  });
-});
+//       document.querySelectorAll(".edit-icon").forEach(icon => {
+//   icon.addEventListener("click", () => {
+//     const card = icon.closest(".request-card");
+//     card.querySelector(".request-view").style.display = "none";
+//     card.querySelector(".edit-form").classList.remove("hidden");
+//   });
+// });
 
+// document.querySelectorAll(".cancel-edit").forEach(btn => {
+//   btn.addEventListener("click", () => {
+//     const card = btn.closest(".request-card");
+//     card.querySelector(".edit-form").classList.add("hidden");
+//     card.querySelector(".request-view").style.display = "block";
+//   });
+// });
+
+const requestedDate = document.getElementById('lastDonation')
+// Create a Date object for the minimum date (e.g., today's date)
+const today = new Date();
+const year = today.getFullYear();
+const month = (today.getMonth() + 1).toString().padStart(2, '0'); // Month is 0-indexed, add 1 and pad with leading zero
+const day = today.getDate().toString().padStart(2, '0'); // Pad with leading zero
+
+// Format the date as YYYY-MM-DD
+const maxDate = `${year}-${month}-${day}`;
+
+requestedDate.setAttribute('max', maxDate) 
+   
 document.querySelectorAll(".cancel-edit").forEach(btn => {
   btn.addEventListener("click", () => {
     const card = btn.closest(".request-card");
