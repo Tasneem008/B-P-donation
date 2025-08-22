@@ -43,24 +43,24 @@
 
         
         <!-- Blood Drop Stats -->
-<div class="flex items-center justify-center gap-6">
+<!-- <div class="flex items-center justify-center gap-6">
 
-  <!-- Blood Type -->
+
   <div class="w-24 h-24 flex flex-col items-center justify-center">
-  <svg width="80" height="150" viewBox="0 0 64 80" xmlns="http://www.w3.org/2000/svg">
+  <svg width="80" height="200" viewBox="0 0 64 80" xmlns="http://www.w3.org/2000/svg">
     <path fill="#ef4444" d="M32 0C32 0 4 36 4 56a28 28 0 1056 0C60 36 32 0 32 0z"/>
   </svg>
   <p class="text-white font-bold -mt-12"><%= bloodGroup %></p>
 </div>
 
-  <!-- Next Donation -->
+
   <div class="w-24 h-24 flex flex-col items-center justify-center">
   <svg width="125" height="250" viewBox="0 0 64 80" xmlns="http://www.w3.org/2000/svg">
     <path fill="#ef4444" d="M32 0C32 0 4 36 4 56a28 28 0 1056 0C60 36 32 0 32 0z"/>
   </svg>
    
       <p class="text-white  -mt-12"><%= daysSinceDonation %> Days ago</p>
-      <!-- <p class="text-white font-bold -mt-12">Donation in</p> -->
+      
       <p class="text-white font-bold -mt-12"></p>
       
   </div>
@@ -74,8 +74,31 @@
 
 </div>
   </div>
+ -->
 
+<div class="grid grid-cols-3 gap-6 text-center">
+  <div class="backdrop-blur-md bg-white/20 text-red-600 p-4 rounded-xl shadow-lg border border-white/30 hover:shadow-xl transition">
+  <i class="fa-solid fa-droplet text-2xl mb-1"></i>
+  <p class="text-xl font-bold"><%= bloodGroup %></p>
+  <p class="text-xs opacity-80">Blood Group</p>
 </div>
+
+
+  <div class="backdrop-blur-md bg-white/20 text-red-600 p-4 rounded-xl shadow-lg border border-white/30 hover:shadow-xl transition">
+    <i class="fa-solid fa-droplet text-2xl mb-1"></i>
+    <p class="text-xl font-bold"><%= daysSinceDonation %></p>
+    <p class="text-xs opacity-80">Days Since Donation</p>
+  </div>
+
+  <div class="backdrop-blur-md bg-white/20 text-red-600 p-4 rounded-xl shadow-lg border border-white/30 hover:shadow-xl transition">
+    <i class="fa-solid fa-droplet text-2xl mb-1"></i>
+    <p class="text-xl font-bold">6</p>
+    <p class="text-xs opacity-80">Donations</p>
+  </div>
+</div>
+
+
+</div> 
 
 
 
@@ -94,7 +117,7 @@
             <input type="text" name="donorId" class="hidden" value="<%= userId %>"/>
 
             <input type="text" name="name" placeholder="Full Name" required
-             class="px-4 py-2 rounded-lg border border-red-600 focus:outline-none focus:ring-2 focus:ring-red-500" 
+             class="px-4 py-2 rounded-lg border border-red-300 focus:outline-none focus:ring-2 focus:ring-red-500" 
              readonly value="<%= user.username %>"
              />
 
@@ -102,7 +125,7 @@
                class="px-4 py-2 rounded-lg border border-red-300 focus:outline-none focus:ring-2  focus:ring-red-500 shadow-sm" />
 
             <input type="tel" name="phone" placeholder="Phone Number" required pattern="^(?:\+?88)?01[3-9]\d{8}$"
-               class="px-4 py-2 rounded-lg border border-red-600 focus:outline-none focus:ring-2 focus:ring-red-500" />
+               class="px-4 py-2 rounded-lg border border-red-300 focus:outline-none focus:ring-2 focus:ring-red-500" />
 
             <input type="text" name="address" placeholder="Address" required
                class="col-span-2 px-4 py-2 rounded-lg border border-red-300 focus:outline-none focus:ring-2 focus:ring-red-500" />
@@ -112,7 +135,7 @@
                class="col-span-2 px-4 py-2 rounded-lg border border-red-300 focus:outline-none focus:ring-2 focus:ring-red-500" />
 
             <select name="donationPlace" required
-              class="px-4 py-2 rounded-lg border border-red-600 focus:outline-none focus:ring-2 focus:ring-red-500">
+              class="px-4 py-2 rounded-lg border border-red-300 focus:outline-none focus:ring-2 focus:ring-red-500">
               <option value="">Select a hospital</option>
               <% hospitals.forEach(hospital => { %>
                 <option value="<%= hospital._id %>"><%= hospital.username %></option>
@@ -120,7 +143,7 @@
             </select>
 
             <select
-              class="px-4 py-2 rounded-lg bg-red-700 text-white focus:outline-none focus:ring-2 focus:ring-red-500"
+              class="px-4 py-2 rounded-lg bg-red-500 text-white focus:outline-none focus:ring-2 focus:ring-red-500"
               required
               name="bloodgroup"
             >
@@ -133,7 +156,7 @@
 <label class="block">
               <span class="text-gray-700">Last Donation Date</span>
               <input type="date" id="lastDonation" name="lastDonation"
-             class="mt-1 px-4 py-2 rounded-lg border border-red-600 focus:outline-none focus:ring-2 focus:ring-red-500">
+             class="mt-1 px-4 py-2 rounded-lg border border-red-300 focus:outline-none focus:ring-2 focus:ring-red-500">
             </label>
 
 
