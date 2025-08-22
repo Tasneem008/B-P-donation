@@ -132,4 +132,46 @@ const acceptRequest = async (req, res) => {
   }
 };
 
-module.exports = { redirectUserToDashboard, showDonorDashboard, updateRequest, acceptRequest};
+const cancelRequest = async (req, res) => {
+  try {
+    const request = await BloodRequest.findOne({
+      _id: req.params.id,
+      reqId: req.session.userId
+    });
+
+    if (!request || request.status !== "pending") {
+      return res.status(400).send("Cannot cancel this request");
+    }
+
+    request.status = "declined";
+    await request.save();
+
+    res.json({ success: true, message: "Request cancelled" });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Server error");
+  }
+};
+
+const completeRequest = async (req, res) => {
+  try {
+    const request = await BloodRequest.findOne({
+      _id: req.params.id,
+      reqId: req.session.userId
+    });
+
+    if (!request || request.status !== "accepted") {
+      return res.status(400).send("Cannot complete this request");
+    }
+
+    request.status = "completed";
+    await request.save();
+
+    res.json({ success: true, message: "Request marked as completed" });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Server error");
+  }
+};
+
+module.exports = { redirectUserToDashboard, showDonorDashboard, updateRequest, acceptRequest, cancelRequest, completeRequest};

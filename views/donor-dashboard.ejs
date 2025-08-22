@@ -181,6 +181,15 @@
   Accept
 </button>
 
+<% if (request.status === "pending") { %>
+  <button class="cancelBtn" data-id="<%= request._id %>">Cancel</button>
+<% } else if (request.status === "accepted") { %>
+  <button class="completeBtn" data-id="<%= request._id %>">Mark as Completed</button>
+<% } else if (request.status === "completed") { %>
+  <span class="text-green-600 text-sm">Completed ✅</span>
+<% } %>
+
+
           </div>
         </div>
       <% }) %>
@@ -369,6 +378,33 @@ document.querySelectorAll(".acceptBtn").forEach(button => {
     }
   });
 });
+document.querySelectorAll(".cancelBtn").forEach(btn => {
+  btn.addEventListener("click", async () => {
+    const id = btn.dataset.id;
+    const res = await fetch(`/cancel-request/${id}`, { method: "POST" });
+    const result = await res.json();
+    if (result.success) {
+      alert("Request cancelled");
+      location.reload();
+    }
+  });
+});
+
+document.addEventListener("DOMContentLoaded", () => {
+    document.querySelectorAll(".completeBtn").forEach(btn => {
+      btn.addEventListener("click", async () => {
+        const id = btn.dataset.id;
+        const res = await fetch(`/complete-request/${id}`, { method: "POST" });
+        const result = await res.json();
+        if (result.success) {
+          alert("Request marked as completed");
+          location.reload();
+        } else {
+          alert("Failed to complete request");
+        }
+      });
+    });
+  });
     </script>
   </body>
 </html>
