@@ -1,6 +1,6 @@
 const BloodDonation = require("../models/BloodDonation.js");
 const BloodRequest = require("../models/BloodRequest.js");
-const User = require("../models/User");
+const User = require("../models/User.js");
 
 const getDonateForm = (req, res) => {
   res.render("donor-dashboard");
