@@ -16,6 +16,14 @@ const userSchema = new mongoose.Schema({
   },
   location: String,
   lastDonationDate: Date,
-});
+
+
+emailVerified: { type: Boolean, default: false },
+  emailVerifyTokenHash: String,
+  emailVerifyTokenExpires: Date,
+
+  resetPasswordTokenHash: String,
+  resetPasswordTokenExpires: Date,
+}, { timestamps: true });
 
 module.exports = mongoose.model("User", userSchema);
