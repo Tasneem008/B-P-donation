@@ -18,6 +18,7 @@ const io = socketIO(server,{
 });
 app.use(cors('*'));
 app.use(express.json());
+//we might need to update here
 app.post('/send',(req,res)=>{
   const message = req.body.message
   console.log(message)
@@ -47,6 +48,7 @@ const recipientRoutes = require("./routes/recipient.route.js");
 const hospitalRoutes = require('./routes/hospital.routes.js');
 const requestRoutes = require("./routes/request.js");
 const donateRoutes = require("./routes/donate.routes.js");
+const resetPasswordRoutes = require("./routes/reset-password.route.js");
 
 
 dotenv.config();
@@ -88,6 +90,7 @@ app.use("/register", registerRoutes);
 
 // Show forgot password form
 app.use("/forgot-password", forgotPasswordRoutes);
+app.use("/reset-password", resetPasswordRoutes);
 
 // Logout Route
 app.get("/logout", (req, res) => {
@@ -104,5 +107,6 @@ app.use("/request", requestRoutes);
 app.use("/donate-blood", donateRoutes);
 
 app.use("/hospital", hospitalRoutes);
+
 
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
