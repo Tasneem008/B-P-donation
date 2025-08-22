@@ -48,6 +48,7 @@ const hospitalRoutes = require("./routes/hospital.routes.js");
 const requestRoutes = require("./routes/recipient-request.route.js");
 const donorRoutes = require("./routes/donor.routes.js");
 const resetPasswordRoutes = require("./routes/reset-password.route.js");
+const aboutUsRoutes = require("./routes/aboutUs.route.js");
 
 dotenv.config();
 
@@ -105,5 +106,6 @@ app.use("/request", requestRoutes);
 app.use("/donor", donorRoutes);
 
 app.use("/hospital", hospitalRoutes);
+app.use("/aboutUs", aboutUsRoutes);
 
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

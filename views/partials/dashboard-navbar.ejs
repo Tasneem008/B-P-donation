@@ -1,5 +1,6 @@
 <header
-  class="navbar justify-between px-6 border-b border-b-black absolute top-0 left-0 w-full z-50"
+  class="navbar justify-between px-6 absolute top-0 left-0 w-full z-50
+         bg-gradient-to-r from-red-600 via-red-500 to-red-400 text-white shadow-m"
 >
   <div>
     <a href="/" class="text-2xl font-bold">DonateLife</a>
@@ -8,10 +9,9 @@
   <div class="space-x-4 mt-2">
     <div>
       <% if(isAuthenticated){ %>
-      <a href="/logout" class="btn btn-outline btn-sm">Logout</a>
-      <div class="mb-1"></div>
+      <a href="/logout" class="btn btn-sm rounded-full bg-red-600 text-white hover:bg-red-700 border-none shadow-md transition">Logout</a>
       <%} else {%>
-      <a href="/login" class="btn btn-outline btn-sm">Login</a>
+      <a href="/login" class="btn btn-sm rounded-full bg-red-600 text-white hover:bg-red-700 border-none shadow-md transition">Login</a>
       <%}%>
     </div>
   </div>
