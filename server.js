@@ -10,31 +10,30 @@ const bodyParser = require("body-parser");
 const path = require("path");
 const app = express();
 const server = http.createServer(app);
-const io = socketIO(server,{
-  cors:{
-    origin: '*',
-    methods: ['GET', 'POST'],
-  }
+const io = socketIO(server, {
+  cors: {
+    origin: "*",
+    methods: ["GET", "POST"],
+  },
 });
-app.use(cors('*'));
+app.use(cors("*"));
 app.use(express.json());
 //we might need to update here
-app.post('/send',(req,res)=>{
-  const message = req.body.message
-  console.log(message)
-  io.emit('pushNotification',{
-    message
-  })
+app.post("/send", (req, res) => {
+  const message = req.body.message;
+  io.emit("pushNotification", {
+    message,
+  });
   res.status(200).send({
-    message: 'Sent Successfully'
-  })
-  io.on('connection', (socket)=>{
-    console.log('Connected')
-    socket.on('disconnect',()=>{
-      console.log('Client disconnected')
-    })
-  })
-})
+    message: "Sent Successfully",
+  });
+  io.on("connection", (socket) => {
+    console.log("Connected");
+    socket.on("disconnect", () => {
+      console.log("Client disconnected");
+    });
+  });
+});
 // Middlewares
 const { setUserData } = require("./middleware/middleware.js");
 // Db Connection
@@ -45,11 +44,10 @@ const registerRoutes = require("./routes/register.route.js");
 const forgotPasswordRoutes = require("./routes/forgot-password.route.js");
 const dashboardRoutes = require("./routes/dashboard.route.js");
 const recipientRoutes = require("./routes/recipient.route.js");
-const hospitalRoutes = require('./routes/hospital.routes.js');
-const requestRoutes = require("./routes/request.js");
-const donateRoutes = require("./routes/donate.routes.js");
+const hospitalRoutes = require("./routes/hospital.routes.js");
+const requestRoutes = require("./routes/recipient-request.route.js");
+const donorRoutes = require("./routes/donor.routes.js");
 const resetPasswordRoutes = require("./routes/reset-password.route.js");
-
 
 dotenv.config();
 
@@ -104,9 +102,8 @@ app.use("/", dashboardRoutes);
 
 app.use("/recipient", recipientRoutes);
 app.use("/request", requestRoutes);
-app.use("/donate-blood", donateRoutes);
+app.use("/donor", donorRoutes);
 
 app.use("/hospital", hospitalRoutes);
-
 
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

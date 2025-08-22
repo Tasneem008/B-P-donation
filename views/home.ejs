@@ -25,10 +25,13 @@
           you're a donor or someone in need, we're here for you.
         </p>
         <div class="flex gap-4">
-          <a href="/register" class="btn btn-error text-white">Join as Donor</a>
-          <a href="#" class="btn btn-outline btn-error"
-            >Request Blood and Plasma</a
-          >
+        <% if(isAuthenticated && role === 'donor'){ %>
+          <a href="/donor/donor-form" class="btn btn-error text-white">Join as Donor</a>
+        <% } %>
+          <% if(isAuthenticated && role === 'recipient'){ %>
+          <a href="/dashboard" class="btn btn-outline btn-error">Request Blood and Plasma</a>
+        <% } %>
+          
         </div>
       </div>
     </section>

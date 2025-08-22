@@ -6,7 +6,7 @@ const getLoginPage = (req, res) => {
     return res.redirect("/");
   }
 
-  res.render("login");
+return  res.render("login");
 };
 
 const postLoginPage = async (req, res) => {

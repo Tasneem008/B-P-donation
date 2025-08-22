@@ -1,8 +1,14 @@
 const express = require("express");
 const {
   redirectUserToDashboard,
-  showDonorDashboard,
-  updateRequest
+  showDonorDashboardHome,
+  // updateRequest,
+  showDonorDashboardEditDetails,
+  postUpdateDonation,
+  getRecipientHistory,
+  getDonorNotifications,
+  acceptBloodRequest,
+  getBloodDonationHistory,
 } = require("../controllers/dashboard.controller");
 const { checkAuth, checkRole } = require("../middleware/middleware");
 
@@ -11,23 +17,59 @@ const router = express.Router();
 router.get("/dashboard", checkAuth, redirectUserToDashboard);
 
 router.get(
-  "/donor/dashboard",
+  "/donor/dashboard/home",
   checkAuth,
   checkRole("donor"),
-  showDonorDashboard,
+  showDonorDashboardHome
 );
-router.post(
-  "/edit-request/:id",
+
+router.get(
+  "/donor/dashboard/edit-details",
   checkAuth,
-  updateRequest
+  checkRole("donor"),
+  showDonorDashboardEditDetails
 );
 
-const { acceptRequest } = require("../controllers/dashboard.controller.js");
+router.get(
+  "/donor/dashboard/notifications",
+  checkAuth,
+  checkRole("donor"),
+  getDonorNotifications
+);
+
+router.get(
+  "/donor/dashboard/history",
+  checkAuth,
+  checkRole("donor"),
+  getBloodDonationHistory
+);
 
 router.post(
-  "/accept-request/:id", 
-  checkAuth, 
-  acceptRequest);
+  "/donor/dashboard/accept-request",
+  checkAuth,
+  checkRole("donor"),
+  acceptBloodRequest
+);
 
+
+router.post(
+  "/donor/edit-details",
+  checkAuth,
+  checkRole("donor"),
+  postUpdateDonation
+);
+
+router.get(
+  "/recipient/dashboard/history",
+  checkAuth,
+  checkRole("recipient"),
+  getRecipientHistory
+);
+
+// router.post("/edit-request/:id", checkAuth, updateRequest);
+
+// const { acceptRequest } = require("../controllers/dashboard.controller.js");
+
+// router.post("/accept-request/:id", checkAuth, acceptRequest);
 
 module.exports = router;

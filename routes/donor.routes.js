@@ -3,7 +3,7 @@ const { getDonateForm, postDonateForm } = require("../controllers/donor.controll
 
 const router = express.Router();
 
-router.get("/", getDonateForm);
-router.post("/", postDonateForm);
+router.get("/donor-form", getDonateForm);
+router.post("/donor-form", postDonateForm);
 
 module.exports = router;

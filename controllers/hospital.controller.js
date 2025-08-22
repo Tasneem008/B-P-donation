@@ -49,7 +49,6 @@ exports.requestBlood = async (req, res) => {
       description,
       recipientId: req.session.userId,
     });
-    console.log(newRequest);
     await newRequest.save();
     res.redirect("/hospital/dashboard");
   } catch (err) {
@@ -85,7 +84,6 @@ exports.rejectRequest = async (req, res) => {
 exports.getDonorRequestsPage = async (req, res) => {
   try {
     const bloodDonorRequest = await BloodDonation.find({}).populate("donorId");
-    console.log(bloodDonorRequest);
     res.render("donor-requests", { bloodDonorRequest });
   } catch (err) {
     console.error(err);

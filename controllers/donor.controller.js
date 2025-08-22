@@ -1,18 +1,35 @@
 const BloodDonation = require("../models/BloodDonation.js");
-const BloodRequest = require("../models/BloodRequest.js");
-const User = require("../models/User.js");
 
-const getDonateForm = (req, res) => {
-  res.render("donor-dashboard");
+const getDonateForm = async (req, res) => {
+  try {
+    const donorFormDone = await BloodDonation.find({
+      donorUserId: req.session.userId,
+    });
+
+    if (donorFormDone) {
+      return res.redirect("/dashboard");
+    }
+
+    return res.render("donor-form");
+  } catch (error) {
+    console.log(error);
+    return res.status(500).send("Error in registering donation");
+  }
 };
-
-
 
 const postDonateForm = async (req, res) => {
   try {
-    const { name, age, phone, address, nid, bloodgroup, donorId, lastDonation, donationPlace } =
-      req.body;
-
+    const {
+      name,
+      age,
+      phone,
+      address,
+      nid,
+      bloodgroup,
+      donorUserId,
+      lastDonation,
+      donationPlace,
+    } = req.body;
 
     const newDonation = new BloodDonation({
       name,
@@ -21,17 +38,20 @@ const postDonateForm = async (req, res) => {
       address,
       nid,
       bloodgroup,
-      donorId,
+      donorUserId,
       lastDonation,
-      donationPlace
+      donationPlace,
     });
 
     await newDonation.save();
-    res.send("Blood donation registered successfully!");
+    return res.redirect("/dashboard");
   } catch (error) {
     console.log(error);
-    res.status(500).send("Error in registering donation");
+    return res.status(500).send("Error in registering donation");
   }
 };
 
-module.exports = { getDonateForm, postDonateForm};
+
+
+
+module.exports = { getDonateForm, postDonateForm };

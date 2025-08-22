@@ -16,7 +16,6 @@ const getForgotPasswordPage = (req, res) => {
 const handleForgotPassword = async (req, res) => {
   try {
     const { email } = req.body;
-    console.log(email);
     const user = await User.findOne({ email: email?.toLowerCase().trim() });
 
     // Always render "sent" to avoid user enumeration
@@ -46,10 +45,9 @@ const handleForgotPassword = async (req, res) => {
       //   <p>If you didn’t request this, you can ignore this email.</p>
       // `,
     });
-    console.log(info);
     return res.render("forgot-password", { sent: true, error: null });
-  } catch (e) {
-    console.log(e);
+  } catch (error) {
+    console.log(error);
     return res.render("forgot-password", {
       sent: false,
       error: "Something went wrong. Try again.",
