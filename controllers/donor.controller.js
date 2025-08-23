@@ -2,7 +2,7 @@ const BloodDonation = require("../models/BloodDonation.js");
 
 const getDonateForm = async (req, res) => {
   try {
-    const donorFormDone = await BloodDonation.find({
+    const donorFormDone = await BloodDonation.findOne({
       donorUserId: req.session.userId,
     });
 

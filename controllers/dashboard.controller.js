@@ -3,6 +3,7 @@ const User = require("../models/User");
 const BloodDonation = require("../models/BloodDonation");
 const BloodRequest = require("../models/BloodRequest.js");
 const History = require("../models/history");
+const NotificationService = require('../services/notificationService');
 
 const redirectUserToDashboard = async (req, res) => {
   const user = await User.findById(req.session.userId);
@@ -203,7 +204,7 @@ const getDonorNotifications = async (req, res) => {
     }).populate("recipientId"); // Assuming the recipient's phone number is in the 'recipientId'
 
     // Render the donor notifications page with the blood requests
-    return res.render("donor-notifications", { bloodRequests });
+    return res.render("donor-notifications", { bloodRequests, userDonor });
   } catch (error) {
     console.error(error);
     return res.status(500).send("Error fetching blood requests");
@@ -224,6 +225,23 @@ const acceptBloodRequest = async (req, res) => {
     if (!request) {
       return res.status(404).send("Blood request not found");
     }
+
+     const updated = await BloodRequest.findByIdAndUpdate(
+    requestId,
+    { status: 'accepted', acceptedBy: req.session.userId },
+    { new: true }
+  );
+
+  if (updated) {
+    NotificationService.getInstance().notifyUser(
+      updated.recipientId.toString(),
+      'requestAccepted',
+      {
+        requestId: updated._id,
+        acceptedBy: req.session.userId
+      }
+    );
+  }
 
     // You can add additional logic here to notify the hospital and recipient
 
