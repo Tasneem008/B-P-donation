@@ -7,7 +7,7 @@ const userSchema = new mongoose.Schema(
     password: { type: String, required: true },
     role: {
       type: String,
-      enum: ["donor", "recipient", "hospital"],
+      enum: ["donor", "recipient"],
       required: true,
     },
     // bloodGroup: {

@@ -4,11 +4,11 @@ const bloodRequestSchema = new mongoose.Schema({
   bloodgroup: { type: String, required: true },
   phone: { type: String },
   recipientId: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
-  location: String,
+  location: { type: mongoose.SchemaTypes.ObjectId, ref: "Hospital" },
   bags: Number,
   description: String,
   requestedDate: { type: Date, default: Date.now },
-  acceptedBy: { type: mongoose.Schema.Types.ObjectId, ref: "User",},
+  acceptedBy: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
   status: {
     type: String,
     enum: ["pending", "accepted", "completed"],
