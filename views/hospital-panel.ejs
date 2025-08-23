@@ -1,118 +1,180 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
-<head>
+<html data-theme="light" lang="en">
+  <head>
+    <%- include('./partials/head.ejs'); %>
+    <title>Hospital Panel - DonateLife</title>
+  </head>
+  <body class="bg-gray-100 text-gray-800 font-sans">
+    <!-- Sidebar -->
+    <div class="flex min-h-screen">
+      <aside class="w-64 bg-white shadow-lg p-6 space-y-6">
+        <a href="/">
+          <h1 class="text-2xl font-bold text-red-600">DonateLife</h1>
+        </a>
+        <nav class="flex flex-col space-y-4">
+          <a href="/hospital/dashboard" class="text-gray-700 hover:text-red-600">Dashboard</a>
+          <a href="/hospital/donor-request" class="text-gray-700 hover:text-red-600"
+            >Donor Requests</a
+          >
+          <a href="#" class="text-gray-700 hover:text-red-600"
+            >Recipient Requests</a
+          >
+          <a href="#" class="text-gray-700 hover:text-red-600">Appointment Requests</a>
+          <a href="/logout" class="text-gray-700 hover:text-red-600 cursor-pointer">Logout</a>
+        </nav>
+      </aside>
 
-      <%- include('./partials/head.ejs'); %>
-     <title>Hospital Panel - LifeSaver</title>
-</head>
-<body class="bg-gray-100 text-gray-800 font-sans">
-
-  <!-- Sidebar -->
-  <div class="flex min-h-screen">
-    <aside class="w-64 bg-white shadow-lg p-6 space-y-6">
-      <h1 class="text-2xl font-bold text-red-600">LifeSaver</h1>
-      <nav class="flex flex-col space-y-4">
-        <a href="#" class="text-gray-700 hover:text-red-600">Dashboard</a>
-        <a href="#" class="text-gray-700 hover:text-red-600">Available Units</a>
-        <a href="#" class="text-gray-700 hover:text-red-600">Donor Requests</a>
-        <a href="#" class="text-gray-700 hover:text-red-600">Recipient Requests</a>
-        <a href="#" class="text-gray-700 hover:text-red-600">Request Blood</a>
-        <a href="#" class="text-gray-700 hover:text-red-600">Appointments</a>
-        <a href="#" class="text-gray-700 hover:text-red-600">Notifications</a>
-        <a href="#" class="text-gray-700 hover:text-red-600">Logout</a>
-      </nav>
-    </aside>
-
-    <!-- Main Panel -->
-    <main class="flex-1 p-8 space-y-10">
-
-      <!-- Topbar -->
-      <div class="flex justify-between items-center">
-        <h2 class="text-3xl font-bold">Hospital Dashboard</h2>
-        <div class="relative">
-          <button class="relative bg-white p-2 rounded-full shadow hover:bg-gray-100">
-            🔔
-            <span class="absolute top-0 right-0 w-2 h-2 bg-red-600 rounded-full"></span>
-          </button>
+      <!-- Main Panel -->
+      <main class="flex-1 p-8 space-y-10">
+        <!-- Topbar -->
+        <div class="flex justify-between items-center">
+          <h2 class="text-3xl font-bold">Hospital Dashboard</h2>
+          <div class="relative">
+            <button
+              class="relative bg-white p-2 rounded-full shadow hover:bg-gray-100"
+            >
+              🔔
+              <span
+                class="absolute top-0 right-0 w-2 h-2 bg-red-600 rounded-full"
+              ></span>
+            </button>
+          </div>
         </div>
-      </div>
 
-      <!-- Summary Cards -->
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <!-- Summary Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div class="bg-white p-6 rounded-lg shadow-md">
+            <h3 class="text-xl font-semibold text-red-600">Available Units</h3>
+            <p class="mt-2 text-gray-700">Blood: 120 | Plasma: 65</p>
+          </div>
+          <div class="bg-white p-6 rounded-lg shadow-md">
+            <h3 class="text-xl font-semibold text-red-600">Donor Requests</h3>
+            <p class="mt-2 text-gray-700">Pending: <%= donorPending %>  | Approved: <%= donorApproved %> </p>
+          </div>
+          <div class="bg-white p-6 rounded-lg shadow-md">
+            <h3 class="text-xl font-semibold text-red-600">
+              Recipient Requests
+            </h3>
+            <p class="mt-2 text-gray-700">Pending: <%= recipientPending %> | Fulfilled: <%= recipientAccepted %></p>
+          </div>
+        </div>
+
+        <!-- Request Blood Section -->
         <div class="bg-white p-6 rounded-lg shadow-md">
-          <h3 class="text-xl font-semibold text-red-600">Available Units</h3>
-          <p class="mt-2 text-gray-700">Blood: 120 | Plasma: 65</p>
+          <h3 class="text-xl font-bold mb-4 text-red-600">
+            Request Blood/Plasma
+          </h3>
+          <form
+            action="/hospital"
+            method="POST"
+            class="grid grid-cols-1 md:grid-cols-3 gap-4"
+          >
+            <select
+              class="select select-primary border-gray-200 p-2 rounded-md"
+              required
+              name="bloodgroup"
+            >
+              <option disabled selected>Blood Group</option>
+              <% ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"].forEach(type => { %>
+                <option value="<%= type %>"><%= type %></option>
+              <% }) %>
+            </select>
+            <input
+              name="bags"
+              type="number"
+              placeholder="Bags (units)"
+              class="p-2 border rounded-md"
+            />
+            <input
+            id="requestedDate"
+              name="requestedDate"
+              type="date"
+              class="p-2 border rounded-md"
+            />
+            <textarea
+              name="description"
+              placeholder="Reason / Notes"
+              class="col-span-3 p-2 border rounded-md h-24"
+            ></textarea>
+            <button
+              type="submit"
+              class="col-span-3 bg-red-600 text-white py-2 px-6 rounded-md hover:bg-red-700 transition"
+            >
+              Submit Request
+            </button>
+          </form>
         </div>
+
+        <!-- Appointments Management -->
         <div class="bg-white p-6 rounded-lg shadow-md">
-          <h3 class="text-xl font-semibold text-red-600">Donor Requests</h3>
-          <p class="mt-2 text-gray-700">Pending: 14 | Approved: 32</p>
+          <h3 class="text-xl font-bold mb-4 text-red-600">
+            Appointment Requests
+          </h3>
+          <div class="overflow-x-auto">
+            <table class="w-full table-auto text-left">
+              <thead>
+                <tr class="bg-gray-100 text-gray-600">
+                  <th class="p-3">Donor Name</th>
+                  <th class="p-3">Date</th>
+                  <th class="p-3">Time</th>
+                  <th class="p-3">Status</th>
+                  <th class="p-3 text-center">Actions</th>
+                </tr>
+              </thead>
+              <tbody class="text-sm text-gray-700">
+                <tr class="border-b">
+                  <td class="p-3">John Doe</td>
+                  <td class="p-3">2025-08-12</td>
+                  <td class="p-3">10:30 AM</td>
+                  <td class="p-3 text-yellow-600 font-medium">Pending</td>
+                  <td class="p-3 flex gap-2 justify-center">
+                    <button
+                      class="bg-green-500 text-white px-4 py-1 rounded hover:bg-green-600"
+                    >
+                      Approve
+                    </button>
+                    <button
+                      class="bg-red-500 text-white px-4 py-1 rounded hover:bg-red-600"
+                    >
+                      Reject
+                    </button>
+                  </td>
+                </tr>
+                <!-- More rows can be dynamically added -->
+              </tbody>
+            </table>
+          </div>
         </div>
+
+        <!-- Notifications Section -->
         <div class="bg-white p-6 rounded-lg shadow-md">
-          <h3 class="text-xl font-semibold text-red-600">Recipient Requests</h3>
-          <p class="mt-2 text-gray-700">Pending: 9 | Fulfilled: 48</p>
+          <h3 class="text-xl font-bold mb-4 text-red-600">Notifications</h3>
+          <ul class="space-y-3 text-sm text-gray-700">
+            <li class="border-l-4 border-red-600 pl-4">
+              New donor request received.
+            </li>
+            <li class="border-l-4 border-green-500 pl-4">
+              Recipient request fulfilled successfully.
+            </li>
+            <li class="border-l-4 border-blue-500 pl-4">
+              Donor #123 requested an appointment on Aug 15.
+            </li>
+          </ul>
         </div>
-      </div>
+      </main>
+    </div>
+    <script>
+const requestedDate = document.getElementById('requestedDate')
+// Create a Date object for the minimum date (e.g., today's date)
+const today = new Date();
+const year = today.getFullYear();
+const month = (today.getMonth() + 1).toString().padStart(2, '0'); // Month is 0-indexed, add 1 and pad with leading zero
+const day = today.getDate().toString().padStart(2, '0'); // Pad with leading zero
 
-      <!-- Request Blood Section -->
-      <div class="bg-white p-6 rounded-lg shadow-md">
-        <h3 class="text-xl font-bold mb-4 text-red-600">Request Blood/Plasma</h3>
-        <form action="/hospital" method="POST" class="grid grid-cols-1 md:grid-cols-3 gap-4">
-  <input name="bloodType" type="text" placeholder="Blood Type (e.g. A+)" class="p-2 border rounded-md" />
-  <input name="quantity" type="number" placeholder="Quantity (units)" class="p-2 border rounded-md" />
-  <input name="urgency" type="text" placeholder="Urgency (Low/Medium/High)" class="p-2 border rounded-md" />
-  <textarea name="notes" placeholder="Reason / Notes" class="col-span-3 p-2 border rounded-md h-24"></textarea>
-  <button type="submit" class="col-span-3 bg-red-600 text-white py-2 px-6 rounded-md hover:bg-red-700 transition">
-    Submit Request
-  </button>
-</form>
+// Format the date as YYYY-MM-DD
+const minDate = `${year}-${month}-${day}`;
 
-      </div>
-
-      <!-- Appointments Management -->
-      <div class="bg-white p-6 rounded-lg shadow-md">
-        <h3 class="text-xl font-bold mb-4 text-red-600">Appointment Requests</h3>
-        <div class="overflow-x-auto">
-          <table class="w-full table-auto text-left">
-            <thead>
-              <tr class="bg-gray-100 text-gray-600">
-                <th class="p-3">Donor Name</th>
-                <th class="p-3">Date</th>
-                <th class="p-3">Time</th>
-                <th class="p-3">Status</th>
-                <th class="p-3 text-center">Actions</th>
-              </tr>
-            </thead>
-            <tbody class="text-sm text-gray-700">
-              <tr class="border-b">
-                <td class="p-3">John Doe</td>
-                <td class="p-3">2025-08-12</td>
-                <td class="p-3">10:30 AM</td>
-                <td class="p-3 text-yellow-600 font-medium">Pending</td>
-                <td class="p-3 flex gap-2 justify-center">
-                  <button class="bg-green-500 text-white px-4 py-1 rounded hover:bg-green-600">Approve</button>
-                  <button class="bg-red-500 text-white px-4 py-1 rounded hover:bg-red-600">Reject</button>
-                </td>
-              </tr>
-              <!-- More rows can be dynamically added -->
-            </tbody>
-          </table>
-        </div>
-      </div>
-
-      
-
-      <!-- Notifications Section -->
-      <div class="bg-white p-6 rounded-lg shadow-md">
-        <h3 class="text-xl font-bold mb-4 text-red-600">Notifications</h3>
-        <ul class="space-y-3 text-sm text-gray-700">
-          <li class="border-l-4 border-red-600 pl-4">New donor request received.</li>
-          <li class="border-l-4 border-green-500 pl-4">Recipient request fulfilled successfully.</li>
-          <li class="border-l-4 border-blue-500 pl-4">Donor #123 requested an appointment on Aug 15.</li>
-        </ul>
-      </div>
-
-    </main>
-  </div>
-
-</body>
+requestedDate.setAttribute('min', minDate) 
+    </script>
+  </body>
 </html>

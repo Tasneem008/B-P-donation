@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+  <head>
+    <%- include('./partials/head.ejs'); %>
+    <title>Donation Form</title>
+    </head>
+  <body
+    style="background-image: url('/pics/recipient.png'); background-size: cover; background-position: center;"
+    class="min-h-screen bg-gray-100">
+
+    <!-- Form Container -->
+    <div class="flex justify-center items-center min-h-screen">
+      <div class="bg-white p-8 rounded-2xl shadow-xl max-w-lg w-full backdrop-blur-md bg-white/20">
+        <h2 class="text-2xl font-bold text-center mb-6">Donate Blood Form</h2>
+
+        <form action="/donor/donor-form" method="POST" class="space-y-6">
+          <input type="text" name="donorUserId" class="hidden" value="<%= userId %>"/>
+
+          <!-- Name -->
+          <div>
+            <label for="name" class="block text-gray-700">Full Name *</label>
+            <input
+              type="text"
+              id="name"
+              name="name"
+              placeholder="Enter your full name"
+              class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500"
+              required
+            />
+          </div>
+
+          <!-- Age -->
+          <div>
+            <label for="age" class="block text-gray-700">Age *</label>
+            <input
+              type="number"
+              id="age"
+              name="age"
+              placeholder="Enter your age"
+              class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500"
+              min="18"
+              required
+            />
+          </div>
+
+          <!-- Phone -->
+          <div>
+            <label for="phone" class="block text-gray-700">Phone Number *</label>
+            <input
+              type="tel"
+              id="phone"
+              name="phone"
+              placeholder="Enter your phone number"
+              class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500"
+              pattern="^(?:\+?88)?01[3-9]\d{8}$"
+              required
+            />
+          </div>
+
+          <!-- Address -->
+          <div>
+            <label for="address" class="block text-gray-700">Address <span class="text-red-500">*</span></label>
+            <input
+              type="text"
+              id="address"
+              name="address"
+              placeholder="Enter your address"
+              class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500"
+              required
+            />
+          </div>
+
+          <!-- National ID -->
+          <div>
+            <label for="nid" class="block text-gray-700">National ID *</label>
+            <input
+              type="number"
+              minlength="16"
+              maxlength="16"
+              id="nid"
+              name="nid"
+              placeholder="Enter your National ID"
+              class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500"
+              required
+            />
+            <!-- 1111111111111111 -->
+          </div>
+
+          <!-- Blood Group -->
+          <div>
+            <label for="bloodgroup" class="block text-gray-700">Blood Group *</label>
+            <select
+              name="bloodgroup"
+              id="bloodgroup"
+              class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500"
+              required
+            >
+              <option value="" disabled selected>Select Blood Group</option>
+              <option value="A+">A+</option>
+              <option value="A-">A-</option>
+              <option value="B+">B+</option>
+              <option value="B-">B-</option>
+              <option value="AB+">AB+</option>
+              <option value="AB-">AB-</option>
+              <option value="O+">O+</option>
+              <option value="O-">O-</option>
+            </select>
+          </div>
+
+          <!-- Last Donation -->
+          <div>
+            <label for="lastdonation" class="block text-gray-700">Last Donation Date *</label>
+            <input
+              type="date"
+              id="lastdonation"
+              name="lastdonation"
+              class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500"
+              required
+            />
+          </div>
+
+          <!-- Submit Button -->
+          <div class="flex justify-center">
+            <button
+              type="submit"
+              class="bg-red-600 text-white py-3 px-6 rounded-full shadow-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500"
+            >
+              Submit Form
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+<script>
+  const requestedDate = document.getElementById('lastdonation')
+// Create a Date object for the minimum date (e.g., today's date)
+const today = new Date();
+const year = today.getFullYear();
+const month = (today.getMonth() + 1).toString().padStart(2, '0'); // Month is 0-indexed, add 1 and pad with leading zero
+const day = today.getDate().toString().padStart(2, '0'); // Pad with leading zero
+
+// Format the date as YYYY-MM-DD
+const maxDate = `${year}-${month}-${day}`;
+
+requestedDate.setAttribute('max', maxDate) 
+</script>
+  </body>
+</html>

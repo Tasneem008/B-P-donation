@@ -1,27 +1,25 @@
-const BloodRequest = require('../models/BloodRequest.js');
-const User = require('../models/User.js');
+const User = require("../models/User.js");
 
-exports.showBloodTypes = (req, res) => {
-  const bloodTypes = ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'];
-  res.render('recipient-blood', { bloodTypes });
+exports.showRecipientDashboard = async (req, res) => {
+  const user = await User.findById(req.session.userId);
+  res.render("recipient-dashboard", { user });
 };
 
-exports.showRequestForm = (req, res) => {
-  const bloodType = req.params.bloodType;
-  res.render('send-request', { bloodType });
+exports.showRecipientHistory = (req, res) => {
+  res.render("recipient-history");
 };
 
-exports.submitRequest = async (req, res) => {
-  const { bloodType, hospital, location, description, requestedDate } = req.body;
+// exports.submitRequest = async (req, res) => {
+//   const { bloodType, hospital, location, description, requestedDate } = req.body;
 
-  await BloodRequest.create({
-    bloodType,
-    recipientId: req.session.userId,
-    hospital,
-    location,
-    description,
-    requestedDate
-  });
+//   await BloodRequest.create({
+//     bloodType,
+//     recipientId: req.session.userId,
+//     hospital,
+//     location,
+//     description,
+//     requestedDate
+//   });
 
-  res.send('Request submitted successfully!');
-};
+//   res.send('Request submitted successfully!');
+// };

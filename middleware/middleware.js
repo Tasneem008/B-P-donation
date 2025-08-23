@@ -16,6 +16,7 @@ function checkRole(role) {
 function setUserData(req, res, next) {
   res.locals.isAuthenticated = req.session.userId ? true : false;
   res.locals.role = req.session.role || null;
+  res.locals.userId = req.session.userId || null;
   next();
 }
 

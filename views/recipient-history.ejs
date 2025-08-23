@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+  <head>
+    <%- include('./partials/head.ejs'); %>
+    <title>History | Blood Requests</title>
+  </head>
+  <body>
+    <!-- Sidebar -->
+    <div class="flex min-h-screen">
+      <%- include('./partials/recipient-sidebar.ejs') %>
+
+      <!-- Main Panel -->
+      <main class="flex-1 p-2 space-y-10 mt-10">
+        <!-- Profile Card -->
+        <h2 class="text-2xl font-bold mb-4">Blood Request History</h2>
+        <!-- Table to display blood request history -->
+        <table class="table-auto w-full border-collapse">
+          <thead>
+            <tr>
+              <th class="px-4 py-2 text-left border-b">Blood Group</th>
+              <th class="px-4 py-2 text-left border-b">Location</th>
+              <th class="px-4 py-2 text-left border-b">Bags Needed</th>
+              <th class="px-4 py-2 text-left border-b">Requested Date</th>
+              <th class="px-4 py-2 text-left border-b">Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% bloodRequests.forEach(function(request) { %>
+            <tr>
+              <td class="px-4 py-2 border-b"><%= request.bloodgroup %></td>
+              <td class="px-4 py-2 border-b"><%= request.location %></td>
+              <td class="px-4 py-2 border-b"><%= request.bags %></td>
+              <td class="px-4 py-2 border-b">
+                <%= new Date(request.requestedDate).toLocaleDateString() %>
+              </td>
+              <td class="px-4 py-2 border-b">
+                <span
+                  class="px-3 py-1 rounded-full <%= request.status === 'pending' ? 'bg-yellow-200 text-yellow-800' : request.status === 'accepted' ? 'bg-green-200 text-green-800' : 'bg-red-200 text-red-800' %>"
+                >
+                  <%= request.status %>
+                </span>
+              </td>
+            </tr>
+            <% }); %>
+          </tbody>
+        </table>
+      </main>
+    </div>
+  </body>
+</html>
