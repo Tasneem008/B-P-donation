@@ -25,10 +25,13 @@
           you're a donor or someone in need, we're here for you.
         </p>
         <div class="flex gap-4">
-          <a href="/register" class="btn btn-error text-white">Join as Donor</a>
-          <a href="#" class="btn btn-outline btn-error"
-            >Request Blood and Plasma</a
-          >
+        <% if(isAuthenticated && role === 'donor'){ %>
+          <a href="/donor/donor-form" class="btn btn-error text-white">Join as Donor</a>
+        <% } %>
+          <% if(isAuthenticated && role === 'recipient'){ %>
+          <a href="/dashboard" class="btn btn-outline btn-error">Request Blood and Plasma</a>
+        <% } %>
+          
         </div>
       </div>
     </section>
@@ -120,8 +123,8 @@
   <div class="mx-auto max-w-7xl px-4 md:px-6 lg:px-8 pt-16 pb-24">
 
     <!-- Row: Title card (left) + Image (right) -->
-    <div class="grid gap-8 md:grid-cols-2 items-start">
-      <!-- Best Services white card -->
+    <!-- <div class="grid gap-8 md:grid-cols-2 items-start">
+      
       <div class="card bg-white shadow-xl rounded-b-xl rounded-t-none -mt-16">
         <div class="card-body p-8 md:p-10">
           <h2 class="card-title text-3xl md:text-4xl">Best Services</h2>
@@ -130,21 +133,21 @@
             Aenean commodo ligula eget dolor. Aenean massa.
           </p>
         </div>
-      </div>
+      </div> -->
 
       <!-- Image with overlapping red badge -->
-      <div class="relative -mt-16">
+     <!-- <div class="relative -mt-16">
         <div class="overflow-hidden rounded-xl shadow-xl">
-          <!-- Replace with your image -->
+        
           <img
             src="https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?q=80&w=1200&auto=format&fit=crop"
             alt="Expert medical staff"
             class="w-full h-[240px] md:h-[280px] object-cover"
           />
-        </div>
+        </div>  -->
 
         <!-- Red badge card overlapping image -->
-        <div
+        <!-- <div
           class="absolute -bottom-6 left-6 bg-[#C3474D] text-white rounded-xl shadow-lg px-6 py-4 flex items-start gap-4"
         >
           <div class="text-3xl leading-none">
@@ -158,7 +161,7 @@
           </div>
         </div>
       </div>
-    </div>
+    </div>  -->
 
     <!-- Cards row -->
     <div class="mt-20 grid gap-6 md:grid-cols-3">
@@ -170,11 +173,11 @@
           </div>
           <h3 class="card-title mt-4 text-2xl">Blood Donation</h3>
           <p class="text-gray-600 mt-2">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-            eiusmod tempor incididunt ut.
+            Give the gift of life by donating blood. Every donation can help save up to three lives 
+        and provide critical support to patients in need of surgeries, treatments, or emergency care.
           </p>
           <div class="card-actions mt-4">
-            <a href="#" class="link link-hover text-[#C3474D]">Learn More</a>
+            <a href="/aboutUs#bloodDonation" class="link link-hover text-[#C3474D]">Learn More</a>
           </div>
         </div>
       </div>
@@ -187,11 +190,11 @@
           </div>
           <h3 class="card-title mt-4 text-2xl">Health Check</h3>
           <p class="text-gray-600 mt-2">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-            eiusmod tempor incididunt ut.
+            Regular health screenings ensure your body is in good shape. Early detection of health 
+        issues like anemia, high blood pressure, or cholesterol can prevent long-term complications.
           </p>
           <div class="card-actions mt-4">
-            <a href="#" class="link link-hover text-[#C3474D]">Learn More</a>
+            <a href="/aboutUs#healthCheck" class="link link-hover text-[#C3474D]">Learn More</a>
           </div>
         </div>
       </div>
@@ -204,11 +207,12 @@
           </div>
           <h3 class="card-title mt-4 text-2xl">Blood Bank</h3>
           <p class="text-gray-600 mt-2">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-            eiusmod tempor incididunt ut.
+            Our blood bank stores and manages safe, screened blood to be available whenever emergencies 
+        arise. With your contribution, hospitals can respond quickly to accidents, surgeries, and 
+        critical care needs.
           </p>
           <div class="card-actions mt-4">
-            <a href="#" class="link link-hover text-[#C3474D]">Learn More</a>
+            <a href="/aboutUs#bloodBank" class="link link-hover text-[#C3474D]">Learn More</a>
           </div>
         </div>
       </div>
@@ -222,13 +226,13 @@
   <!-- Header -->
   <div class="flex items-center justify-between gap-4 mb-6">
     <div>
-      <span class="text-sm font-medium text-red-600">Event</span>
+      <!-- <span class="text-sm font-medium text-red-600">Event</span> -->
       <h2 class="text-3xl md:text-4xl font-extrabold leading-tight">Affiliated Hospitals</h2>
     </div>
-    <a href="#"
+    <!-- <a href="#"
        class="btn bg-red-600 hover:bg-red-700 text-white border-none normal-case">
       View More
-    </a>
+    </a> -->
   </div>
 
   <!-- Cards -->
@@ -256,13 +260,12 @@
       <!-- body -->
       <div class="p-6 text-center">
         <h3 class="text-2xl font-semibold leading-snug">
-          Blood Donation for Independence Day
+          Popular Diagnostic Centre Ltd.
         </h3>
         <p class="mt-3 text-gray-600">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-          eiusmod tempor incididunt ut labore et dolore magna.
+          Popular Diagnostic Centre is one of the leading healthcare providers in Bangladesh, offering advanced medical diagnostics, specialized treatments, and quality hospital services. With modern technology and expert doctors, it is trusted by millions of patients nationwide.
         </p>
-        <a href="#" class="mt-4 inline-block text-red-600 hover:text-red-700 font-medium">
+        <a href="https://www.populardiagnostic.com/goals" target="_blank" class="mt-4 inline-block text-red-600 hover:text-red-700 font-medium">
           Learn More
         </a>
       </div>
@@ -291,7 +294,7 @@
         <p class="mt-3 text-gray-600">
          Vision Labaid Specialized Hospital will Create healthier communities by creatively challenging individuals to be more responsible for their personal health status. Relentlessly pursue unparalleled quality, value, patient, customer and staff satisfaction.
         </p>
-        <a href="#" class="mt-4 inline-block text-red-600 hover:text-red-700 font-medium">
+        <a href="https://labaid.com.bd/en/about/about-labaid" target="_blank" class="mt-4 inline-block text-red-600 hover:text-red-700 font-medium">
           Learn More
         </a>
       </div>
@@ -319,7 +322,7 @@
         <p class="mt-3 text-gray-600">
          With a strong focus on education, awareness, research, and patient care, NHF strives to combat the rising prevalence of heart diseases and promote a heart-healthy lifestyle among individuals of all ages.
         </p>
-        <a href="#" class="mt-4 inline-block text-red-600 hover:text-red-700 font-medium">
+        <a href="https://www.nhf.org.bd/" target="_blank" class="mt-4 inline-block text-red-600 hover:text-red-700 font-medium">
           Learn More
         </a>
       </div>

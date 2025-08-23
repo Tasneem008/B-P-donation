@@ -12,11 +12,12 @@
       <!-- Main Panel -->
       <main class="flex-1 p-2 space-y-10 mt-10">
         <!-- Profile Card -->
-        <h2 class="text-2xl font-bold mb-4">Blood Request History</h2>
+        <h2 class="text-2xl font-bold mb-4">Blood Donation History</h2>
         <!-- Table to display blood request history -->
         <table class="table-auto w-full border-collapse">
           <thead>
             <tr>
+              <th class="px-4 py-2 text-left border-b">Reciever Username</th>
               <th class="px-4 py-2 text-left border-b">Blood Group</th>
               <th class="px-4 py-2 text-left border-b">Location</th>
               <th class="px-4 py-2 text-left border-b">Bags Needed</th>
@@ -25,8 +26,9 @@
             </tr>
           </thead>
           <tbody>
-            <% bloodRequests.forEach(function(request) { %>
+            <% donationHistory.forEach(function(request) { %>
             <tr>
+              <td class="px-4 py-2 border-b"><%= request.recipientId.username %></td>
               <td class="px-4 py-2 border-b"><%= request.bloodgroup %></td>
               <td class="px-4 py-2 border-b"><%= request.location %></td>
               <td class="px-4 py-2 border-b"><%= request.bags %></td>

@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html data-theme="light" lang="en">
+  <head>
+    <%- include('./partials/head.ejs'); %>
+    <title>Dashboard | DonateLife</title>
+  </head>
+  <body class="min-h-screen"
+     style="
+        background-image: url('/pics/recipient.png');
+        background-size: cover;
+        background-position: center;
+      "
+    >
+
+    <!-- Sidebar -->
+    <div class="flex min-h-screen">
+      <%- include('./partials/donor-sidebar.ejs') %>
+
+      <!-- Main Panel -->
+      <main class="flex-1 p-2 space-y-10 flex items-center justify-center">
+        <!-- Donor Info Card -->
+        <div
+          class="flex flex-col items-center w-[800px] backdrop-blur-md bg-white/30 p-4 rounded-2xl shadow-xl border border-white/30"
+        >
+          <!-- Avatar -->
+          <div class="flex flex-col items-center mt-8 text-center">
+            <div
+              class="w-24 h-24 rounded-full border-4 border-white shadow-lg overflow-hidden"
+            >
+              <img
+                src="/icons/user.svg"
+                alt="Donor Avatar"
+                class="w-full h-full object-cover"
+              />
+            </div>
+            <h3 class="text-2xl font-semibold mt-4"><%= userDonor.donorUserId.username%></h3>
+          </div>
+
+          <!-- Info Section -->
+          <!-- <div class="text-center mt-6 space-y-2">
+            <h2 class="text-2xl font-bold"></h2>
+            <p class="text-sm opacity-80">Blood Donor</p>
+          </div> -->
+
+          <!-- Stats -->
+          <!-- <div class="mt-6 grid grid-cols-2 gap-4 text-sm">
+            <div class="bg-white/20 rounded-lg p-3 text-center">
+              <p class="text-xs opacity-80">Age</p>
+              <p class="font-semibold"></p>
+            </div>
+            <div class="bg-white/20 rounded-lg p-3 text-center">
+              <p class="text-xs opacity-80">Blood Group</p>
+              <p class="font-semibold"></p>
+            </div>
+            <div class="col-span-2 bg-white/20 rounded-lg p-3 text-center">
+              <p class="text-xs opacity-80">Phone</p>
+              <p class="font-semibold"></p>
+            </div>
+          </div> -->
+
+          <!-- Highlight / Badge -->
+          <!-- <div class="mt-6 text-center">
+            <button
+              class="bg-white/30 text-white px-4 py-1 rounded-full text-xs font-semibold tracking-wide"
+            >
+              Edit Details
+            </button>
+          </div> -->
+          <form
+            action="/donor/edit-details"
+            method="POST"
+            class="space-y-6 w-full"
+          >
+            <input
+              type="text"
+              name="donorUserId"
+              class="hidden"
+              value="<%= userId %>"
+            />
+
+            <div class="grid grid-cols-2 gap-4">
+              <!-- Name -->
+              <div>
+                <label for="name" class="block text-gray-700"
+                  >Full Name *</label
+                >
+                <input
+                  type="text"
+                  id="name"
+                  name="name"
+                  placeholder="Enter your full name"
+                  value="<%= userDonor.name %>"
+                  class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500"
+                  required
+                />
+              </div>
+
+              <!-- Email -->
+              <div>
+                <label for="name" class="block text-gray-700"
+                  >Email Address *</label
+                >
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  value="<%= userDonor.donorUserId.email %>"
+                  placeholder="Enter your email"
+                  class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500"
+                  required
+                  disabled
+                />
+              </div>
+
+              <!-- Age -->
+              <div>
+                <label for="age" class="block text-gray-700">Age *</label>
+                <input
+                  type="number"
+                  id="age"
+                  value="<%= userDonor.age %>"
+                  name="age"
+                  placeholder="Enter your age"
+                  class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500"
+                  min="18"
+                  required
+                />
+              </div>
+
+              <!-- Phone -->
+              <div>
+                <label for="phone" class="block text-gray-700"
+                  >Phone Number *</label
+                >
+                <input
+                  type="tel"
+                  id="phone"
+                  value="<%= userDonor.phone %>"
+                  name="phone"
+                  placeholder="Enter your phone number"
+                  class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500"
+                  pattern="^(?:\+?88)?01[3-9]\d{8}$"
+                  required
+                />
+              </div>
+
+              <!-- Address -->
+              <div>
+                <label for="address" class="block text-gray-700"
+                  >Address <span class="text-red-500">*</span></label
+                >
+                <input
+                  type="text"
+                  id="address"
+                  value="<%= userDonor.address %>"
+                  name="address"
+                  placeholder="Enter your address"
+                  class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500"
+                  required
+                />
+              </div>
+
+              <!-- National ID -->
+              <div>
+                <label for="nid" class="block text-gray-700"
+                  >National ID *</label
+                >
+                <input
+                  type="number"
+                  minlength="16"
+                  maxlength="16"
+                  id="nid"
+                  name="nid"
+                  placeholder="Enter your National ID"
+                  class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500"
+                  required
+                  disabled
+                  value="<%= userDonor.nid %>"
+                />
+              </div>
+
+              <!-- Blood Group -->
+              <div>
+                <label for="bloodgroup" class="block text-gray-700"
+                  >Blood Group *</label
+                >
+                <select
+                  name="bloodgroup"
+                  id="bloodgroup"
+                  class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500"
+                  required
+                  disabled
+                  
+                >
+                  <option value="<%= userDonor.bloodgroup %>" disabled selected><%= userDonor.bloodgroup %></option>
+                </select>
+              </div>
+
+              <!-- Last Donation -->
+              <div>
+                <label for="lastdonation" class="block text-gray-700"
+                  >Last Donation Date *</label
+                >
+                <input
+                  type="date"
+                  id="lastdonation"
+                  name="lastdonation"
+                  value="<%= new Date(userDonor.lastdonation).toISOString().slice(0, 10) %>"
+                  class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500"
+                  required
+                />
+              </div>
+            </div>
+
+            <!-- Submit Button -->
+            <div class="flex justify-center">
+              <button
+                type="submit"
+                class="bg-red-600 text-white py-3 px-6 rounded-full shadow-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500"
+              >
+                Update Profile
+              </button>
+            </div>
+          </form>
+        </div>
+      </main>
+    </div>
+  </body>
+</html>
