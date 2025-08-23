@@ -43,11 +43,6 @@ const loginRoutes = require("./routes/login.route.js");
 const registerRoutes = require("./routes/register.route.js");
 const forgotPasswordRoutes = require("./routes/forgot-password.route.js");
 const dashboardRoutes = require("./routes/dashboard.route.js");
-const recipientRoutes = require("./routes/recipient.route.js");
-const hospitalRoutes = require("./routes/hospital.routes.js");
-const requestRoutes = require("./routes/recipient-request.route.js");
-const donorRoutes = require("./routes/donor.routes.js");
-const resetPasswordRoutes = require("./routes/reset-password.route.js");
 const aboutUsRoutes = require("./routes/aboutUs.route.js");
 
 dotenv.config();
@@ -89,7 +84,6 @@ app.use("/register", registerRoutes);
 
 // Show forgot password form
 app.use("/forgot-password", forgotPasswordRoutes);
-app.use("/reset-password", resetPasswordRoutes);
 
 // Logout Route
 app.get("/logout", (req, res) => {
@@ -101,11 +95,6 @@ app.get("/logout", (req, res) => {
 // Dashboard of different roles users.
 app.use("/", dashboardRoutes);
 
-app.use("/recipient", recipientRoutes);
-app.use("/request", requestRoutes);
-app.use("/donor", donorRoutes);
-
-app.use("/hospital", hospitalRoutes);
 app.use("/aboutUs", aboutUsRoutes);
 
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
