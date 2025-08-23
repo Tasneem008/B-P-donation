@@ -33,10 +33,7 @@
               </div>
               <p class="font-semibold text-gray-700"><%= user.username %></p>
             </div>
-            <div
-              id="requestForm"
-              class="mt-10"
-            >
+            <div id="requestForm" class="mt-10">
               <div
                 class="backdrop-blur-md bg-white/30 border border-white/40 rounded-2xl shadow-2xl p-8"
               >
@@ -45,7 +42,7 @@
                 </h2>
 
                 <form
-                  action="/request"
+                  action="/recipient/dashboard/home"
                   method="post"
                   class="grid grid-cols-1 md:grid-cols-2 gap-6"
                 >
@@ -86,17 +83,18 @@
                   <!-- Location -->
                   <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1"
-                      >Address</label
+                      >Preferred Locations</label
                     >
                     <select
                       name="location"
                       class="w-full px-4 py-2 rounded-lg bg-red-600/80 text-white focus:outline-none focus:ring-2 focus:ring-red-400 shadow-md"
                     >
                       <option disabled selected>Select Location</option>
-                      <option>Dhanmondi</option>
-                      <option>Mohammadpur</option>
-                      <option>Gulshan</option>
-                      <option>Shyamoli</option>
+                      <% hospitals.forEach(hospital => { %>
+                      <option value="<%= hospital._id %>">
+                        <%= hospital.name %> - <%= hospital.location %>
+                      </option>
+                      <% }) %>
                     </select>
                   </div>
 
@@ -125,7 +123,7 @@
                     />
                   </div>
 
-                     <!-- Description -->
+                  <!-- Description -->
                   <div class="md:col-span-2">
                     <label class="block text-sm font-medium text-gray-700 mb-1"
                       >Description</label
@@ -152,115 +150,7 @@
             </div>
           </div>
         </div>
-<<<<<<< HEAD
       </main>
     </div>
-=======
-
-        <!-- Request Blood Form (Initially Hidden) -->
-<!-- Request Blood Form (Initially Hidden) -->
-<div
-  id="requestForm"
-  class="mt-10 hidden transition-all duration-500"
->
-  <div class="backdrop-blur-md bg-white/20 border border-white/40 rounded-2xl shadow-2xl p-8">
-    <h2 class="text-xl font-bold text-red-800 mb-6 text-center">Send Your Request!</h2>
-
-    <form
-      action="/request"
-      method="post"
-      class="grid grid-cols-1 md:grid-cols-2 gap-6"
-    >
-      <!-- Blood group -->
-      <div>
-        <label class="block text-sm font-medium text-gray-700 mb-1">Blood Group</label>
-        <select
-          name="bloodgroup"
-          class="w-full px-4 py-2 rounded-lg bg-red-600/80 text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-red-400 shadow-md"
-        >
-          <option disabled selected>Select Blood Group</option>
-          <option>O+</option><option>A+</option><option>B+</option><option>AB+</option><option>AB-</option><option>B-</option><option>A-</option><option>O-</option>
-        </select>
-      </div>
-
-      <!-- Phone -->
-      <div>
-        <label class="block text-sm font-medium text-gray-700 mb-1">Phone Number</label>
-        <input
-          name="phone"
-          type="tel"
-          placeholder="01XXXXXXXXX"
-          class="w-full px-4 py-2 rounded-lg bg-white/70 border border-red-300 focus:outline-none focus:ring-2 focus:ring-red-400 shadow-md"
-        />
-      </div>
-
-      <!-- Location -->
-      <div>
-        <label class="block text-sm font-medium text-gray-700 mb-1">Location</label>
-        <select
-          name="location"
-          class="w-full px-4 py-2 rounded-lg bg-red-600/80 text-white focus:outline-none focus:ring-2 focus:ring-red-400 shadow-md"
-        >
-          <option disabled selected>Select Location</option>
-          <option>LabAid Hospital</option>
-          <option>DMCH</option>
-          <option>Popular Medical</option>
-        </select>
-      </div>
-
-      <!-- Blood Unit -->
-      <div>
-        <label class="block text-sm font-medium text-gray-700 mb-1">Blood Unit</label>
-        <input
-          name="bags"
-          type="number"
-          placeholder="e.g., 2 bags"
-          class="w-full px-4 py-2 rounded-lg bg-white/70 border border-red-300 focus:outline-none focus:ring-2 focus:ring-red-400 shadow-md"
-        />
-      </div>
-
-      <!-- Description -->
-      <div class="md:col-span-2">
-        <label class="block text-sm font-medium text-gray-700 mb-1">Description</label>
-        <input
-          name="description"
-          type="text"
-          placeholder="Write something here..."
-          class="w-full px-4 py-2 rounded-lg bg-white/70 border border-red-300 focus:outline-none focus:ring-2 focus:ring-red-400 shadow-md"
-        />
-      </div>
-
-      <!-- Date & Time -->
-      <div class="md:col-span-2">
-        <label class="block text-sm font-medium text-gray-700 mb-1">Requested Date & Time</label>
-        <input
-          type="datetime-local"
-          name="requestedDate"
-          class="w-full px-4 py-2 rounded-lg bg-white/70 border border-red-300 focus:outline-none focus:ring-2 focus:ring-red-400 shadow-md"
-        />
-      </div>
-
-      <!-- Submit -->
-      <div class="md:col-span-2 flex justify-center">
-        <button
-          type="submit"
-          class="bg-red-600 hover:bg-red-700 text-white px-8 py-3 rounded-full shadow-xl transition-all duration-300 transform hover:scale-105"
-        >
-          Send Request
-        </button>
-      </div>
-    </form>
-  </div>
-</div>
-
-    </main>
-
-    <script>
-      function toggleRequestForm() {
-        const form = document.getElementById("requestForm");
-        form.classList.toggle("hidden");
-      }
-    </script>
->>>>>>> others
   </body>
 </html>

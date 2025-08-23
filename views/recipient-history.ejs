@@ -28,7 +28,7 @@
             <% bloodRequests.forEach(function(request) { %>
             <tr>
               <td class="px-4 py-2 border-b"><%= request.bloodgroup %></td>
-              <td class="px-4 py-2 border-b"><%= request.location %></td>
+              <td class="px-4 py-2 border-b"><%= request.location.name %> - <%= request.location.location %></td>
               <td class="px-4 py-2 border-b"><%= request.bags %></td>
               <td class="px-4 py-2 border-b">
                 <%= new Date(request.requestedDate).toLocaleDateString() %>

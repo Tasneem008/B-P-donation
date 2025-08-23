@@ -21,7 +21,7 @@
         <div class="min-h-screen p-6">
           <h2 class="text-2xl font-bold mb-6">Blood Donation Requests</h2>
 
-          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 " >
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 " >
             <% bloodRequests.forEach(function(request) { %>
             <div
               class="bg-white p-6 rounded-lg shadow-md w-full sm:w-96 flex flex-col"
@@ -36,7 +36,7 @@
               <div class="mb-4">
                 <!-- Location -->
                 <div class="text-md text-gray-600 mb-2">
-                  Location: <%= request.location %>
+                  Location: <%= request.location.name %> - <%= request.location.location %>
                 </div>
 
                 <!-- Bags Needed -->
@@ -52,7 +52,7 @@
 
                 <!-- Phone Number -->
                 <div class="text-md text-gray-600 mb-2">
-                  Recipient Phone: <%= request.phone %>
+                  Recipient Phone: <%= request.phone ? request.phone : "Contact Hospital" %>
                 </div>
               </div>
 

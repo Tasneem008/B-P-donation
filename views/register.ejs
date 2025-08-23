@@ -13,13 +13,15 @@
       background-position: center;
     "
   >
-   <div class="container mx-auto">
-    <form
-      method="POST"
-      action="/register"
-      class="bg-white/20 backdrop-blur-sm shadow-lg rounded-xl px-8 py-10 w-full max-w-sm"
-    >
-      <h1 class="text-3xl font-bold text-center text-red-600 mb-6">Register</h1>
+    <div class="container mx-auto">
+      <form
+        method="POST"
+        action="/register"
+        class="bg-white/20 backdrop-blur-sm shadow-lg rounded-xl px-8 py-10 w-full max-w-sm"
+      >
+        <h1 class="text-3xl font-bold text-center text-red-600 mb-6">
+          Register
+        </h1>
 
         <label class="form-control w-full mb-4">
           <span class="label-text font-semibold">Username</span>
@@ -73,7 +75,6 @@
           <option value="">Select Role</option>
           <option value="recipient">Recipient</option>
           <option value="donor">Donor</option>
-          <option value="hospital">Hospital</option>
         </select>
         <p id="errorMessage" class="text-red-500"><%= error %></p>
         <button
@@ -89,6 +90,15 @@
           <a href="/login" class="text-red-600 font-medium hover:underline"
             >Login</a
           >
+        </p>
+
+        <p class="text-center mt-4 text-sm text-gray-600">
+          <a
+            href="/register/hospital"
+            class="text-red-600 font-medium hover:underline"
+            >Register</a
+          >
+          as a hospital
         </p>
       </form>
     </div>
@@ -129,7 +139,7 @@
         } else {
           errorMessageField.innerText = "Passwords do not match.";
         }
-      }); -->
-    </script>
+      }); 
+    </script> -->
   </body>
 </html>
