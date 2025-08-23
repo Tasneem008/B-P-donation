@@ -3,6 +3,9 @@ const BloodDonation = require("../models/BloodDonation");
 const BloodRequest = require("../models/BloodRequest.js");
 const Hospital = require("../models/Hospital.js");
 const User = require("../models/User.js");
+const History = require("../models/history");
+const NotificationService = require('../services/notificationService');
+
 
 const redirectUserToDashboard = async (req, res) => {
   if (req.session.role === "donor") {
@@ -90,6 +93,8 @@ const postUpdateDonation = async (req, res) => {
   }
 };
 
+
+
 const getDonorNotifications = async (req, res) => {
   try {
     const userDonor = await BloodDonation.findOne({
@@ -104,7 +109,7 @@ const getDonorNotifications = async (req, res) => {
       .populate("location");
 
     // Render the donor notifications page with the blood requests
-    return res.render("donor-notifications", { bloodRequests });
+    return res.render("donor-notifications", { bloodRequests, userDonor });
   } catch (error) {
     console.error(error);
     return res.status(500).send("Error fetching blood requests");
@@ -186,6 +191,26 @@ const acceptBloodRequest = async (req, res) => {
       return res.status(404).send("Blood request not found");
     }
 
+    // 2. Fetch the donor’s username
+    const donor = await User.findById(req.session.userId)
+      .select("username")
+      .lean();
+
+    // 3. Build a richer payload
+    const payload = {
+      requestId: updated._id.toString(),
+      acceptedById: donor._id.toString(),
+      donorUsername: donor.username
+    };
+
+    // 4. Emit with username included
+    NotificationService.getInstance().notifyUser(
+      updated.recipientId.toString(),
+      "requestAccepted",
+      payload
+    );
+
+    // 5. Redirect back
     return res.redirect("/donor/dashboard/notifications");
   } catch (error) {
     console.error(error);
@@ -436,6 +461,28 @@ const acceptBloodRequestByHospital = async (req, res) => {
     return res.status(500).send("Error accepting blood request");
   }
 };
+
+  const matchingDonors = await BloodDonation.find({ bloodgroup }).populate("donorUserId");
+
+  matchingDonors.forEach(donor => {
+  if (!donor.donorUserId) return; // skip if not populated
+
+  const roomId = donor.donorUserId._id.toString(); // only the _id as string
+  NotificationService.getInstance().notifyUser(
+    roomId,
+    "newRequest",
+    {
+      requestId: newbloodrequest._id,
+      bloodgroup: newbloodrequest.bloodgroup,
+      location: newbloodrequest.location,
+      bags: newbloodrequest.bags,
+      message: `New blood request for ${newbloodrequest.bloodgroup}`,
+    }
+  );
+
+  console.log("Sending notification to donor room:", roomId);
+});
+
 
 module.exports = {
   redirectUserToDashboard,

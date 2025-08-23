@@ -10,30 +10,31 @@ const bodyParser = require("body-parser");
 const path = require("path");
 const app = express();
 const server = http.createServer(app);
+const NotificationService = require('./services/notificationService.js');
+app.use(cors());
 const io = socketIO(server, {
   cors: {
     origin: "*",
     methods: ["GET", "POST"],
   },
 });
+NotificationService.initialize(io);
 app.use(cors("*"));
 app.use(express.json());
 //we might need to update here
-app.post("/send", (req, res) => {
-  const message = req.body.message;
-  io.emit("pushNotification", {
-    message,
+io.on("connection", (socket) => {
+  console.log(`Socket connected: ${socket.id}`);
+
+  socket.on("joinRoom", (userId) => {
+    socket.join(userId); // room name = donor _id
+    console.log(`Socket ${socket.id} joined room ${userId}`);
   });
-  res.status(200).send({
-    message: "Sent Successfully",
-  });
-  io.on("connection", (socket) => {
-    console.log("Connected");
-    socket.on("disconnect", () => {
-      console.log("Client disconnected");
-    });
+
+  socket.on("disconnect", () => {
+    console.log(`Socket ${socket.id} disconnected`);
   });
 });
+
 // Middlewares
 const { setUserData } = require("./middleware/middleware.js");
 // Db Connection
@@ -44,7 +45,6 @@ const registerRoutes = require("./routes/register.route.js");
 const forgotPasswordRoutes = require("./routes/forgot-password.route.js");
 const dashboardRoutes = require("./routes/dashboard.route.js");
 const aboutUsRoutes = require("./routes/aboutUs.route.js");
-
 dotenv.config();
 
 const PORT = process.env.PORT || 3000;
@@ -96,5 +96,6 @@ app.get("/logout", (req, res) => {
 app.use("/", dashboardRoutes);
 
 app.use("/aboutUs", aboutUsRoutes);
-
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+// server.js (below your other routes)
+//const NotificationService = require("./services/notificationService");
+server.listen(PORT, () => console.log(`Server running on port ${PORT}`));
