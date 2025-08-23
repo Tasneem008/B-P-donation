@@ -14,13 +14,17 @@ const {
   postRequestForm,
   showRecipientDashboard,
   getDonateForm,
+  completeDonation,
+  showHospitalAppointment,
+  getHospitalRecipient,
+  acceptBloodRequestByHospital,
+  postDonateForm,
 } = require("../controllers/dashboard.controller.js");
 const { checkAuth, checkRole } = require("../middleware/middleware");
 
 const router = express.Router();
 
 router.get("/dashboard", checkAuth, redirectUserToDashboard);
-
 
 // Donor Routes
 router.get(
@@ -30,12 +34,9 @@ router.get(
   showDonorDashboardHome
 );
 
-router.get(
-  "/donor/donor-form",
-  checkAuth,
-  checkRole("donor"),
-  getDonateForm
-);
+router.get("/donor/donor-form", checkAuth, checkRole("donor"), getDonateForm);
+
+router.post("/donor/donor-form", checkAuth, checkRole("donor"), postDonateForm);
 
 
 router.get(
@@ -106,11 +107,40 @@ router.get(
   getHospitalDashboardHome
 );
 
+router.get(
+  "/hospital/dashboard/appointment",
+  checkAuth,
+  checkRole("hospital"),
+  showHospitalAppointment
+);
+
+
+router.get(
+  "/hospital/dashboard/recipient",
+  checkAuth,
+  checkRole("hospital"),
+  getHospitalRecipient
+);
+
+router.post(
+  "/hospital/dashboard/accept-request",
+  checkAuth,
+  checkRole("hospital"),
+  acceptBloodRequestByHospital
+);
+
 router.post(
   "/hospital/dashboard/home",
   checkAuth,
   checkRole("hospital"),
   requestBlood
+);
+
+router.post(
+  "/hospital/dashboard/home/completed-donation/:requestId",
+  checkAuth,
+  checkRole("hospital"),
+  completeDonation
 );
 
 module.exports = router;
