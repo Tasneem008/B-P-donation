@@ -95,46 +95,5 @@
         </div>
       </main>
     </div>
- <!-- Socket.IO -->
-  <script src="/socket.io/socket.io.js"></script>
-<script>
-  console.log("socket script loaded");
-
-  const userId = "<%= userDonor ? userDonor.donorUserId._id : '' %>";
-  console.log("Donor userId:", userId);
-
-  if (userId) {
-    const socket = io(); 
-
-    // Wait until the client genuinely connects
-    socket.on("connect", () => {
-      console.log("socket connected:", socket.id);
-
-      socket.emit("joinRoom", userId);
-      console.log("emitted joinRoom:", userId);
-    });
-
-    socket.on("newRequest", data => {
-      console.log("📢 newRequest:", data);
-      alert(`New blood request for ${data.bloodgroup} at ${data.location}`);
-    });
-
-    socket.on("requestAccepted", data => {
-      console.log("✅ requestAccepted:", data);
-      alert("Your blood request has been accepted!");
-    });
-
-    socket.on("disconnect", reason => {
-      console.log("socket disconnected:", reason);
-    });
-
-  } else {
-    console.error("userDonor not defined. Socket not initialized.");
-  }
-</script>
-
-
-
-
   </body>
 </html>
