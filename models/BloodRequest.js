@@ -8,7 +8,11 @@ const bloodRequestSchema = new mongoose.Schema({
   bags: Number,
   description: String,
   requestedDate: { type: Date, default: Date.now },
-  acceptedBy: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+  acceptedByDonor: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+  acceptedByHospital: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Hospital",
+  },
   status: {
     type: String,
     enum: ["pending", "accepted", "completed"],

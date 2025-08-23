@@ -10,20 +10,8 @@ const userSchema = new mongoose.Schema(
       enum: ["donor", "recipient"],
       required: true,
     },
-    // bloodGroup: {
-    //   type: String,
-    //   enum: ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"],
-    //   default: "B+",
-    // },
     location: String,
     lastDonationDate: Date,
-
-    // emailVerified: { type: Boolean, default: false },
-    // emailVerifyTokenHash: String,
-    // emailVerifyTokenExpires: Date,
-
-    // resetPasswordTokenHash: String,
-    // resetPasswordTokenExpires: Date,
   },
   { timestamps: true }
 );

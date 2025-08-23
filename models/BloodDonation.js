@@ -11,11 +11,6 @@ const bloodDonationSchema = new mongoose.Schema(
     donorUserId: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
     lastdonation: { type: Date, default: Date.now },
     donationPlace: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
-    // status: {
-    //   type: String,
-    //   enum: ["pending", "approved", "rejected"],
-    //   default: "pending",
-    // },
   },
   { timestamps: true }
 );
