@@ -386,7 +386,7 @@ const showHospitalAppointment = async (req, res) => {
       .populate("recipientId")
       .populate("acceptedByDonor");
 
-    console.log(donorRecipientAppointment);
+    
 
     return res.render("hospital-appointment", {
       hospital,
