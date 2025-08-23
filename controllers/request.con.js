@@ -10,8 +10,16 @@ const getRequestForm = (req, res) => {
 const postRequestForm = async (req, res) => {
   try {
     const userId = req.session.userId;
-    const { bloodgroup, phone, location, bags, description, requestedDate } = req.body;
+    const {
+      bloodgroup,
+      phone,
+      location,
+      bags,
+      description,
+      requestedDate
+    } = req.body;
 
+    // 1. Save new request
     const newbloodrequest = new BloodRequest({
       bloodgroup,
       phone,
@@ -22,36 +30,41 @@ const postRequestForm = async (req, res) => {
       recipientId: userId,
       status: "pending",
     });
-
     await newbloodrequest.save();
 
-    // 🔎 Find matching donors by blood group
-    const matchingDonors = await BloodDonation.find({ bloodgroup }).populate("donorUserId");
+    // 2. Find & notify matching donors
+    const matchingDonors = await BloodDonation
+      .find({ bloodgroup })
+      .populate("donorUserId");
 
-  matchingDonors.forEach(donor => {
-  if (!donor.donorUserId) return; // skip if not populated
+    matchingDonors.forEach(donor => {
+      if (!donor.donorUserId) return;
+      const roomId = donor.donorUserId._id.toString();
+      NotificationService
+        .getInstance()
+        .notifyUser(
+          roomId,
+          "newRequest",
+          {
+            requestId: newbloodrequest._id,
+            bloodgroup: newbloodrequest.bloodgroup,
+            location: newbloodrequest.location,
+            bags: newbloodrequest.bags,
+            message: `New blood request for ${newbloodrequest.bloodgroup}`
+          }
+        );
+      console.log("Sending notification to donor room:", roomId);
+    });
 
-  const roomId = donor.donorUserId._id.toString(); // only the _id as string
-  NotificationService.getInstance().notifyUser(
-    roomId,
-    "newRequest",
-    {
-      requestId: newbloodrequest._id,
-      bloodgroup: newbloodrequest.bloodgroup,
-      location: newbloodrequest.location,
-      bags: newbloodrequest.bags,
-      message: `New blood request for ${newbloodrequest.bloodgroup}`,
-    }
-  );
+    // 3. Redirect with match count as query-param
+    const matchCount = matchingDonors.length;
+    return res.redirect(
+      //`../views/recipient-history?matches=${matchCount}`
+      `/recipient/dashboard/history?matches=${matchCount}`
+    );
 
-  console.log("Sending notification to donor room:", roomId);
-});
-
-
-
-    return res.redirect("/recipient/dashboard/history");
   } catch (error) {
-    console.log(error);
+    console.error(error);
     return res.status(500).send("Error in creating requests");
   }
 };

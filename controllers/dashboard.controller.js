@@ -134,18 +134,26 @@ const postUpdateDonation = async (req, res) => {
 
 const getRecipientHistory = async (req, res) => {
   try {
-    // Fetch all blood requests for the logged-in recipient
-    const bloodRequests = await BloodRequest.find({
-      recipientId: req.session.userId,
-    });
+    // Extract match count from query (defaults to 0)
+    const { matches } = req.query;
 
-    // Pass the data to the dashboard's history page
-    return res.render("recipient-history", { bloodRequests });
+    // Fetch all blood requests for the logged-in recipient
+    // .lean() can speed up rendering if you don't need Mongoose methods on each doc
+    const bloodRequests = await BloodRequest
+      .find({ recipientId: req.session.userId })
+      .lean();
+
+    // Render the history page, passing both the requests and match count
+    return res.render("recipient-history", {
+      bloodRequests,
+      matches: Number(matches) || 0
+    });
   } catch (error) {
     console.error(error);
     return res.status(500).send("Error fetching blood requests");
   }
 };
+
 
 
 const getDonorNotifications = async (req, res) => {
