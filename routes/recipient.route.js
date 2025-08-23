@@ -7,7 +7,7 @@ showRecipientHistory} = require("../controllers/recipient.controller.js");
 
 router.get("/dashboard/home", checkAuth, checkRole("recipient"), showRecipientDashboard);
 
-router.get('/recipient-history', checkAuth, checkRole('recipient'), showRecipientHistory)
+router.get('/recipient-history', checkAuth, checkRole('recipient'), showRecipientHistory);
 
 
 

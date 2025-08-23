@@ -8,18 +8,3 @@ exports.showRecipientDashboard = async (req, res) => {
 exports.showRecipientHistory = (req, res) => {
   res.render("recipient-history");
 };
-
-// exports.submitRequest = async (req, res) => {
-//   const { bloodType, hospital, location, description, requestedDate } = req.body;
-
-//   await BloodRequest.create({
-//     bloodType,
-//     recipientId: req.session.userId,
-//     hospital,
-//     location,
-//     description,
-//     requestedDate
-//   });
-
-//   res.send('Request submitted successfully!');
-// };

@@ -147,50 +147,6 @@ const getRecipientHistory = async (req, res) => {
   }
 };
 
-// const updateRequest = async (req, res) => {
-//   try {
-//     const requestId = req.params.id;
-//     const sessionUserId = req.session.userId;
-
-//     if (!mongoose.Types.ObjectId.isValid(requestId)) {
-//       return res.status(400).send("Invalid request ID");
-//     }
-
-//     if (!sessionUserId) {
-//       return res.status(401).send("User not logged in");
-//     }
-
-//     const request = await BloodRequest.findOne({
-//       _id: requestId,
-//       reqId: sessionUserId,
-//     });
-
-//     if (!request) {
-//       return res.status(403).send("Unauthorized or request not found");
-//     }
-
-//     // Only update fields that are present in req.body
-//     const updatableFields = [
-//       "phone",
-//       "requestedDate",
-//       "bags",
-//       "description",
-//       "location",
-//       "bloodgroup",
-//     ];
-//     updatableFields.forEach((field) => {
-//       if (req.body[field] !== undefined && req.body[field] !== "") {
-//         request[field] = req.body[field];
-//       }
-//     });
-
-//     await request.save();
-//     res.redirect("/donor/dashboard");
-//   } catch (err) {
-//     console.error("Error updating blood request:", err);
-//     res.status(500).send("Server error");
-//   }
-// };
 
 const getDonorNotifications = async (req, res) => {
   try {
@@ -215,43 +171,44 @@ const acceptBloodRequest = async (req, res) => {
   try {
     const { requestId } = req.body;
 
-    // Find the blood request by ID and update its status to 'Accepted'
-    const request = await BloodRequest.findByIdAndUpdate(
+    // 1. Mark the request as accepted in one go
+    const updated = await BloodRequest.findByIdAndUpdate(
       requestId,
-      { status: "accepted", acceptedBy: req.session.userId }, // Update the status to "Fulfilled" (or "Accepted")
+      { status: "accepted", acceptedBy: req.session.userId },
       { new: true }
     );
 
-    if (!request) {
+    if (!updated) {
       return res.status(404).send("Blood request not found");
     }
 
-     const updated = await BloodRequest.findByIdAndUpdate(
-    requestId,
-    { status: 'accepted', acceptedBy: req.session.userId },
-    { new: true }
-  );
+    // 2. Fetch the donor’s username
+    const donor = await User.findById(req.session.userId)
+      .select("username")
+      .lean();
 
-  if (updated) {
+    // 3. Build a richer payload
+    const payload = {
+      requestId: updated._id.toString(),
+      acceptedById: donor._id.toString(),
+      donorUsername: donor.username
+    };
+
+    // 4. Emit with username included
     NotificationService.getInstance().notifyUser(
       updated.recipientId.toString(),
-      'requestAccepted',
-      {
-        requestId: updated._id,
-        acceptedBy: req.session.userId
-      }
+      "requestAccepted",
+      payload
     );
-  }
 
-    // You can add additional logic here to notify the hospital and recipient
-
-    // Redirect the donor to the dashboard or another page
+    // 5. Redirect back
     return res.redirect("/donor/dashboard/notifications");
   } catch (error) {
     console.error(error);
     return res.status(500).send("Error accepting blood request");
   }
 };
+
 
 const getBloodDonationHistory = async (req, res) => {
   try {
@@ -276,44 +233,10 @@ const getBloodDonationHistory = async (req, res) => {
   }
 };
 
-// const acceptRequest = async (req, res) => {
-//   try {
-//     const donorId = req.session.userId;
-//     const requestId = req.params.id;
-
-//     const request = await BloodRequest.findById(requestId).populate("reqId");
-
-//     if (!request || request.status !== "pending") {
-//       return res.status(400).send("Invalid or already accepted request");
-//     }
-
-//     // Update request status
-//     request.status = "accepted";
-//     await request.save();
-
-//     // Create history record
-//     const historyEntry = new History({
-//       hisId: donorId, // optional if used
-//       donorId,
-//       reqId: request.reqId._id,
-//       status: "accepted",
-//     });
-
-//     await historyEntry.save();
-
-//     res.json({ success: true, message: "Request accepted and history saved" });
-//   } catch (err) {
-//     console.error("Error accepting request:", err);
-//     res.status(500).send("Server error");
-//   }
-// };
-
 module.exports = {
   redirectUserToDashboard,
   showDonorDashboardHome,
   showDonorDashboardEditDetails,
-  // updateRequest,
-  // acceptRequest,
   postUpdateDonation,
   getRecipientHistory,
   getDonorNotifications,
