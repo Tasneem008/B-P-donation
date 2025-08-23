@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html data-theme="light" lang="en">
+  <head>
+    <%- include('./partials/head.ejs'); %>
+    <title>Hospital Panel - DonateLife</title>
+  </head>
+  <body class="bg-gray-100 text-gray-800 font-sans">
+    <!-- Sidebar -->
+    <div class="flex min-h-screen">
+      <%- include('./partials/hospital-sidebar.ejs') %>
+      
+
+      <!-- Main Panel -->
+      <main class="flex-1 p-8 space-y-10">
+        <!-- Topbar -->
+        <div class="flex justify-between items-center">
+          <h2 class="text-3xl font-bold">Hospital Dashboard - <%= hospital.name %> - <%= hospital.location %></h2>
+          <div class="relative">
+            <button
+              class="relative bg-white p-2 rounded-full shadow hover:bg-gray-100"
+            >
+              🔔
+              <span
+                class="absolute top-0 right-0 w-2 h-2 bg-red-600 rounded-full"
+              ></span>
+            </button>
+          </div>
+        </div>
+
+
+        <!-- Appointments Management -->
+        <div class="bg-white p-6 rounded-lg shadow-md">
+          <h3 class="text-xl font-bold mb-4 text-red-600">
+            Donor → Recipient Appointments
+          </h3>
+          <div class="overflow-x-auto">
+            <table class="w-full table-auto text-left">
+              <thead>
+                <tr class="bg-gray-100 text-gray-600">
+                  <th class="p-3">Donor User Name</th>
+                  <th class="p-3">Reciepient User Name</th>
+                  <th class="p-3">Requested Date</th>
+                  <th class="p-3">Blood Group</th>
+                    <th class="p-3">Bags Requested</th>
+                  <th class="p-3">Status</th>
+                  <th class="p-3 text-center">Actions</th>
+                </tr>
+              </thead>
+              <tbody class="text-sm text-gray-700">
+                <% donorRecipientAppointment.forEach(app=>{  %>
+                  <tr class="border-b">
+                  <td class="p-3"><%= app?.acceptedByDonor?.username  %></td>
+                  <td class="p-3"><%= app.recipientId.username  %></td>
+                  <td class="p-3"><%= new Date(app.requestedDate).toLocaleDateString()  %></td>
+                  <td class="p-3"><%= app.bloodgroup %></td>
+                  <td class="p-3"><%= app.bags %></td>
+                  <td class="p-3 font-medium <%= app.status === 'accepted' ? 'text-yellow-800' : "text-green-500"  %>"><%= app.status %></td>
+                  <td class="p-3 flex gap-2 justify-center">
+                    <form action="" method="post">
+                      <button
+                        class="bg-green-500 text-white px-4 py-1 rounded hover:bg-green-600 <%= app.status === 'completed' ? 'btn-disabled' : ''  %>"
+                        <%= app.status === 'completed' ? 'disabled' : ''  %>
+                        type='submit'
+                      >
+                        Completed
+                      </button>
+                    </form>
+                  </td>
+                </tr>
+                <% }) %>
+              </tbody>
+            </table>
+          </div>
+        </div>  
+      </main>
+    </div>
+  </body>
+</html>
