@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html data-theme="light" lang="en">
+  <head>
+    <%- include('./partials/head.ejs'); %>
+    <title>Register | DonateLife</title>
+  </head>
+  <body
+    class="bg-red-100 flex items-center justify-start min-h-screen"
+    style="
+      background-image: url('/pics/login.png');
+      background-size: cover;
+      background-position: center;
+    "
+  >
+    <div class="container mx-auto">
+      <form
+        method="POST"
+        action="/register/hospital"
+        class="bg-white/20 backdrop-blur-sm shadow-lg rounded-xl px-8 py-10 w-full max-w-sm"
+      >
+        <h1 class="text-3xl font-bold text-center text-red-600 mb-6">
+          Register
+        </h1>
+
+        <!-- Name Field -->
+        <label class="form-control w-full mb-6">
+          <span class="label-text font-semibold">Name</span>
+          <select name="name" required class="select select-bordered w-full">
+            <option value="">Select Hospital</option>
+            <% hospitalsArray.forEach(hospital => { %>
+            <option value="<%= hospital.title %>"><%= hospital.title %></option>
+            <% }) %>
+            <!-- Popular Hospital Branches -->
+          </select>
+        </label>
+
+        <!-- Email Field -->
+        <label class="form-control w-full mb-4">
+          <span class="label-text font-semibold">Email</span>
+          <input
+            type="email"
+            name="email"
+            required
+            class="input input-bordered w-full"
+            pattern="^[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$"
+          />
+        </label>
+
+        <!-- Password Field -->
+        <label class="form-control w-full mb-6">
+          <span class="label-text font-semibold"
+            >Password (At least 8 characters)</span
+          >
+          <input
+            id="password"
+            type="password"
+            name="password"
+            required
+            class="input input-bordered w-full"
+            pattern="^.{8,}$"
+          />
+        </label>
+
+        <!-- Confirm Password Field -->
+        <label class="form-control w-full mb-6">
+          <span class="label-text font-semibold">Confirm Password</span>
+          <input
+            id="confirmPassword"
+            type="password"
+            name="confirmPassword"
+            required
+            class="input input-bordered w-full"
+            pattern="^.{8,}$"
+          />
+        </label>
+
+        <!-- Location Field -->
+        <label class="form-control w-full mb-6">
+          <span class="label-text font-semibold">Location</span>
+          <select
+            name="location"
+            required
+            class="select select-bordered w-full"
+          >
+            <option value="">Select Location</option>
+            <% hospitalsArray.forEach(hospital => { %>
+            <optgroup label="<%= hospital.title %>">
+              <% hospital.areas.forEach(area => { %>
+              <option value="<%= area %>"><%= area %></option>
+              <% }) %>
+            </optgroup>
+            <% }) %>
+          </select>
+        </label>
+
+        <!-- Error Message -->
+        <p id="errorMessage" class="text-red-500"></p>
+
+        <!-- Submit Button -->
+        <button
+          id="submitter"
+          type="submit"
+          class="btn btn-primary w-full bg-red-600 hover:bg-red-700 border-none"
+        >
+          Register
+        </button>
+
+        <!-- Redirect to Login Page -->
+        <p class="text-center mt-4 text-sm text-gray-600">
+          Already have an account?
+          <a href="/login" class="text-red-600 font-medium hover:underline"
+            >Login</a
+          >
+        </p>
+
+        <!-- Register as Hospital Link -->
+        <p class="text-center mt-4 text-sm text-gray-600">
+          <a
+            href="/register/hospital"
+            class="text-red-600 font-medium hover:underline"
+            >Register</a
+          >
+          as a hospital
+        </p>
+      </form>
+    </div>
+  </body>
+</html>
