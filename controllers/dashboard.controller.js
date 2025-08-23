@@ -1,3 +1,4 @@
+const { default: mongoose } = require("mongoose");
 const BloodDonation = require("../models/BloodDonation");
 const BloodRequest = require("../models/BloodRequest.js");
 const Hospital = require("../models/Hospital.js");
@@ -112,7 +113,7 @@ const getDonorNotifications = async (req, res) => {
 
 const getDonateForm = async (req, res) => {
   try {
-    const donorFormDone = await BloodDonation.find({
+    const donorFormDone = await BloodDonation.findOne({
       donorUserId: req.session.userId,
     });
 
@@ -122,7 +123,7 @@ const getDonateForm = async (req, res) => {
 
     return res.render("donor-form");
   } catch (error) {
-    console.log(error);
+    console.error(error);
     return res.status(500).send("Error in registering donation");
   }
 };
@@ -156,8 +157,39 @@ const postDonateForm = async (req, res) => {
     await newDonation.save();
     return res.redirect("/dashboard");
   } catch (error) {
-    console.log(error);
+    console.error(error);
     return res.status(500).send("Error in registering donation");
+  }
+};
+
+const getDonorRequestsPage = async (req, res) => {
+  try {
+    const bloodDonorRequest = await BloodDonation.find({}).populate("donorId");
+    res.render("donor-requests", { bloodDonorRequest });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Server Error");
+  }
+};
+
+const acceptBloodRequest = async (req, res) => {
+  try {
+    const { requestId } = req.body;
+
+    const request = await BloodRequest.findByIdAndUpdate(
+      requestId,
+      { status: "accepted", acceptedByDonor: req.session.userId },
+      { new: true }
+    );
+
+    if (!request) {
+      return res.status(404).send("Blood request not found");
+    }
+
+    return res.redirect("/donor/dashboard/notifications");
+  } catch (error) {
+    console.error(error);
+    return res.status(500).send("Error accepting blood request");
   }
 };
 
@@ -170,12 +202,10 @@ const showRecipientDashboard = async (req, res) => {
 
 const getRecipientHistory = async (req, res) => {
   try {
-    // Fetch all blood requests for the logged-in recipient
     const bloodRequests = await BloodRequest.find({
       recipientId: req.session.userId,
     }).populate("location");
 
-    // Pass the data to the dashboard's history page
     return res.render("recipient-history", { bloodRequests });
   } catch (error) {
     console.error(error);
@@ -204,29 +234,8 @@ const postRequestForm = async (req, res) => {
     await newbloodrequest.save();
     return res.redirect("/recipient/dashboard/history");
   } catch (error) {
-    console.log(error);
-    return res.status(500).send("Error in creating requests");
-  }
-};
-
-const acceptBloodRequest = async (req, res) => {
-  try {
-    const { requestId } = req.body;
-
-    const request = await BloodRequest.findByIdAndUpdate(
-      requestId,
-      { status: "accepted", acceptedBy: req.session.userId },
-      { new: true }
-    );
-
-    if (!request) {
-      return res.status(404).send("Blood request not found");
-    }
-
-    return res.redirect("/donor/dashboard/notifications");
-  } catch (error) {
     console.error(error);
-    return res.status(500).send("Error accepting blood request");
+    return res.status(500).send("Error in creating requests");
   }
 };
 
@@ -234,12 +243,10 @@ const getBloodDonationHistory = async (req, res) => {
   try {
     // Find the blood request by ID and update its status to 'Accepted'
     const donationHistory = await BloodRequest.find({
-      acceptedBy: req.session.userId,
+      acceptedByDonor: req.session.userId,
     })
       .populate("recipientId")
       .populate("location");
-
-    console.log(donationHistory);
 
     if (!donationHistory) {
       return res.status(404).send("Blood Donation not found");
@@ -255,11 +262,10 @@ const getBloodDonationHistory = async (req, res) => {
 // Hospital Dashboard Code.
 const getHospitalDashboardHome = async (req, res) => {
   try {
- 
     const donorPending =
       (await BloodRequest.countDocuments({
         status: "accepted",
-        location: req.session.userId 
+        location: req.session.userId,
       })) || 0;
 
     const donorApproved =
@@ -275,7 +281,21 @@ const getHospitalDashboardHome = async (req, res) => {
       status: "accepted",
     });
 
+    const hospital = await Hospital.findById(req.session.userId);
+
+    const donorHospitalAppointment = await BloodRequest.find({
+      location: req.session.userId,
+      // $or: [{ status: "accepted" }, { status: "completed" }],
+      recipientId: { $exists: false },
+      acceptedByDonor: { $exists: true },
+    })
+      .populate("acceptedByDonor")
+      .populate("acceptedByHospital");
+
     const totalBlood = await Hospital.aggregate([
+      {
+        $match: { _id: new mongoose.Types.ObjectId(req.session.userId) }, // Match the hospital by its ID
+      },
       {
         $project: {
           totalBlood: {
@@ -294,16 +314,14 @@ const getHospitalDashboardHome = async (req, res) => {
       },
     ]);
 
-    // Fetch all requests for the table
-    const requests = await BloodRequest.find().sort({ createdAt: -1 });
-
     return res.render("hospital-panel", {
       donorPending,
       donorApproved,
       recipientPending,
       recipientAccepted,
-      requests,
+      hospital,
       totalBlood: totalBlood[0].totalBlood,
+      donorHospitalAppointment,
     });
   } catch (err) {
     console.error(err);
@@ -329,37 +347,93 @@ const requestBlood = async (req, res) => {
   }
 };
 
-// Approve a blood request
-const approveRequest = async (req, res) => {
+const completeDonation = async (req, res) => {
   try {
-    await BloodRequest.findByIdAndUpdate(req.params.id, {
-      status: "Fulfilled",
+    const bloodRequest = await BloodRequest.findByIdAndUpdate(
+      req.params.requestId,
+      {
+        status: "completed",
+      },
+      { new: true }
+    );
+
+    await Hospital.findByIdAndUpdate(
+      req.session.userId,
+      {
+        $inc: {
+          [`inventory.blood.${bloodRequest.bloodgroup}`]: bloodRequest.bags,
+        },
+      },
+      { new: true }
+    );
+
+    return res.redirect("/hospital/dashboard/home");
+  } catch (err) {
+    console.error(err);
+    return res.status(500).send("Server Error");
+  }
+};
+
+const showHospitalAppointment = async (req, res) => {
+  try {
+    const hospital = await Hospital.findById(req.session.userId);
+    const donorRecipientAppointment = await BloodRequest.find({
+      location: req.session.userId,
+      acceptedByDonor: { $exists: true },
+      recipientId: { $exists: true },
+      status: "accepted",
+    })
+      .populate("recipientId")
+      .populate("acceptedByDonor");
+
+    console.log(donorRecipientAppointment);
+
+    return res.render("hospital-appointment", {
+      hospital,
+      donorRecipientAppointment,
     });
-    res.redirect("/hospital");
-  } catch (err) {
-    console.error(err);
-    res.status(500).send("Server Error");
+  } catch (error) {
+    console.error(error);
+    return res.status(500).send("Error");
   }
 };
 
-// Reject a blood request
-const rejectRequest = async (req, res) => {
+const getHospitalRecipient = async (req, res) => {
   try {
-    await BloodRequest.findByIdAndUpdate(req.params.id, { status: "Rejected" });
-    res.redirect("/hospital");
-  } catch (err) {
-    console.error(err);
-    res.status(500).send("Server Error");
+    const bloodRequests = await BloodRequest.find({
+      location: req.session.userId,
+      status: "pending",
+    })
+      .populate("recipientId")
+      .populate("location")
+      .populate("acceptedByHospital");
+
+    // Render the donor notifications page with the blood requests
+    return res.render("hospital-recipient", { bloodRequests });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).send("Error fetching blood requests");
   }
 };
 
-const getDonorRequestsPage = async (req, res) => {
+const acceptBloodRequestByHospital = async (req, res) => {
   try {
-    const bloodDonorRequest = await BloodDonation.find({}).populate("donorId");
-    res.render("donor-requests", { bloodDonorRequest });
-  } catch (err) {
-    console.error(err);
-    res.status(500).send("Server Error");
+    const { requestId } = req.body;
+
+    const request = await BloodRequest.findByIdAndUpdate(
+      requestId,
+      { status: "accepted", acceptedByHospital: req.session.userId },
+      { new: true }
+    );
+
+    if (!request) {
+      return res.status(404).send("Blood request not found");
+    }
+
+    return res.redirect("/hospital/dashboard/home");
+  } catch (error) {
+    console.error(error);
+    return res.status(500).send("Error accepting blood request");
   }
 };
 
@@ -373,8 +447,7 @@ module.exports = {
   acceptBloodRequest,
   getBloodDonationHistory,
   getHospitalDashboardHome,
-  approveRequest,
-  rejectRequest,
+  completeDonation,
   getDonorRequestsPage,
   requestBlood,
   postRequestForm,
@@ -382,4 +455,7 @@ module.exports = {
   showRecipientDashboard,
   getDonateForm,
   postDonateForm,
+  showHospitalAppointment,
+  getHospitalRecipient,
+  acceptBloodRequestByHospital,
 };
