@@ -2,26 +2,41 @@ const express = require("express");
 const {
   redirectUserToDashboard,
   showDonorDashboardHome,
-  // updateRequest,
   showDonorDashboardEditDetails,
   postUpdateDonation,
   getRecipientHistory,
   getDonorNotifications,
   acceptBloodRequest,
   getBloodDonationHistory,
-} = require("../controllers/dashboard.controller");
+  getHospitalDashboardHome,
+  requestBlood,
+  getRequestForm,
+  postRequestForm,
+  showRecipientDashboard,
+  getDonateForm,
+} = require("../controllers/dashboard.controller.js");
 const { checkAuth, checkRole } = require("../middleware/middleware");
 
 const router = express.Router();
 
 router.get("/dashboard", checkAuth, redirectUserToDashboard);
 
+
+// Donor Routes
 router.get(
   "/donor/dashboard/home",
   checkAuth,
   checkRole("donor"),
   showDonorDashboardHome
 );
+
+router.get(
+  "/donor/donor-form",
+  checkAuth,
+  checkRole("donor"),
+  getDonateForm
+);
+
 
 router.get(
   "/donor/dashboard/edit-details",
@@ -51,7 +66,6 @@ router.post(
   acceptBloodRequest
 );
 
-
 router.post(
   "/donor/edit-details",
   checkAuth,
@@ -59,6 +73,7 @@ router.post(
   postUpdateDonation
 );
 
+// Reciepient Routes
 router.get(
   "/recipient/dashboard/history",
   checkAuth,
@@ -66,10 +81,36 @@ router.get(
   getRecipientHistory
 );
 
-// router.post("/edit-request/:id", checkAuth, updateRequest);
+router.get(
+  "/recipient/dashboard/home",
+  checkAuth,
+  checkRole("recipient"),
+  showRecipientDashboard
+);
 
-// const { acceptRequest } = require("../controllers/dashboard.controller.js");
+router.post(
+  "/recipient/dashboard/home",
+  checkAuth,
+  checkRole("recipient"),
+  postRequestForm
+);
 
-// router.post("/accept-request/:id", checkAuth, acceptRequest);
+router.get("/recipient/dashboard", getRequestForm);
+router.post("/", postRequestForm);
+
+// Hospital Routes
+router.get(
+  "/hospital/dashboard/home",
+  checkAuth,
+  checkRole("hospital"),
+  getHospitalDashboardHome
+);
+
+router.post(
+  "/hospital/dashboard/home",
+  checkAuth,
+  checkRole("hospital"),
+  requestBlood
+);
 
 module.exports = router;

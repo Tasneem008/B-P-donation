@@ -2,15 +2,21 @@ const express = require("express");
 const {
   getRegisterPage,
   postRegisterPage,
-  verifyEmail,        
+  getHospitalRegisterPage,
+  registerHospital,
+  // verifyEmail,
 } = require("../controllers/register.controller.js");
 
 const router = express.Router();
 
 router.get("/", getRegisterPage);
 
+router.get('/hospital', getHospitalRegisterPage)
+
 router.post("/", postRegisterPage);
 
-router.get("/verify-email", verifyEmail);
+router.post('/hospital', registerHospital)
+
+// router.get("/verify-email", verifyEmail);
 
 module.exports = router;
