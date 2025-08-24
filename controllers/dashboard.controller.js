@@ -381,12 +381,9 @@ const showHospitalAppointment = async (req, res) => {
       location: req.session.userId,
       acceptedByDonor: { $exists: true },
       recipientId: { $exists: true },
-      status: "accepted",
     })
       .populate("recipientId")
       .populate("acceptedByDonor");
-
-    
 
     return res.render("hospital-appointment", {
       hospital,
@@ -437,6 +434,23 @@ const acceptBloodRequestByHospital = async (req, res) => {
   }
 };
 
+const completeDonorRecipientRequest = async (req, res) => {
+  try {
+    const requestId = req.params.requestId;
+
+    const updated = await BloodRequest.findByIdAndUpdate(
+      requestId,
+      { status: "completed" },
+      { new: true }
+    );
+
+    return res.redirect("/hospital/dashboard/appointment");
+  } catch (error) {
+    console.error(error);
+    return res.status(500).send("Error in updating blood request");
+  }
+};
+
 module.exports = {
   redirectUserToDashboard,
   showDonorDashboardHome,
@@ -458,4 +472,5 @@ module.exports = {
   showHospitalAppointment,
   getHospitalRecipient,
   acceptBloodRequestByHospital,
+  completeDonorRecipientRequest,
 };

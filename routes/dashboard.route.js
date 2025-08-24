@@ -19,6 +19,7 @@ const {
   getHospitalRecipient,
   acceptBloodRequestByHospital,
   postDonateForm,
+  completeDonorRecipientRequest,
 } = require("../controllers/dashboard.controller.js");
 const { checkAuth, checkRole } = require("../middleware/middleware");
 
@@ -37,7 +38,6 @@ router.get(
 router.get("/donor/donor-form", checkAuth, checkRole("donor"), getDonateForm);
 
 router.post("/donor/donor-form", checkAuth, checkRole("donor"), postDonateForm);
-
 
 router.get(
   "/donor/dashboard/edit-details",
@@ -114,6 +114,12 @@ router.get(
   showHospitalAppointment
 );
 
+router.post(
+  "/hospital/dashboard/appointment/:requestId",
+  checkAuth,
+  checkRole("hospital"),
+  completeDonorRecipientRequest
+);
 
 router.get(
   "/hospital/dashboard/recipient",
