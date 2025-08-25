@@ -1,4 +1,5 @@
-const User = require("../models/User");
+const Hospital = require("../models/Hospital.js");
+const User = require("../models/User.js");
 const bcrypt = require("bcryptjs");
 
 const getLoginPage = (req, res) => {
@@ -6,26 +7,51 @@ const getLoginPage = (req, res) => {
     return res.redirect("/");
   }
 
-  res.render("login");
+  return res.render("login");
 };
 
 const postLoginPage = async (req, res) => {
   const { email, password } = req.body;
 
+  // Check if the email exists in the User model
   const user = await User.findOne({ email });
-  if (!user) {
+
+  // Check if the email exists in the Hospital model
+  const hospital = await Hospital.findOne({ email });
+
+  // If neither user nor hospital is found, return an error
+  if (!user && !hospital) {
     return res.send("Invalid email or password");
   }
 
-  const isMatch = await bcrypt.compare(password, user.password);
-  if (!isMatch) {
-    return res.send("Invalid credentials");
+  let isMatch;
+
+  // Compare password for User or Hospital depending on what was found
+  if (user) {
+    // Compare password for User
+    isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
+      return res.send("Invalid credentials");
+    }
+
+    // Set session for user
+    req.session.userId = user._id;
+    req.session.role = user.role;
+  } else if (hospital) {
+    // Compare password for Hospital
+    isMatch = await bcrypt.compare(password, hospital.password);
+    if (!isMatch) {
+      return res.send("Invalid credentials");
+    }
+
+    // Set session for hospital
+    req.session.userId = hospital._id;
+    req.session.role = "hospital"; // Hospital role for session
   }
 
-  // Set session and redirect
-  req.session.userId = user._id;
-  req.session.role = user.role;
+  
 
+  // Redirect to dashboard or home page after login
   return res.redirect("/");
 };
 

@@ -1,11 +1,39 @@
 // Required Packages
 const dotenv = require("dotenv");
 const express = require("express");
+const http = require("http");
+const socketIO = require("socket.io");
+const cors = require("cors");
 const session = require("express-session");
 const MongoStore = require("connect-mongo");
 const bodyParser = require("body-parser");
 const path = require("path");
 const app = express();
+const server = http.createServer(app);
+const io = socketIO(server, {
+  cors: {
+    origin: "*",
+    methods: ["GET", "POST"],
+  },
+});
+app.use(cors("*"));
+app.use(express.json());
+//we might need to update here
+app.post("/send", (req, res) => {
+  const message = req.body.message;
+  io.emit("pushNotification", {
+    message,
+  });
+  res.status(200).send({
+    message: "Sent Successfully",
+  });
+  io.on("connection", (socket) => {
+    console.log("Connected");
+    socket.on("disconnect", () => {
+      console.log("Client disconnected");
+    });
+  });
+});
 // Middlewares
 const { setUserData } = require("./middleware/middleware.js");
 // Db Connection
@@ -15,7 +43,7 @@ const loginRoutes = require("./routes/login.route.js");
 const registerRoutes = require("./routes/register.route.js");
 const forgotPasswordRoutes = require("./routes/forgot-password.route.js");
 const dashboardRoutes = require("./routes/dashboard.route.js");
-const recipientRoutes = require("./routes/recipient.route.js");
+const aboutUsRoutes = require("./routes/aboutUs.route.js");
 
 dotenv.config();
 
@@ -67,6 +95,6 @@ app.get("/logout", (req, res) => {
 // Dashboard of different roles users.
 app.use("/", dashboardRoutes);
 
-app.use("/recipient", recipientRoutes);
+app.use("/aboutUs", aboutUsRoutes);
 
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

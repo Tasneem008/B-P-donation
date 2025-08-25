@@ -1,4 +1,3 @@
-<!-- views/home.ejs -->
 <!DOCTYPE html>
 <html data-theme="light" lang="en">
   <head>
@@ -8,143 +7,315 @@
   <body class="flex flex-col">
     <%- include('./partials/navbar.ejs'); %>
 
-
-    <section class=" "
-     style="background-image: url('/pics/bg2.jpg'); background-size: cover; background-position: center;">
-     <div class="flex flex-col items-center justify-center text-center px-4 bg-white/2 backdrop-blur-sm h-[90vh]">
-      <h1 class="text-5xl font-bold text-red-700 mb-4">Welcome to DonateLife</h1>
-      <p class="text-lg max-w-2xl text-gray-800 mb-6">
-        Join our community to save lives by donating blood and plasma. Whether you're a donor or someone in need, we're here for you.
-      </p>
-      <div class="flex gap-4">
-        <a href="/register" class="btn btn-error text-white">Join as Donor</a>
-        <a href="/recipient/blood" class="btn btn-outline btn-error">Request Blood and Plasma</a>
-      </div>
-     </div>
-      
-    </section>
-
-   <section class="py-16 bg-white">
-  <div class="container mx-auto grid grid-cols-1 md:grid-cols-2 gap-8">
-
-    <div>
-     
-      <div class="grid grid-cols-3 gap-4 mb-8">
-        <div class="text-center">
-          <h2 class="text-4xl font-bold text-red-600">320+</h2>
-          <p class="text-gray-600">Blood Donations</p>
-        </div>
-        <div class="text-center">
-          <h2 class="text-4xl font-bold text-red-600">150+</h2>
-          <p class="text-gray-600">Registered Donors</p>
-        </div>
-        <div class="text-center">
-          <h2 class="text-4xl font-bold text-red-600">50+</h2>
-          <p class="text-gray-600">Hospitals Partnered</p>
-        </div>
-      </div>
-
-      <!-- Image / Info Box -->
-      <div class="bg-red-600 text-white p-6 rounded-lg mb-4">
-        <h3 class="text-2xl font-semibold mb-2">Why We Do It</h3>
-        <p>
-          Every 2 seconds, someone needs a blood transfusion. Yet, less than 5% of eligible donors give blood.
-          We’re here to bridge that gap, making donation simple, safe, and rewarding.
+    <section
+      style="
+        background-image: url('/pics/bg2.jpg');
+        background-size: cover;
+        background-position: center;
+      "
+    >
+      <div
+        class="flex flex-col items-center justify-center text-center px-4 bg-white/2 backdrop-blur-sm h-[90vh]"
+      >
+        <h1 class="text-5xl font-bold text-red-700 mb-4">
+          Welcome to DonateLife
+        </h1>
+        <p class="text-lg max-w-2xl text-gray-800 mb-6">
+          Join our community to save lives by donating blood and plasma. Whether
+          you're a donor or someone in need, we're here for you.
         </p>
-      </div>
-
-      <img src="/pics/blood-bag.jpg" alt="Blood Bag" class="rounded-lg shadow-md px-6" />
-    </div>
-
-    <!-- Right Column -->
-    <div>
-      <p class="text-red-600 font-semibold mb-2">Our Story</p>
-      <h2 class="text-4xl font-bold mb-4">Dedicated to Life: The Story of Our Blood Drive Initiative</h2>
-      <p class="text-gray-700 mb-6">
-        Join our mission to save lives. We connect donors with recipients, ensuring that life-saving blood and plasma reaches those in need quickly and safely.
-      </p>
-
-      <!-- How It Works Box -->
-      <div class="bg-gray-50 p-6 rounded-lg shadow-sm mb-6">
-        <h3 class="text-lg font-semibold mb-4">How It Works</h3>
-        <ul class="space-y-2 text-gray-700">
-          <li><i class="fa-solid fa-heart text-red-500"></i> Register as a donor or request blood.</li>
-          <li><i class="fa-solid fa-heart text-red-500"></i> We match donors with recipients based on needs.</li>
-          <li><i class="fa-solid fa-heart text-red-500"></i> Donations happen at certified locations.</li>
-          <li><i class="fa-solid fa-heart text-red-500"></i> Save lives and inspire others to give.</li>
-        </ul>
-      </div>
-
-      <a href="/about" class="btn btn-error text-white">Discover More</a>
-    </div>
-
-  </div>
-</section>
-
-    <section class="py-16 bg-red-50">
-      <h2 class="text-3xl font-bold text-center text-red-700 mb-10">
-        Available Blood Types
-      </h2>
-      <div
-        class="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-8 gap-6 justify-center px-6"
-      >
-        <% ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'].forEach(bg => { %>
-        <div
-          class="rounded-full w-20 h-20 flex items-center justify-center text-white font-bold text-lg bg-red-600 animate-pulse"
-        >
-          <%= bg %>
+        <div class="flex gap-4">
+          <% if(isAuthenticated && role === 'donor'){ %>
+          <a href="/donor/donor-form" class="btn btn-error text-white"
+            >Join as Donor</a
+          >
+          <% } %> <% if(isAuthenticated && role === 'recipient'){ %>
+          <a href="/dashboard" class="btn btn-error text-white"
+            >Request Blood and Plasma</a
+          >
+          <% } %> <% if(isAuthenticated && role === 'hospital'){ %>
+          <a href="/dashboard" class="btn btn-error text-white"
+            >Hospital Dashboard</a
+          >
+          <% } %>
         </div>
-        <% }) %>
-      </div>
-
-      <h2 class="text-2xl font-semibold text-center text-yellow-600 mt-16 mb-6">
-        Available Plasma Types
-      </h2>
-      <div
-        class="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 gap-6 justify-center px-6"
-      >
-        <% ['Plasma A', 'Plasma B', 'Plasma AB', 'Plasma O'].forEach(plasma => {
-        %>
-        <div
-          class="blood-type rounded-full w-24 h-24 flex items-center justify-center text-white font-bold text-sm bg-yellow-500 hover:bg-yellow-600"
-        >
-          <%= plasma %>
-        </div>
-        <% }) %>
       </div>
     </section>
 
-    <section class="py-16 bg-white">
-      <h2 class="text-3xl font-bold text-center text-red-600 mb-8">
-        Get Started
-      </h2>
-      <div
-        class="flex flex-col md:flex-row justify-center items-center gap-8 px-4"
-      >
-        <div class="card w-64 bg-red-100 shadow-xl">
-          <div class="card-body text-center">
-            <h3 class="text-xl font-bold">I'm a Donor</h3>
-            <a href="/donor/dashboard" class="btn btn-error text-white mt-4"
-              >Donate</a
-            >
+    <section class="bg-white mt-20">
+      <div class="max-w-[1440px] mx-auto grid grid-cols-2">
+        <!-- Left Column with Image -->
+        <div class="">
+          <img
+            src="/pics/manpointingright.png"
+            alt="Person with red shirt"
+            class="rounded-lg w-full h-full"
+          />
+        </div>
+
+        <!-- Right Column with Form -->
+        <div class="ml-20 h-[500px] flex flex-col items-center justify-center gap-4">
+          <h3 class="text-red-600 font-bold text-2xl tracking-wider">Join Us And Request For Blood & Plasma</h3>
+          <img
+            src="/pics/recipientform.jpg"
+            alt="Person with red shirt"
+            class="rounded-lg pb-10 h-full "
+          />
+        </div>
+      </div>
+    </section>
+
+    <!-- Services Section -->
+    <section class="relative bg-[#C3474D]">
+      <!-- top spacing so the white cards can overlap nicely -->
+      <div class="mx-auto max-w-7xl px-4 md:px-6 lg:px-8 pt-16 pb-24">
+        <!-- Row: Title card (left) + Image (right) -->
+        <!-- <div class="grid gap-8 md:grid-cols-2 items-start">
+      
+      <div class="card bg-white shadow-xl rounded-b-xl rounded-t-none -mt-16">
+        <div class="card-body p-8 md:p-10">
+          <h2 class="card-title text-3xl md:text-4xl">Best Services</h2>
+          <p class="mt-3 text-gray-600">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+            Aenean commodo ligula eget dolor. Aenean massa.
+          </p>
+        </div>
+      </div> -->
+
+        <!-- Image with overlapping red badge -->
+        <!-- <div class="relative -mt-16">
+        <div class="overflow-hidden rounded-xl shadow-xl">
+        
+          <img
+            src="https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?q=80&w=1200&auto=format&fit=crop"
+            alt="Expert medical staff"
+            class="w-full h-[240px] md:h-[280px] object-cover"
+          />
+        </div>  -->
+
+        <!-- Red badge card overlapping image -->
+        <!-- <div
+          class="absolute -bottom-6 left-6 bg-[#C3474D] text-white rounded-xl shadow-lg px-6 py-4 flex items-start gap-4"
+        >
+          <div class="text-3xl leading-none">
+            <i class="fa-solid fa-people-group"></i>
+          </div>
+          <div>
+            <div class="font-semibold text-lg">Expert Staff</div>
+            <p class="text-white/90 text-sm">
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+            </p>
           </div>
         </div>
-        <div class="card w-64 bg-red-100 shadow-xl">
-          <div class="card-body text-center">
-            <h3 class="text-xl font-bold">I'm a Recipient</h3>
-            <a href="/recipient/blood" class="btn btn-error text-white mt-4"
-              >Request Blood</a
-            >
+      </div>
+    </div>  -->
+
+        <!-- Cards row -->
+        <div class="mt-20 grid gap-6 md:grid-cols-3">
+          <!-- Card 1 -->
+          <div class="card bg-white shadow-xl rounded-xl">
+            <div class="card-body items-center text-center p-8">
+              <div class="text-5xl text-[#C3474D]">
+                <i class="fa-solid fa-hand-holding-medical"></i>
+              </div>
+              <h3 class="card-title mt-4 text-2xl">Blood Donation</h3>
+              <p class="text-gray-600 mt-2">
+                Give the gift of life by donating blood. Every donation can help
+                save up to three lives and provide critical support to patients
+                in need of surgeries, treatments, or emergency care.
+              </p>
+              <div class="card-actions mt-4">
+                <a
+                  href="/aboutUs#bloodDonation"
+                  class="link link-hover text-[#C3474D]"
+                  >Learn More</a
+                >
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 2 -->
+          <div class="card bg-white shadow-xl rounded-xl">
+            <div class="card-body items-center text-center p-8">
+              <div class="text-5xl text-[#C3474D]">
+                <i class="fa-solid fa-droplet"></i>
+              </div>
+              <h3 class="card-title mt-4 text-2xl">Health Check</h3>
+              <p class="text-gray-600 mt-2">
+                Regular health screenings ensure your body is in good shape.
+                Early detection of health issues like anemia, high blood
+                pressure, or cholesterol can prevent long-term complications.
+              </p>
+              <div class="card-actions mt-4">
+                <a
+                  href="/aboutUs#healthCheck"
+                  class="link link-hover text-[#C3474D]"
+                  >Learn More</a
+                >
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 3 -->
+          <div class="card bg-white shadow-xl rounded-xl">
+            <div class="card-body items-center text-center p-8">
+              <div class="text-5xl text-[#C3474D]">
+                <i class="fa-solid fa-hospital"></i>
+              </div>
+              <h3 class="card-title mt-4 text-2xl">Blood Bank</h3>
+              <p class="text-gray-600 mt-2">
+                Our blood bank stores and manages safe, screened blood to be
+                available whenever emergencies arise. With your contribution,
+                hospitals can respond quickly to accidents, surgeries, and
+                critical care needs.
+              </p>
+              <div class="card-actions mt-4">
+                <a
+                  href="/aboutUs#bloodBank"
+                  class="link link-hover text-[#C3474D]"
+                  >Learn More</a
+                >
+              </div>
+            </div>
           </div>
         </div>
-        <div class="card w-64 bg-red-100 shadow-xl">
-          <div class="card-body text-center">
-            <h3 class="text-xl font-bold">Hospital Admin</h3>
-            <a href="/admin/dashboard" class="btn btn-error text-white mt-4"
-              >Admin Panel</a
-            >
-          </div>
+      </div>
+    </section>
+
+    <!-- EVENTS SECTION -->
+    <section class="mx-auto max-w-7xl px-4 md:px-6 lg:px-8 py-12">
+      <!-- Header -->
+      <div class="flex items-center justify-between gap-4 mb-6">
+        <div>
+          <!-- <span class="text-sm font-medium text-red-600">Event</span> -->
+          <h2 class="text-3xl md:text-4xl font-extrabold leading-tight">
+            Affiliated Hospitals
+          </h2>
         </div>
+        <!-- <a href="#"
+       class="btn bg-red-600 hover:bg-red-700 text-white border-none normal-case">
+      View More
+    </a> -->
+      </div>
+
+      <!-- Cards -->
+      <div class="grid gap-6 md:grid-cols-3">
+        <!-- Card -->
+        <article class="rounded-xl overflow-hidden shadow-sm bg-white">
+          <div class="relative">
+            <img
+              src="/pics/popular.jpg"
+              alt="Event image"
+              class="h-64 w-full"
+            />
+          </div>
+
+          <!-- location strip -->
+          <div class="bg-gray-100 px-4 py-3">
+            <div class="flex items-center gap-2 text-gray-700">
+              <i class="fa-solid fa-location-dot text-red-600"></i>
+              <span class="text-sm font-medium"
+                >Popular Diagnostic Centre Ltd</span
+              >
+            </div>
+          </div>
+
+          <!-- body -->
+          <div class="p-6 text-center">
+            <h3 class="text-2xl font-semibold leading-snug">
+              Popular Diagnostic Centre Ltd.
+            </h3>
+            <p class="mt-3 text-gray-600">
+              Popular Diagnostic Centre is one of the leading healthcare
+              providers in Bangladesh, offering advanced medical diagnostics,
+              specialized treatments, and quality hospital services. With modern
+              technology and expert doctors, it is trusted by millions of
+              patients nationwide.
+            </p>
+            <a
+              href="https://www.populardiagnostic.com/goals"
+              target="_blank"
+              class="mt-4 inline-block text-red-600 hover:text-red-700 font-medium"
+            >
+              Learn More
+            </a>
+          </div>
+        </article>
+
+        <!-- Card 2 -->
+        <article class="rounded-xl overflow-hidden shadow-sm bg-white">
+          <div class="relative">
+            <img
+              src="/pics/labaid.jpg"
+              alt="Event image"
+              class="h-64 w-full object-cover"
+            />
+          </div>
+          <div class="bg-gray-100 px-4 py-3">
+            <div class="flex items-center gap-2 text-gray-700">
+              <i class="fa-solid fa-location-dot text-red-600"></i>
+              <span class="text-sm font-medium"
+                >Labaid Specialized Hospital</span
+              >
+            </div>
+          </div>
+          <div class="p-6 text-center">
+            <h3 class="text-2xl font-semibold leading-snug">
+              Labaid Specialiazed Hospital
+            </h3>
+            <p class="mt-3 text-gray-600">
+              Vision Labaid Specialized Hospital will Create healthier
+              communities by creatively challenging individuals to be more
+              responsible for their personal health status. Relentlessly pursue
+              unparalleled quality, value, patient, customer and staff
+              satisfaction.
+            </p>
+            <a
+              href="https://labaid.com.bd/en/about/about-labaid"
+              target="_blank"
+              class="mt-4 inline-block text-red-600 hover:text-red-700 font-medium"
+            >
+              Learn More
+            </a>
+          </div>
+        </article>
+
+        <!-- Card 3 -->
+        <article class="rounded-xl overflow-hidden shadow-sm bg-white">
+          <div class="relative">
+            <img
+              src="/pics/heart.jpeg"
+              alt="Event image"
+              class="h-64 w-full object-cover"
+            />
+          </div>
+          <div class="bg-gray-100 px-4 py-3">
+            <div class="flex items-center gap-2 text-gray-700">
+              <i class="fa-solid fa-location-dot text-red-600"></i>
+              <span class="text-sm font-medium"
+                >National Heart Foundation Hospital & Research Institute</span
+              >
+            </div>
+          </div>
+          <div class="p-6 text-center">
+            <h3 class="text-2xl font-semibold leading-snug">
+              National Heart Foundation
+            </h3>
+            <p class="mt-3 text-gray-600">
+              With a strong focus on education, awareness, research, and patient
+              care, NHF strives to combat the rising prevalence of heart
+              diseases and promote a heart-healthy lifestyle among individuals
+              of all ages.
+            </p>
+            <a
+              href="https://www.nhf.org.bd/"
+              target="_blank"
+              class="mt-4 inline-block text-red-600 hover:text-red-700 font-medium"
+            >
+              Learn More
+            </a>
+          </div>
+        </article>
       </div>
     </section>
 
