@@ -46,5 +46,16 @@
         </table>
       </main>
     </div>
+  
+    <% if (matches > 0) { %>
+      <script>
+        // server → browser
+        const matches = "<%= matches %>";
+
+        alert(
+          `✅ We found ${matches} ${matches === 1 ? "donor" : "donors"} with your blood group. You’ll get an acceptance soon!`
+        );
+      </script>
+    <% } %>
   </body>
 </html>

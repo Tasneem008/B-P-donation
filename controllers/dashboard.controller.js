@@ -1,6 +1,7 @@
 const { default: mongoose } = require("mongoose");
 const BloodDonation = require("../models/BloodDonation");
 const BloodRequest = require("../models/BloodRequest.js");
+const NotificationService = require('../services/notificationService');
 const Hospital = require("../models/Hospital.js");
 const User = require("../models/User.js");
 
@@ -104,7 +105,7 @@ const getDonorNotifications = async (req, res) => {
       .populate("location");
 
     // Render the donor notifications page with the blood requests
-    return res.render("donor-notifications", { bloodRequests });
+    return res.render("donor-notifications", { bloodRequests, userDonor});
   } catch (error) {
     console.error(error);
     return res.status(500).send("Error fetching blood requests");
@@ -185,6 +186,23 @@ const acceptBloodRequest = async (req, res) => {
     if (!request) {
       return res.status(404).send("Blood request not found");
     }
+     const donor = await User.findById(req.session.userId)
+      .select("username")
+      .lean();
+
+    // 3. Build a richer payload
+    const payload = {
+      requestId: request._id.toString(),
+      acceptedById: donor._id.toString(),
+      donorUsername: donor.username
+    };
+
+    // 4. Emit with username included
+    NotificationService.getInstance().notifyUser(
+      request.recipientId.toString(),
+      "requestAccepted",
+      payload
+    );
 
     return res.redirect("/donor/dashboard/notifications");
   } catch (error) {
@@ -205,8 +223,8 @@ const getRecipientHistory = async (req, res) => {
     const bloodRequests = await BloodRequest.find({
       recipientId: req.session.userId,
     }).populate("location");
-
-    return res.render("recipient-history", { bloodRequests });
+    const matches = req.query.matches || 0;
+    return res.render("recipient-history", { bloodRequests, matches});
   } catch (error) {
     console.error(error);
     return res.status(500).send("Error fetching blood requests");
@@ -214,7 +232,7 @@ const getRecipientHistory = async (req, res) => {
 };
 
 const getRequestForm = (req, res) => {
-  res.render("/views/donor-dashboard.ejs");
+  res.render("request-form");
 };
 
 const postRequestForm = async (req, res) => {
@@ -232,8 +250,39 @@ const postRequestForm = async (req, res) => {
       recipientId: userId,
     });
     await newbloodrequest.save();
-    return res.redirect("/recipient/dashboard/history");
-  } catch (error) {
+     const populatedRequest = await BloodRequest.findById(newbloodrequest._id)
+      .populate("location", "name"); 
+
+    const matchingDonors = await BloodDonation
+      .find({ bloodgroup })
+      .populate("donorUserId", "location");
+
+    matchingDonors.forEach(donor => {
+      if (!donor.donorUserId) return;
+      const roomId = donor.donorUserId._id.toString();
+      NotificationService
+        .getInstance()
+        .notifyUser(
+          roomId,
+          "newRequest",
+          {
+            requestId: newbloodrequest._id,
+            bloodgroup: newbloodrequest.bloodgroup,
+            location: populatedRequest.location?.name || "Unknown Hospital",
+            bags: newbloodrequest.bags,
+            message: `New blood request for ${newbloodrequest.bloodgroup}`
+          }
+        );
+      console.log("Sending notification to donor room:", roomId);
+    });
+
+    // 3. Redirect with match count as query-param
+    const matchCount = matchingDonors.length;
+    return res.redirect(
+      `/recipient/dashboard/history?matches=${matchCount}`
+    );
+
+  }catch (error) {
     console.error(error);
     return res.status(500).send("Error in creating requests");
   }
