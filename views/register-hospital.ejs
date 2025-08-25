@@ -2,7 +2,6 @@
 <html data-theme="light" lang="en">
   <head>
     <%- include('./partials/head.ejs'); %>
-
     <title>Register | DonateLife</title>
   </head>
   <body
@@ -16,24 +15,26 @@
     <div class="container mx-auto">
       <form
         method="POST"
-        action="/register"
+        action="/register/hospital"
         class="bg-white/20 backdrop-blur-sm shadow-lg rounded-xl px-8 py-10 w-full max-w-sm"
       >
         <h1 class="text-3xl font-bold text-center text-red-600 mb-6">
           Register
         </h1>
 
-        <label class="form-control w-full mb-4">
-          <span class="label-text font-semibold">Username</span>
-          <input
-            type="text"
-            name="username"
-            required
-            class="input input-bordered w-full"
-            pattern="^[a-zA-Z0-9][a-zA-Z0-9_\-]{2,13}[a-zA-Z0-9]$"
-          />
+        <!-- Name Field -->
+        <label class="form-control w-full mb-6">
+          <span class="label-text font-semibold">Name</span>
+          <select name="name" required class="select select-bordered w-full">
+            <option value="">Select Hospital</option>
+            <% hospitalsArray.forEach(hospital => { %>
+            <option value="<%= hospital.title %>"><%= hospital.title %></option>
+            <% }) %>
+            <!-- Popular Hospital Branches -->
+          </select>
         </label>
 
+        <!-- Email Field -->
         <label class="form-control w-full mb-4">
           <span class="label-text font-semibold">Email</span>
           <input
@@ -45,6 +46,7 @@
           />
         </label>
 
+        <!-- Password Field -->
         <label class="form-control w-full mb-6">
           <span class="label-text font-semibold"
             >Password (At least 8 characters)</span
@@ -55,10 +57,11 @@
             name="password"
             required
             class="input input-bordered w-full"
-            pattern="^.{8}$"
+            pattern="^.{8,}$"
           />
         </label>
 
+        <!-- Confirm Password Field -->
         <label class="form-control w-full mb-6">
           <span class="label-text font-semibold">Confirm Password</span>
           <input
@@ -67,16 +70,33 @@
             name="confirmPassword"
             required
             class="input input-bordered w-full"
-            pattern="^.{8}$"
+            pattern="^.{8,}$"
           />
         </label>
 
-        <select name="role" required class="select select-bordered w-full mb-6">
-          <option value="">Select Role</option>
-          <option value="recipient">Recipient</option>
-          <option value="donor">Donor</option>
-        </select>
-        <p id="errorMessage" class="text-red-500"><%= error %></p>
+        <!-- Location Field -->
+        <label class="form-control w-full mb-6">
+          <span class="label-text font-semibold">Location</span>
+          <select
+            name="location"
+            required
+            class="select select-bordered w-full"
+          >
+            <option value="">Select Location</option>
+            <% hospitalsArray.forEach(hospital => { %>
+            <optgroup label="<%= hospital.title %>">
+              <% hospital.areas.forEach(area => { %>
+              <option value="<%= area %>"><%= area %></option>
+              <% }) %>
+            </optgroup>
+            <% }) %>
+          </select>
+        </label>
+
+        <!-- Error Message -->
+        <p id="errorMessage" class="text-red-500"></p>
+
+        <!-- Submit Button -->
         <button
           id="submitter"
           type="submit"
@@ -85,6 +105,7 @@
           Register
         </button>
 
+        <!-- Redirect to Login Page -->
         <p class="text-center mt-4 text-sm text-gray-600">
           Already have an account?
           <a href="/login" class="text-red-600 font-medium hover:underline"
@@ -92,6 +113,7 @@
           >
         </p>
 
+        <!-- Register as Hospital Link -->
         <p class="text-center mt-4 text-sm text-gray-600">
           <a
             href="/register/hospital"
@@ -102,44 +124,5 @@
         </p>
       </form>
     </div>
-    <!-- <script>
-      const form = document.getElementById("registerForm");
-
-      form.addEventListener("submit", function (e) {
-        e.preventDefault();
-        const password = document.getElementById("password").value;
-        const confirmPassword =
-          document.getElementById("confirmPassword").value;
-        const errorMessageField = document.getElementById("errorMessage");
-        const submitter = document.getElementById("submitter");
-        const formData = new FormData(form, submitter);
-        const data = {};
-
-        formData.forEach((value, key) => {
-          data[key] = value;
-        });
-
-        console.log(data);
-
-        if (password === confirmPassword) {
-          fetch("/register", {
-            method: "POST", // Use POST for form submissions
-            headers: {
-              "Content-Type": "application/json", // Specify JSON content type
-            },
-            body: JSON.stringify(data), // Convert the data object to JSON
-          })
-            .then((response) => response.json()) // Parse the JSON response from the backend
-            .then((data) => {
-              console.log("Success:", data); // Handle the response from the backend
-            })
-            .catch((error) => {
-              console.error("Error:", error); // Handle any errors
-            });
-        } else {
-          errorMessageField.innerText = "Passwords do not match.";
-        }
-      }); 
-    </script> -->
   </body>
 </html>

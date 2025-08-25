@@ -7,28 +7,14 @@
   <body class="bg-gray-100 text-gray-800 font-sans">
     <!-- Sidebar -->
     <div class="flex min-h-screen">
-      <aside class="w-64 bg-white shadow-lg p-6 space-y-6">
-        <a href="/">
-          <h1 class="text-2xl font-bold text-red-600">DonateLife</h1>
-        </a>
-        <nav class="flex flex-col space-y-4">
-          <a href="/hospital/dashboard" class="text-gray-700 hover:text-red-600">Dashboard</a>
-          <a href="/hospital/donor-request" class="text-gray-700 hover:text-red-600"
-            >Donor Requests</a
-          >
-          <a href="#" class="text-gray-700 hover:text-red-600"
-            >Recipient Requests</a
-          >
-          <a href="#" class="text-gray-700 hover:text-red-600">Appointment Requests</a>
-          <a href="/logout" class="text-gray-700 hover:text-red-600 cursor-pointer">Logout</a>
-        </nav>
-      </aside>
+      <%- include('./partials/hospital-sidebar.ejs') %>
+      
 
       <!-- Main Panel -->
       <main class="flex-1 p-8 space-y-10">
         <!-- Topbar -->
         <div class="flex justify-between items-center">
-          <h2 class="text-3xl font-bold">Hospital Dashboard</h2>
+          <h2 class="text-3xl font-bold">Hospital Dashboard - <%= hospital.name %> - <%= hospital.location %></h2>
           <div class="relative">
             <button
               class="relative bg-white p-2 rounded-full shadow hover:bg-gray-100"
@@ -45,15 +31,15 @@
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div class="bg-white p-6 rounded-lg shadow-md">
             <h3 class="text-xl font-semibold text-red-600">Available Units</h3>
-            <p class="mt-2 text-gray-700">Blood: 120 | Plasma: 65</p>
+            <p class="mt-2 text-gray-700">Blood: <%= totalBlood %></p>
           </div>
           <div class="bg-white p-6 rounded-lg shadow-md">
-            <h3 class="text-xl font-semibold text-red-600">Donor Requests</h3>
-            <p class="mt-2 text-gray-700">Pending: <%= donorPending %>  | Approved: <%= donorApproved %> </p>
+            <h3 class="text-xl font-semibold text-red-600">Accepted Requests</h3>
+            <p class="mt-2 text-gray-700">Accepted: <%= donorPending %>  | Completed: <%= donorApproved %> </p>
           </div>
           <div class="bg-white p-6 rounded-lg shadow-md">
             <h3 class="text-xl font-semibold text-red-600">
-              Recipient Requests
+              Total Recipient Requests
             </h3>
             <p class="mt-2 text-gray-700">Pending: <%= recipientPending %> | Fulfilled: <%= recipientAccepted %></p>
           </div>
@@ -65,7 +51,7 @@
             Request Blood/Plasma
           </h3>
           <form
-            action="/hospital"
+            action="/hospital/dashboard/home"
             method="POST"
             class="grid grid-cols-1 md:grid-cols-3 gap-4"
           >
@@ -108,39 +94,41 @@
         <!-- Appointments Management -->
         <div class="bg-white p-6 rounded-lg shadow-md">
           <h3 class="text-xl font-bold mb-4 text-red-600">
-            Appointment Requests
+            Donor → Hospital Appointments
           </h3>
           <div class="overflow-x-auto">
             <table class="w-full table-auto text-left">
               <thead>
                 <tr class="bg-gray-100 text-gray-600">
-                  <th class="p-3">Donor Name</th>
-                  <th class="p-3">Date</th>
-                  <th class="p-3">Time</th>
+                  <th class="p-3">Donor User Name</th>
+                  <th class="p-3">Requested Date</th>
+                  <th class="p-3">Blood Group</th>
+                    <th class="p-3">Bags Requested</th>
                   <th class="p-3">Status</th>
                   <th class="p-3 text-center">Actions</th>
                 </tr>
               </thead>
               <tbody class="text-sm text-gray-700">
-                <tr class="border-b">
-                  <td class="p-3">John Doe</td>
-                  <td class="p-3">2025-08-12</td>
-                  <td class="p-3">10:30 AM</td>
-                  <td class="p-3 text-yellow-600 font-medium">Pending</td>
+                <% donorHospitalAppointment.forEach(app=>{  %>
+                  <tr class="border-b">
+                  <td class="p-3"><%= app?.acceptedByDonor?.username ? app.acceptedByDonor.username : `${app.acceptedByHospital.name} - ${app.acceptedByHospital.location}`  %></td>
+                  <td class="p-3"><%= new Date(app.requestedDate).toLocaleDateString() %></td>
+                  <td class="p-3"><%= app.bloodgroup %></td>
+                  <td class="p-3"><%= app.bags %></td>
+                  <td class="p-3 font-medium <%= app.status === 'accepted' ? 'text-yellow-800' : "text-green-500"  %>"><%= app.status %></td>
                   <td class="p-3 flex gap-2 justify-center">
-                    <button
-                      class="bg-green-500 text-white px-4 py-1 rounded hover:bg-green-600"
-                    >
-                      Approve
-                    </button>
-                    <button
-                      class="bg-red-500 text-white px-4 py-1 rounded hover:bg-red-600"
-                    >
-                      Reject
-                    </button>
+                    <form action="/hospital/dashboard/home/completed-donation/<%= app._id %>" method="post">
+                      <button
+                        class="bg-green-500 text-white px-4 py-1 rounded hover:bg-green-600 <%= app.status === 'completed' ? 'btn-disabled' : ''  %>"
+                        <%= app.status === 'completed' ? 'disabled' : ''  %>
+                        type='submit'
+                      >
+                        Completed
+                      </button>
+                    </form>
                   </td>
                 </tr>
-                <!-- More rows can be dynamically added -->
+                <% }) %>
               </tbody>
             </table>
           </div>

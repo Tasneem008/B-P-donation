@@ -10,31 +10,30 @@ const bodyParser = require("body-parser");
 const path = require("path");
 const app = express();
 const server = http.createServer(app);
-const NotificationService = require('./services/notificationService.js');
-app.use(cors());
 const io = socketIO(server, {
   cors: {
     origin: "*",
     methods: ["GET", "POST"],
   },
 });
-NotificationService.initialize(io);
 app.use(cors("*"));
 app.use(express.json());
 //we might need to update here
-io.on("connection", (socket) => {
-  console.log(`Socket connected: ${socket.id}`);
-
-  socket.on("joinRoom", (userId) => {
-    socket.join(userId); // room name = donor _id
-    console.log(`Socket ${socket.id} joined room ${userId}`);
+app.post("/send", (req, res) => {
+  const message = req.body.message;
+  io.emit("pushNotification", {
+    message,
   });
-
-  socket.on("disconnect", () => {
-    console.log(`Socket ${socket.id} disconnected`);
+  res.status(200).send({
+    message: "Sent Successfully",
+  });
+  io.on("connection", (socket) => {
+    console.log("Connected");
+    socket.on("disconnect", () => {
+      console.log("Client disconnected");
+    });
   });
 });
-
 // Middlewares
 const { setUserData } = require("./middleware/middleware.js");
 // Db Connection
@@ -44,12 +43,8 @@ const loginRoutes = require("./routes/login.route.js");
 const registerRoutes = require("./routes/register.route.js");
 const forgotPasswordRoutes = require("./routes/forgot-password.route.js");
 const dashboardRoutes = require("./routes/dashboard.route.js");
-const recipientRoutes = require("./routes/recipient.route.js");
-const hospitalRoutes = require("./routes/hospital.routes.js");
-const requestRoutes = require("./routes/recipient-request.route.js");
-const donorRoutes = require("./routes/donor.routes.js");
-const resetPasswordRoutes = require("./routes/reset-password.route.js");
 const aboutUsRoutes = require("./routes/aboutUs.route.js");
+
 dotenv.config();
 
 const PORT = process.env.PORT || 3000;
@@ -89,7 +84,6 @@ app.use("/register", registerRoutes);
 
 // Show forgot password form
 app.use("/forgot-password", forgotPasswordRoutes);
-app.use("/reset-password", resetPasswordRoutes);
 
 // Logout Route
 app.get("/logout", (req, res) => {
@@ -101,12 +95,6 @@ app.get("/logout", (req, res) => {
 // Dashboard of different roles users.
 app.use("/", dashboardRoutes);
 
-app.use("/recipient", recipientRoutes);
-app.use("/request", requestRoutes);
-app.use("/donor", donorRoutes);
-
-app.use("/hospital", hospitalRoutes);
 app.use("/aboutUs", aboutUsRoutes);
-// server.js (below your other routes)
-//const NotificationService = require("./services/notificationService");
-server.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

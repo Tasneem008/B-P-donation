@@ -28,14 +28,14 @@
             <% bloodRequests.forEach(function(request) { %>
             <tr>
               <td class="px-4 py-2 border-b"><%= request.bloodgroup %></td>
-              <td class="px-4 py-2 border-b"><%= request.location %></td>
+              <td class="px-4 py-2 border-b"><%= request.location.name %> - <%= request.location.location %></td>
               <td class="px-4 py-2 border-b"><%= request.bags %></td>
               <td class="px-4 py-2 border-b">
                 <%= new Date(request.requestedDate).toLocaleDateString() %>
               </td>
               <td class="px-4 py-2 border-b">
                 <span
-                  class="px-3 py-1 rounded-full <%= request.status === 'pending' ? 'bg-yellow-200 text-yellow-800' : request.status === 'accepted' ? 'bg-green-200 text-green-800' : 'bg-red-200 text-red-800' %>"
+                  class="px-3 py-1 rounded-full <%= request.status === 'pending' ? 'bg-yellow-200 text-yellow-800' : request.status === 'accepted' ? 'bg-green-200 text-green-800' : 'bg-blue-200 text-blue-800' %>"
                 >
                   <%= request.status %>
                 </span>

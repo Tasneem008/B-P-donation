@@ -13,7 +13,7 @@
   >
     <!-- Sidebar -->
     <div class="flex min-h-screen">
-      <%- include('./partials/donor-sidebar.ejs') %>
+      <%- include('./partials/hospital-sidebar.ejs') %>
 
       <!-- Main Panel -->
       <main class="flex-1 p-2 space-y-10">
@@ -36,7 +36,7 @@
               <div class="mb-4">
                 <!-- Location -->
                 <div class="text-md text-gray-600 mb-2">
-                  Location: <%= request.location.name %> - <%= request.location.location %>
+                 Username: <%= request.recipientId.username %>
                 </div>
 
                 <!-- Bags Needed -->
@@ -57,7 +57,7 @@
               </div>
 
               <!-- Accept Button -->
-              <form action="/donor/dashboard/accept-request" method="POST">
+              <form action="/hospital/dashboard/accept-request" method="POST">
                 <input
                   type="hidden"
                   name="requestId"
