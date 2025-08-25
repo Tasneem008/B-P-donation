@@ -158,5 +158,23 @@
         </div>
       </main>
     </div>
+    <script src="/socket.io/socket.io.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const socket = io();
+    const userId = "<%= userId %>";
+
+    socket.on("connect", () => {
+      socket.emit("joinRoom", userId);
+    });
+
+    socket.on("requestAccepted", ({ requestId, donorUsername }) => {
+      alert(
+        `🎉 Your request (${requestId}) was accepted by ${donorUsername}!`
+      );
+    });
+  });
+</script>
+
   </body>
 </html>

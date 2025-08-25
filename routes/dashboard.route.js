@@ -79,7 +79,7 @@ router.get(
   "/recipient/dashboard/history",
   checkAuth,
   checkRole("recipient"),
-  getRecipientHistory
+  getRecipientHistory,
 );
 
 router.get(

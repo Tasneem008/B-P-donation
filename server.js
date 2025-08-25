@@ -10,28 +10,28 @@ const bodyParser = require("body-parser");
 const path = require("path");
 const app = express();
 const server = http.createServer(app);
+const NotificationService = require('./services/notificationService.js');
+app.use(cors());
 const io = socketIO(server, {
   cors: {
     origin: "*",
     methods: ["GET", "POST"],
   },
 });
+NotificationService.initialize(io);
 app.use(cors("*"));
 app.use(express.json());
 //we might need to update here
-app.post("/send", (req, res) => {
-  const message = req.body.message;
-  io.emit("pushNotification", {
-    message,
+io.on("connection", (socket) => {
+  console.log(`Socket connected: ${socket.id}`);
+
+  socket.on("joinRoom", (userId) => {
+    socket.join(userId); // room name = donor _id
+    console.log(`Socket ${socket.id} joined room ${userId}`);
   });
-  res.status(200).send({
-    message: "Sent Successfully",
-  });
-  io.on("connection", (socket) => {
-    console.log("Connected");
-    socket.on("disconnect", () => {
-      console.log("Client disconnected");
-    });
+
+  socket.on("disconnect", () => {
+    console.log(`Socket ${socket.id} disconnected`);
   });
 });
 // Middlewares
@@ -97,4 +97,4 @@ app.use("/", dashboardRoutes);
 
 app.use("/aboutUs", aboutUsRoutes);
 
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+server.listen(PORT, () => console.log(`Server running on port ${PORT}`));
