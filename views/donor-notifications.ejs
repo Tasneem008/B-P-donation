@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <%- include('./partials/head.ejs'); %>
+    <title>Donor Notifications</title>
+  </head>
+  <body class="min-h-screen"
+  style="
+      background-image: url('/pics/recipient.png');
+      background-size: cover;
+      background-position: center;
+    "
+  >
+    <!-- Sidebar -->
+    <div class="flex min-h-screen">
+      <%- include('./partials/donor-sidebar.ejs') %>
+
+      <!-- Main Panel -->
+      <main class="flex-1 p-2 space-y-10">
+        <!-- Dashboard Layout -->
+        <div class="min-h-screen p-6">
+          <h2 class="text-2xl font-bold mb-6">Blood Donation Requests</h2>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 " >
+            <% bloodRequests.forEach(function(request) { %>
+            <div
+              class="bg-white p-6 rounded-lg shadow-md w-full sm:w-96 flex flex-col"
+            >
+              <div class="flex items-center mb-4">
+                <!-- Blood Group -->
+                <div class="text-xl font-semibold text-gray-800 mr-4">
+                  Blood Group: <%= request.bloodgroup %>
+                </div>
+              </div>
+
+              <div class="mb-4">
+                <!-- Location -->
+                <div class="text-md text-gray-600 mb-2">
+                  Location: <%= request.location.name %> - <%= request.location.location %>
+                </div>
+
+                <!-- Bags Needed -->
+                <div class="text-md text-gray-600 mb-2">
+                  Bags Needed: <%= request.bags %>
+                </div>
+
+                <!-- Requested Date -->
+                <div class="text-sm text-gray-500 mb-2">
+                  Requested Date: <%= new
+                  Date(request.requestedDate).toLocaleDateString() %>
+                </div>
+
+                <!-- Phone Number -->
+                <div class="text-md text-gray-600 mb-2">
+                  Recipient Phone: <%= request.phone ? request.phone : "Contact Hospital" %>
+                </div>
+              </div>
+
+              <!-- Accept Button -->
+              <form action="/donor/dashboard/accept-request" method="POST">
+                <input
+                  type="hidden"
+                  name="requestId"
+                  value="<%= request._id %>"
+                />
+                <button
+                  type="submit"
+                  class="bg-green-600 text-white py-2 px-4 rounded-full hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500"
+                >
+                  Accept Request
+                </button>
+              </form>
+            </div>
+            <% }); %>
+          </div>
+        </div>
+      </main>
+    </div>
+  </body>
+</html>

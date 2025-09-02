@@ -1,21 +1,49 @@
 // Required Packages
 const dotenv = require("dotenv");
 const express = require("express");
+const http = require("http");
+const socketIO = require("socket.io");
+const cors = require("cors");
 const session = require("express-session");
 const MongoStore = require("connect-mongo");
 const bodyParser = require("body-parser");
 const path = require("path");
 const app = express();
+const server = http.createServer(app);
+const NotificationService = require('./services/notificationService.js');
+app.use(cors());
+const io = socketIO(server, {
+  cors: {
+    origin: "*",
+    methods: ["GET", "POST"],
+  },
+});
+NotificationService.initialize(io);
+app.use(cors("*"));
+app.use(express.json());
+//we might need to update here
+io.on("connection", (socket) => {
+  console.log(`Socket connected: ${socket.id}`);
+
+  socket.on("joinRoom", (userId) => {
+    socket.join(userId); // room name = donor _id
+    console.log(`Socket ${socket.id} joined room ${userId}`);
+  });
+
+  socket.on("disconnect", () => {
+    console.log(`Socket ${socket.id} disconnected`);
+  });
+});
 // Middlewares
 const { setUserData } = require("./middleware/middleware.js");
-// Database Connection
+// Db Connection
 const connectDB = require("./config/db.js");
 // Routes
 const loginRoutes = require("./routes/login.route.js");
 const registerRoutes = require("./routes/register.route.js");
 const forgotPasswordRoutes = require("./routes/forgot-password.route.js");
 const dashboardRoutes = require("./routes/dashboard.route.js");
-const recipientRoutes = require("./routes/recipient.route.js");
+const aboutUsRoutes = require("./routes/aboutUs.route.js");
 
 dotenv.config();
 
@@ -41,7 +69,6 @@ app.use(
 
 app.use(setUserData);
 
-// Serve static files (if needed)
 app.use(express.static(path.join(__dirname, "public")));
 
 // Home route
@@ -68,6 +95,6 @@ app.get("/logout", (req, res) => {
 // Dashboard of different roles users.
 app.use("/", dashboardRoutes);
 
-app.use("/recipient", recipientRoutes);
+app.use("/aboutUs", aboutUsRoutes);
 
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+server.listen(PORT, () => console.log(`Server running on port ${PORT}`));

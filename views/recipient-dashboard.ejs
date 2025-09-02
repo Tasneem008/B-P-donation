@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html data-theme="light" lang="en">
+  <head>
+    <%- include('./partials/head.ejs') %>
+    <title>Dashboard | DonateLife</title>
+  </head>
+  <body
+    class="min-h-screen"
+    style="
+      background-image: url('/pics/recipient.png');
+      background-size: cover;
+      background-position: center;
+    "
+  >
+    <!-- Sidebar -->
+    <div class="flex min-h-screen">
+      <%- include('./partials/recipient-sidebar.ejs') %>
+
+      <!-- Main Panel -->
+      <main class="flex-1 p-2 space-y-10 flex justify-center mt-20">
+        <!-- Profile Card -->
+        <div
+          class="w-full max-w-4xl bg-white/30 p-6 rounded-xl shadow-md text-center"
+        >
+          <!-- User Info and Stats -->
+          <div>
+            <!-- User Info -->
+            <div class="flex flex-col items-center space-y-2">
+              <div
+                class="w-16 h-16 bg-gray-300 rounded-full flex items-center justify-center"
+              >
+                <img src="/icons/user.svg" />
+              </div>
+              <p class="font-semibold text-gray-700"><%= user.username %></p>
+            </div>
+            <div id="requestForm" class="mt-10">
+              <div
+                class="backdrop-blur-md bg-white/30 border border-white/40 rounded-2xl shadow-2xl p-8"
+              >
+                <h2 class="text-xl font-bold text-red-800 mb-6 text-center">
+                  Send Your Request!
+                </h2>
+
+                <form
+                  action="/recipient/dashboard/home"
+                  method="post"
+                  class="grid grid-cols-1 md:grid-cols-2 gap-6"
+                >
+                  <!-- Blood group -->
+                  <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1"
+                      >Blood Group</label
+                    >
+                    <select
+                      name="bloodgroup"
+                      class="w-full px-4 py-2 rounded-lg bg-red-600/80 text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-red-400 shadow-md"
+                      required
+                    >
+                      <option disabled selected>Select Blood Group</option>
+                      <option>O+</option>
+                      <option>A+</option>
+                      <option>B+</option>
+                      <option>AB+</option>
+                      <option>AB-</option>
+                      <option>B-</option>
+                      <option>A-</option>
+                      <option>O-</option>
+                    </select>
+                  </div>
+
+                  <!-- Phone -->
+                  <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1"
+                      >Phone Number</label
+                    >
+                    <input
+                      name="phone"
+                      type="tel"
+                      placeholder="01XXXXXXXXX"
+                      class="w-full px-4 py-2 rounded-lg bg-white/70 border border-red-400 focus:outline-none focus:ring-2 focus:ring-red-400 shadow-md"
+                      required
+                    />
+                  </div>
+
+                  <!-- Location -->
+                  <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1"
+                      >Preferred Locations</label
+                    >
+                    <select
+                      name="location"
+                      class="w-full px-4 py-2 rounded-lg bg-red-600/80 text-white focus:outline-none focus:ring-2 focus:ring-red-400 shadow-md"
+                      required
+                    >
+                      <option disabled selected>Select Location</option>
+                      <% hospitals.forEach(hospital => { %>
+                      <option value="<%= hospital._id %>">
+                        <%= hospital.name %> - <%= hospital.location %>
+                      </option>
+                      <% }) %>
+                    </select>
+                  </div>
+
+                  <!-- Blood Unit -->
+                  <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1"
+                      >Blood Unit</label
+                    >
+                    <input
+                      name="bags"
+                      type="number"
+                      placeholder="e.g., 2 bags"
+                      class="w-full px-4 py-2 rounded-lg bg-white/70 border border-red-400 focus:outline-none focus:ring-2 focus:ring-red-400 shadow-md"
+                      required
+                    />
+                  </div>
+
+                  <!-- Date & Time -->
+                  <div class="md:col-span-2">
+                    <label class="block text-sm font-medium text-gray-700 mb-1"
+                      >Requested Date & Time</label
+                    >
+                    <input
+                      type="date"
+                      name="requestedDate"
+                      class="w-full px-4 py-2 rounded-lg bg-white/70 border border-red-400 focus:outline-none focus:ring-2 focus:ring-red-400 shadow-md"
+                      required
+                    />
+                  </div>
+
+                  <!-- Description -->
+                  <div class="md:col-span-2">
+                    <label class="block text-sm font-medium text-gray-700 mb-1"
+                      >Description</label
+                    >
+                    <textarea
+                      name="description"
+                      type="text"
+                      placeholder="Write something here..."
+                      class="w-full px-4 py-2 rounded-lg bg-white/70 border border-red-400 focus:outline-none focus:ring-2 focus:ring-red-400 shadow-md"
+                      required
+                    ></textarea>
+                  </div>
+
+                  <!-- Submit -->
+                  <div class="md:col-span-2 flex justify-center">
+                    <button
+                      type="submit"
+                      class="bg-red-600 hover:bg-red-700 text-white px-8 py-3 rounded-full shadow-xl transition-all duration-300 transform hover:scale-105"
+                    >
+                      Send Request
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+    <script src="/socket.io/socket.io.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const socket = io();
+    const userId = "<%= userId %>";
+
+    socket.on("connect", () => {
+      socket.emit("joinRoom", userId);
+    });
+
+    socket.on("requestAccepted", ({ requestId, donorUsername }) => {
+      alert(
+        `🎉 Your request (${requestId}) was accepted by ${donorUsername}!`
+      );
+    });
+  });
+</script>
+
+  </body>
+</html>

@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html data-theme="light" lang="en">
+  <head>
+    <%- include('./partials/head.ejs'); %>
+    <title>Hospital Panel - DonateLife</title>
+  </head>
+  <body class="bg-gray-100 text-gray-800 font-sans">
+    <!-- Sidebar -->
+    <div class="flex min-h-screen">
+      <%- include('./partials/hospital-sidebar.ejs') %>
+      
+
+      <!-- Main Panel -->
+      <main class="flex-1 p-8 space-y-10">
+        <!-- Topbar -->
+        <div class="flex justify-between items-center">
+          <h2 class="text-3xl font-bold">Hospital Dashboard - <%= hospital.name %> - <%= hospital.location %></h2>
+          <div class="relative">
+            <button
+              class="relative bg-white p-2 rounded-full shadow hover:bg-gray-100"
+            >
+              🔔
+              <span
+                class="absolute top-0 right-0 w-2 h-2 bg-red-600 rounded-full"
+              ></span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Summary Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div class="bg-white p-6 rounded-lg shadow-md">
+            <h3 class="text-xl font-semibold text-red-600">Available Units</h3>
+            <p class="mt-2 text-gray-700">Blood: <%= totalBlood %></p>
+          </div>
+          <div class="bg-white p-6 rounded-lg shadow-md">
+            <h3 class="text-xl font-semibold text-red-600">Accepted Requests</h3>
+            <p class="mt-2 text-gray-700">Accepted: <%= donorPending %>  | Completed: <%= donorApproved %> </p>
+          </div>
+          <div class="bg-white p-6 rounded-lg shadow-md">
+            <h3 class="text-xl font-semibold text-red-600">
+              Total Recipient Requests
+            </h3>
+            <p class="mt-2 text-gray-700">Pending: <%= recipientPending %> | Fulfilled: <%= recipientAccepted %></p>
+          </div>
+        </div>
+
+        <!-- Request Blood Section -->
+        <div class="bg-white p-6 rounded-lg shadow-md">
+          <h3 class="text-xl font-bold mb-4 text-red-600">
+            Request Blood/Plasma
+          </h3>
+          <form
+            action="/hospital/dashboard/home"
+            method="POST"
+            class="grid grid-cols-1 md:grid-cols-3 gap-4"
+          >
+            <select
+              class="select select-primary border-gray-200 p-2 rounded-md"
+              required
+              name="bloodgroup"
+            >
+              <option disabled selected>Blood Group</option>
+              <% ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"].forEach(type => { %>
+                <option value="<%= type %>"><%= type %></option>
+              <% }) %>
+            </select>
+            <input
+              name="bags"
+              type="number"
+              placeholder="Bags (units)"
+              class="p-2 border rounded-md"
+            />
+            <input
+            id="requestedDate"
+              name="requestedDate"
+              type="date"
+              class="p-2 border rounded-md"
+            />
+            <textarea
+              name="description"
+              placeholder="Reason / Notes"
+              class="col-span-3 p-2 border rounded-md h-24"
+            ></textarea>
+            <button
+              type="submit"
+              class="col-span-3 bg-red-600 text-white py-2 px-6 rounded-md hover:bg-red-700 transition"
+            >
+              Submit Request
+            </button>
+          </form>
+        </div>
+
+        <!-- Appointments Management -->
+        <div class="bg-white p-6 rounded-lg shadow-md">
+          <h3 class="text-xl font-bold mb-4 text-red-600">
+            Donor → Hospital Appointments
+          </h3>
+          <div class="overflow-x-auto">
+            <table class="w-full table-auto text-left">
+              <thead>
+                <tr class="bg-gray-100 text-gray-600">
+                  <th class="p-3">Donor User Name</th>
+                  <th class="p-3">Requested Date</th>
+                  <th class="p-3">Blood Group</th>
+                    <th class="p-3">Bags Requested</th>
+                  <th class="p-3">Status</th>
+                  <th class="p-3 text-center">Actions</th>
+                </tr>
+              </thead>
+              <tbody class="text-sm text-gray-700">
+                <% donorHospitalAppointment.forEach(app=>{  %>
+                  <tr class="border-b">
+                  <td class="p-3"><%= app?.acceptedByDonor?.username ? app.acceptedByDonor.username : `${app.acceptedByHospital.name} - ${app.acceptedByHospital.location}`  %></td>
+                  <td class="p-3"><%= new Date(app.requestedDate).toLocaleDateString() %></td>
+                  <td class="p-3"><%= app.bloodgroup %></td>
+                  <td class="p-3"><%= app.bags %></td>
+                  <td class="p-3 font-medium <%= app.status === 'accepted' ? 'text-yellow-800' : "text-green-500"  %>"><%= app.status %></td>
+                  <td class="p-3 flex gap-2 justify-center">
+                    <form action="/hospital/dashboard/home/completed-donation/<%= app._id %>" method="post">
+                      <button
+                        class="bg-green-500 text-white px-4 py-1 rounded hover:bg-green-600 <%= app.status === 'completed' ? 'btn-disabled' : ''  %>"
+                        <%= app.status === 'completed' ? 'disabled' : ''  %>
+                        type='submit'
+                      >
+                        Completed
+                      </button>
+                    </form>
+                  </td>
+                </tr>
+                <% }) %>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Notifications Section -->
+        <div class="bg-white p-6 rounded-lg shadow-md">
+          <h3 class="text-xl font-bold mb-4 text-red-600">Notifications</h3>
+          <ul class="space-y-3 text-sm text-gray-700">
+            <li class="border-l-4 border-red-600 pl-4">
+              New donor request received.
+            </li>
+            <li class="border-l-4 border-green-500 pl-4">
+              Recipient request fulfilled successfully.
+            </li>
+            <li class="border-l-4 border-blue-500 pl-4">
+              Donor #123 requested an appointment on Aug 15.
+            </li>
+          </ul>
+        </div>
+      </main>
+    </div>
+    <script>
+const requestedDate = document.getElementById('requestedDate')
+// Create a Date object for the minimum date (e.g., today's date)
+const today = new Date();
+const year = today.getFullYear();
+const month = (today.getMonth() + 1).toString().padStart(2, '0'); // Month is 0-indexed, add 1 and pad with leading zero
+const day = today.getDate().toString().padStart(2, '0'); // Pad with leading zero
+
+// Format the date as YYYY-MM-DD
+const minDate = `${year}-${month}-${day}`;
+
+requestedDate.setAttribute('min', minDate) 
+    </script>
+  </body>
+</html>
